@@ -46,7 +46,7 @@ const postsInColumn = column.items.map((item) => {
                   {post.title}
                 </h3>
                 {post.date && (
-                  <span class="text-sm text-secondary shrink-0">
+                  <span class="hidden sm:block text-sm text-secondary shrink-0">
                     {getFormattedDate(post.date)}
                   </span>
                 )}
