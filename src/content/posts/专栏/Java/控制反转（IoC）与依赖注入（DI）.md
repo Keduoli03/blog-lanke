@@ -9,6 +9,7 @@ tags:
 column: SpringBoot
 cover:
 status: true
+unlisted: true
 pinned: false
 aiSummary: true
 date: 2026-01-15 19:27
