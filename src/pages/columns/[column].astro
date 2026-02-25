@@ -1,0 +1,26 @@
+---
+import type { GetStaticPaths } from 'astro'
+import { getColumnsFromFolder } from '@/utils/content'
+
+export const getStaticPaths = (async () => {
+  const columns = await getColumnsFromFolder()
+  return columns.map((c) => {
+    const first = c.items?.[0]
+    const firstSeg = first ? first.slug.split('/').pop() : null
+    return { params: { column: c.slug }, props: { base: c.base, firstSeg } }
+  })
+}) satisfies GetStaticPaths
+
+const { base, firstSeg } = Astro.props as { base: string; firstSeg: string | null }
+
+if (firstSeg) {
+  return Astro.redirect(`/columns/${Astro.params.column}/${firstSeg}`)
+}
+---
+
+<html lang="zh-CN">
+  <head>
+    <meta http-equiv="refresh" content="0; url=/archives" />
+  </head>
+  <body></body>
+</html>

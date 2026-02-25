@@ -1,5 +1,6 @@
 ---
 import { slugify } from '@/utils/content'
+import { Icon } from 'astro-icon/components'
 
 interface Props {
   tags: string[]
@@ -10,11 +11,11 @@ interface Props {
 const { tags, category, class: className } = Astro.props
 ---
 
-<div class="flex flex-wrap gap-2 text-sm text-secondary" class:list={[className]}>
+<div class="flex flex-wrap gap-3 text-sm text-secondary" class:list={[className]}>
   {
     category && (
-      <div>
-        <i class="iconfont icon-folder" />
+      <div class="icon-inline">
+        <Icon name="ri:folder-line" />
         <a
           class="hover:text-accent hover:underline underline-offset-2 decoration-dashed"
           href={`/categories/${slugify(category)}`}
@@ -26,8 +27,8 @@ const { tags, category, class: className } = Astro.props
   }
   {
     tags.length > 0 && (
-      <div>
-        <i class="iconfont icon-hashtag" />
+      <div class="icon-inline">
+        <Icon name="ri:hashtag" />
         {tags.map((tag, index) => (
           <>
             {index > 0 && <span>, </span>}

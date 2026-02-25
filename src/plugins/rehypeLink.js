@@ -12,7 +12,7 @@ export function rehypeLink() {
           target: '_blank',
         }
         parent.children[index] = node
-        const icon = h('i', { class: 'iconfont icon-external-link' })
+        const icon = h('iconify-icon', { icon: 'ri:external-link-line' })
         parent.children.splice(index + 1, 0, icon)
       }
     })

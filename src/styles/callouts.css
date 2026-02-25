@@ -1,0 +1,228 @@
+/* ========================================================================== */
+/*  Callout 样式（对齐你之前的风格）                                          */
+/* ========================================================================== */
+
+.callout,
+details.callout {
+  --co: var(--callout-color-light, #3b82f6);
+  position: relative;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 1rem 0;
+  width: 100%;
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--co) 8%, rgb(var(--color-bg-primary)));
+  /* 左侧彩色条 */
+  border-left: 0.25em solid var(--co);
+  /* 上右下细边框 */
+  border-top: 1px solid color-mix(in oklab, var(--co) 28%, transparent);
+  border-right: 1px solid color-mix(in oklab, var(--co) 28%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--co) 28%, transparent);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.dark .callout,
+.dark details.callout {
+  background: color-mix(in oklab, var(--co) 10%, rgb(var(--color-bg-primary)));
+  border-left-color: var(--co);
+  border-top: 1px solid color-mix(in oklab, var(--co) 36%, transparent);
+  border-right: 1px solid color-mix(in oklab, var(--co) 36%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--co) 36%, transparent);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.callout:hover,
+details.callout:hover {
+  border-top-color: rgba(var(--callout-border-rgb, 59, 130, 246), 0.5);
+  border-right-color: rgba(var(--callout-border-rgb, 59, 130, 246), 0.5);
+  border-bottom-color: rgba(var(--callout-border-rgb, 59, 130, 246), 0.5);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.dark .callout:hover,
+.dark details.callout:hover {
+  border-top-color: rgba(var(--callout-border-rgb, 59, 130, 246), 0.6);
+  border-right-color: rgba(var(--callout-border-rgb, 59, 130, 246), 0.6);
+  border-bottom-color: rgba(var(--callout-border-rgb, 59, 130, 246), 0.6);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* 标题区域与图标 */
+.callout-title,
+summary.callout-title {
+  display: flex;
+  align-items: center !important;
+  padding: 6px 8px 6px 6px !important;
+  line-height: 1 !important;
+  gap: 8px;
+  font-weight: 500;
+  color: var(--co);
+  background-color: transparent;
+}
+.dark .callout-title,
+.dark summary.callout-title {
+  color: var(--co);
+}
+
+.callout-title-icon,
+.callout-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  margin-top: 1px !important;
+  color: var(--co);
+}
+.callout-title-icon svg,
+.callout-icon svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+.callout-title-text,
+.callout-title-inner {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  line-height: 1.2 !important;
+  padding-top: 1px !important;
+}
+.callout-fold-icon {
+  display: flex !important;
+  align-items: center !important;
+  margin-left: -2px;
+  color: var(--co);
+}
+
+/* 折叠交互 */
+[data-collapsible='true'] .callout-title {
+  cursor: pointer;
+}
+[data-collapsible='true'] > .callout-title .callout-fold-icon svg {
+  transform: rotate(-90deg);
+  transition: transform 100ms ease-in-out;
+}
+[data-collapsible='true'][open] > .callout-title .callout-fold-icon svg {
+  transform: none;
+}
+
+/* 内容区域 */
+.callout-content {
+  padding: 0.4rem 1rem 0.9rem;
+}
+.callout-content > :first-child {
+  margin-top: 1rem;
+}
+.callout-content > :last-child {
+  margin-bottom: 0;
+}
+.callout-title::-webkit-details-marker {
+  display: none;
+}
+
+/* 类型色板（沿用你旧样式的 RGB 变量） */
+[data-callout='note' i] {
+  --rc-color-light: #0969da;
+  --rc-color-dark: #2f81f7;
+  --callout-border-rgb: 9, 105, 218;
+  --callout-bg-rgb: 9, 105, 218;
+  border-left-color: #0969da;
+  border-top-color: rgba(9, 105, 218, 0.3);
+  border-right-color: rgba(9, 105, 218, 0.3);
+  border-bottom-color: rgba(9, 105, 218, 0.3);
+  background-color: rgba(9, 105, 218, 0.08);
+}
+[data-callout='note' i] .callout-title,
+[data-callout='note' i] .callout-title-icon,
+[data-callout='note' i] .callout-fold-icon {
+  color: #0969da;
+}
+[data-callout='tip' i] {
+  --rc-color-light: #1a7f37;
+  --rc-color-dark: #3fb950;
+  --callout-border-rgb: 26, 127, 55;
+  --callout-bg-rgb: 26, 127, 55;
+  border-left-color: #1a7f37;
+  border-top-color: rgba(26, 127, 55, 0.3);
+  border-right-color: rgba(26, 127, 55, 0.3);
+  border-bottom-color: rgba(26, 127, 55, 0.3);
+  background-color: rgba(26, 127, 55, 0.08);
+}
+[data-callout='tip' i] .callout-title,
+[data-callout='tip' i] .callout-title-icon,
+[data-callout='tip' i] .callout-fold-icon {
+  color: #1a7f37;
+}
+[data-callout='important' i] {
+  --rc-color-light: #8250df;
+  --rc-color-dark: #a371f7;
+  --callout-border-rgb: 130, 80, 223;
+  --callout-bg-rgb: 130, 80, 223;
+  border-left-color: #8250df;
+  border-top-color: rgba(130, 80, 223, 0.3);
+  border-right-color: rgba(130, 80, 223, 0.3);
+  border-bottom-color: rgba(130, 80, 223, 0.3);
+  background-color: rgba(130, 80, 223, 0.1);
+}
+[data-callout='important' i] .callout-title,
+[data-callout='important' i] .callout-title-icon,
+[data-callout='important' i] .callout-fold-icon {
+  color: #8250df;
+}
+[data-callout='warning' i] {
+  --rc-color-light: #9a6700;
+  --rc-color-dark: #d29922;
+  --callout-border-rgb: 154, 103, 0;
+  --callout-bg-rgb: 154, 103, 0;
+  border-left-color: #9a6700;
+  border-top-color: rgba(154, 103, 0, 0.3);
+  border-right-color: rgba(154, 103, 0, 0.3);
+  border-bottom-color: rgba(154, 103, 0, 0.3);
+  background-color: rgba(154, 103, 0, 0.1);
+}
+[data-callout='warning' i] .callout-title,
+[data-callout='warning' i] .callout-title-icon,
+[data-callout='warning' i] .callout-fold-icon {
+  color: #9a6700;
+}
+[data-callout='caution' i] {
+  --rc-color-light: #d1242f;
+  --rc-color-dark: #d1242f;
+  --callout-border-rgb: 209, 36, 47;
+  --callout-bg-rgb: 209, 36, 47;
+  border-left-color: #d1242f;
+  border-top-color: rgba(209, 36, 47, 0.3);
+  border-right-color: rgba(209, 36, 47, 0.3);
+  border-bottom-color: rgba(209, 36, 47, 0.3);
+  background-color: rgba(209, 36, 47, 0.1);
+}
+[data-callout='caution' i] .callout-title,
+[data-callout='caution' i] .callout-title-icon,
+[data-callout='caution' i] .callout-fold-icon {
+  color: #d1242f;
+}
+
+/* 移动端细化 */
+@media (max-width: 768px) {
+  .callout-title,
+  summary.callout-title {
+    padding: 4px 6px 4px 2px !important;
+    gap: 2px;
+  }
+  .callout-title-icon {
+    width: 14px !important;
+    height: 14px !important;
+    min-width: 14px !important;
+    min-height: 14px !important;
+    margin-top: 0 !important;
+  }
+  .callout-title-icon svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+  .callout-content > :first-child {
+    margin-top: 0.2rem !important;
+  }
+}

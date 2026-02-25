@@ -1,8 +1,15 @@
 ---
 import { Waline } from './Waline'
-import { waline } from '@/config.json'
+import { Artalk } from './Artalk'
+import { comment, waline, artalk } from '@/config.json'
+const provider = (comment?.provider || 'waline') as 'waline' | 'artalk'
 ---
 
-<div>
-  {waline.serverURL && <Waline {...waline} client:visible />}
+<div id="comments">
+  {provider === 'waline' && waline?.serverURL && <Waline {...waline} client:visible />}
+  {
+    provider === 'artalk' && artalk?.server && artalk?.site && (
+      <Artalk server={artalk.server} site={artalk.site} client:visible />
+    )
+  }
 </div>

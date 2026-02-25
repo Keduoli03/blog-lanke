@@ -3,6 +3,8 @@ import { createContext, useContext, useState, forwardRef } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { motion, AnimatePresence } from 'framer-motion'
 import clsx from 'clsx'
+import { Icon } from '@iconify/react'
+import '@/icons/registerRi'
 
 const contentVariants = {
   hidden: {
@@ -94,20 +96,27 @@ const TriggerButton = forwardRef<HTMLButtonElement>((props, ref) => {
       aria-label="Open menu"
       {...props}
     >
-      <i className="iconfont icon-menu"></i>
+      <Icon icon="ri:menu-line" />
     </button>
   )
 })
 
 function DrawerContentImpl() {
   const { dismiss } = useContext(DrawerContext)
+  const menuIconMap: Record<string, string> = {
+    'icon-pantone': 'ri:pantone-line',
+    'icon-archive': 'ri:archive-line',
+    'icon-flask': 'ri:flask-line',
+    'icon-ghost': 'ri:ghost-line',
+    'icon-hearts': 'ri:heart-2-line',
+  }
 
   return (
     <ul className="mt-8 pb-8 overflow-y-auto overflow-x-hidden min-h-0">
       {menus.map((menu) => (
         <motion.li key={menu.name} variants={menuItemVariants}>
-          <a className="inline-flex p-2 space-x-4" href={menu.link} onClick={dismiss}>
-            <i className={clsx('iconfont', menu.icon)}></i>
+          <a className="inline-flex items-center p-2 space-x-4" href={menu.link} onClick={dismiss}>
+            <Icon icon={menuIconMap[menu.icon] ?? 'ri:links-line'} />
             <span>{menu.name}</span>
           </a>
         </motion.li>

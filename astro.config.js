@@ -9,6 +9,7 @@ import { rehypeHeading } from './src/plugins/rehypeHeading'
 import remarkDirective from 'remark-directive'
 import { remarkSpoiler } from './src/plugins/remarkSpoiler'
 import { remarkEmbed } from './src/plugins/remarkEmbed'
+import { remarkImageSize } from './src/plugins/remarkImageSize'
 import tailwind from '@astrojs/tailwind'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
@@ -17,6 +18,9 @@ import { site } from './src/config.json'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import swup from '@swup/astro'
+import rehypeCallouts from 'rehype-callouts'
+
+import icon from 'astro-icon'
 
 // https://astro.build/config
 export default defineConfig({
@@ -31,14 +35,24 @@ export default defineConfig({
       containers: ['main'],
       morph: ['[component-export="Provider"]'],
     }),
+    icon(),
   ],
   markdown: {
     syntaxHighlight: false,
     smartypants: false,
-    remarkPlugins: [remarkMath, remarkDirective, remarkEmbed, remarkSpoiler, remarkReadingTime],
+    remarkPlugins: [
+      remarkMath,
+      remarkDirective,
+      remarkImageSize,
+      remarkEmbed,
+      remarkSpoiler,
+      remarkReadingTime,
+    ],
     rehypePlugins: [
       rehypeHeadingIds,
       rehypeKatex,
+      // Use GitHub-like palette so Important 为紫色、Warning 为橙黄等
+      [rehypeCallouts, { theme: 'github', showIndicator: true }],
       rehypeLink,
       rehypeImage,
       rehypeHeading,

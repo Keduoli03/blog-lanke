@@ -1,0 +1,17 @@
+---
+import { getFormattedDate } from '@/utils/date'
+
+interface Props {
+  lastMod: Date
+  className?: string
+}
+
+const { lastMod, className = '' } = Astro.props
+---
+
+<div class={`flex justify-center text-sm p-4 ${className}`}>
+  <span>
+    这篇文章最后修改于 {getFormattedDate(lastMod)}
+    ，部分内容可能已经不适用，如有疑问可联系作者。
+  </span>
+</div>

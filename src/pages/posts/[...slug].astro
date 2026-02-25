@@ -9,17 +9,19 @@ import { PostToc } from '@/components/post/PostToc'
 import PostMetaInfo from '@/components/post/PostMetaInfo.astro'
 import PostArchiveInfo from '@/components/post/PostArchiveInfo.astro'
 import { ReadingProgress } from '@/components/post/ReadingProgress'
-import { Outdate } from '@/components/post/Outdate'
+import Outdate from '@/components/post/Outdate.astro'
 import PostNav from '@/components/post/PostNav.astro'
 import { Comments } from '@/components/comment'
 import { ActionAside } from '@/components/post/ActionAside'
 import { PostCopyright } from '@/components/post/PostCopyright'
+import AiSummary from '@/components/post/AiSummary.astro'
+import { getDiffInDays } from '@/utils/date'
 
 export const getStaticPaths = (async () => {
   const sortedPosts = await getSortedPosts()
 
   return sortedPosts.map((post, index) => ({
-    params: { slug: post.slug },
+    params: { slug: String((post.data as any).slug ?? post.slug) },
     props: {
       current: post,
       prev: index > 0 ? sortedPosts[index - 1] : undefined,
@@ -38,7 +40,7 @@ const { current, prev, next } = Astro.props
 
 const { headings, Content, remarkPluginFrontmatter } = await current.render()
 
-const mdSlug = `/posts/${current.slug}`
+const mdSlug = `/posts/${String((current.data as any).slug ?? current.slug)}`
 
 const mdDescription = concat(current.data.category || '', current.data.tags.join(', '))
 
@@ -49,29 +51,37 @@ function concat(str1: string, str2: string, sep = ' / ') {
   return ''
 }
 
-const lastMod = current.data.lastMod || current.data.date
+const lastMod = (current.data.lastMod || current.data.date) as Date
+// 1. 如果 frontmatter 明确设置了 outdate: true/false，则直接使用
+// 2. 如果未设置 (undefined)，则走默认逻辑：超过 90 天显示
+const shouldShowOutdate =
+  typeof current.data.outdate === 'boolean'
+    ? current.data.outdate
+    : getDiffInDays(lastMod) > 90
+
+const shouldShowAiSummary = current.data.aiSummary
 ---
 
 <MarkdownLayout
   title={current.data.title}
   description={current.data.summary}
-  image={current.data.cover}
+  image={(current.data.cover || undefined) as string | undefined}
   mdTitle={current.data.title}
   mdDescription={mdDescription}
   mdSlug={mdSlug}
 >
   <div
-    class="max-w-[1100px] mx-auto px-4 md:px-8 py-16 grid lg:grid-cols-[auto_260px] gap-8"
+    class="w-full px-4 md:px-8 py-16 grid gap-8 lg:grid-cols-[1fr_minmax(0,900px)_1fr]"
     data-pagefind-body
   >
-    <div>
+    <div class="lg:col-start-2">
       <header class="space-y-4">
         <h1 class="text-4xl font-bold text-center">
           {current.data.title}
         </h1>
         <PostMetaInfo
           class="justify-center"
-          date={current.data.date}
+          date={current.data.date as Date}
           lastMod={current.data.lastMod}
           words={remarkPluginFrontmatter.words}
           readingMinutes={remarkPluginFrontmatter.readingMinutes}
@@ -81,17 +91,33 @@ const lastMod = current.data.lastMod || current.data.date
           category={current.data.category}
           tags={current.data.tags}
         />
-        <div>
-          <Outdate lastMod={lastMod} client:idle />
-        </div>
+        {
+          /* Info Panel: 合并 Outdate 和 AiSummary */
+          (shouldShowOutdate || shouldShowAiSummary) && (
+            <div class="rounded-lg bg-amber-300/10 border border-amber-300 overflow-hidden">
+              {shouldShowOutdate && <Outdate lastMod={lastMod} />}
+              {shouldShowOutdate && shouldShowAiSummary && (
+                <div class="border-t border-amber-300/50 mx-4" />
+              )}
+              {shouldShowAiSummary && (
+                <AiSummary
+                  slug={String((current.data as any).slug ?? current.slug)}
+                  title={current.data.title}
+                  body={current.body}
+                  embedded={true}
+                />
+              )}
+            </div>
+          )
+        }
       </header>
     </div>
-    <div class="col-start-1 min-w-0">
+    <div class="min-w-0 lg:col-start-2">
       <MarkdownWrapper>
         <Content />
       </MarkdownWrapper>
     </div>
-    <div class="hidden lg:block" data-pagefind-ignore>
+    <div class="hidden xl:block lg:col-start-3 justify-self-start w-[260px]" data-pagefind-ignore>
       <aside class="sticky top-20">
         <SectionBlock title="目录">
           <PostToc headings={headings} client:idle />
@@ -101,7 +127,7 @@ const lastMod = current.data.lastMod || current.data.date
         <ActionAside client:idle />
       </aside>
     </div>
-    <div data-pagefind-ignore>
+    <div class="lg:col-start-2" data-pagefind-ignore>
       <section class="space-y-6">
         <PostCopyright title={current.data.title} slug={mdSlug} lastMod={lastMod} client:visible />
         <PostNav prev={prev} next={next} />

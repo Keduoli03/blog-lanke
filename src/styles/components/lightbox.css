@@ -1,0 +1,258 @@
+/* Lightbox Dialog */
+.md-lightbox-dialog[open] {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100vw !important;
+  min-height: 100vh !important;
+
+  margin: 0 !important;
+  border: none !important;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left) !important;
+
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  background: transparent !important;
+  z-index: 2147483647 !important;
+  overflow: hidden !important;
+  /* 防止被主题色覆盖 */
+  color: initial !important;
+}
+
+.md-lightbox-dialog::backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Content Wrappers */
+.lightbox-content-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none; /* 让点击穿透到 dialog 用于关闭 */
+  /* 重置继承的颜色，防止被 prose 的颜色影响 */
+  color: white !important;
+}
+
+.lightbox-image-container {
+  position: relative !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  max-width: 100% !important;
+  max-height: calc(100vh - 4rem) !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: auto;
+}
+
+/* Image Styles */
+#md-lightbox-img {
+  object-fit: contain !important;
+  display: block !important;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+  cursor: grab;
+  /* 强制清除可能继承的行内样式限制 */
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+  width: auto !important;
+  height: auto !important;
+
+  /* 修复图片被主题色覆盖的问题（混合模式重置） */
+  mix-blend-mode: normal !important;
+  filter: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important; /* 清除可能存在的阴影 */
+  border-radius: 0 !important; /* 清除可能存在的圆角 */
+
+  /* 强制重置其他可能影响显示的属性 */
+  opacity: 1 !important;
+  visibility: visible !important;
+  margin: auto !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+
+  /* 防止选中变色 */
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-touch-callout: none !important;
+}
+
+#md-lightbox-img:active {
+  cursor: grabbing;
+}
+
+/* Caption */
+#md-lightbox-caption {
+  position: absolute !important;
+  bottom: 1rem !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  margin: 0 !important;
+  color: #fff !important;
+  text-align: center !important;
+  max-width: 90% !important;
+  padding: 0.5rem 1rem !important;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  word-wrap: break-word !important;
+  line-height: 1.5 !important;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+/* Toolbar */
+.lightbox-toolbar {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 2147483648;
+  pointer-events: auto;
+}
+
+/* Counter */
+.lb-counter {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 2147483648;
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  user-select: none !important;
+}
+
+/* Buttons */
+.lb-tool-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  backdrop-filter: blur(4px);
+}
+
+.lb-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.lb-tool-btn.close-btn {
+  background: rgba(255, 50, 50, 0.2);
+  border-color: rgba(255, 50, 50, 0.3);
+  margin-left: 0.5rem;
+}
+.lb-tool-btn.close-btn:hover {
+  background: rgba(255, 50, 50, 0.4);
+}
+
+/* Nav Buttons */
+.lb-nav-btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2147483648;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+}
+
+.lb-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.lb-prev {
+  left: 1.5rem;
+}
+.lb-next {
+  right: 1.5rem;
+}
+
+/* Mobile Adaptation */
+@media (max-width: 768px) {
+  .lightbox-toolbar {
+    top: 1rem;
+    right: 1rem;
+    gap: 0.5rem;
+  }
+  .lb-counter {
+    top: 1rem;
+    left: 1rem;
+  }
+  .lb-tool-btn {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  .lb-nav-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: transparent;
+  }
+  .lb-prev {
+    left: 0.5rem;
+  }
+  .lb-next {
+    right: 0.5rem;
+  }
+}
+
+/* Global Body/Cursor Styles */
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 确保选择器优先级足够高，且覆盖各种嵌套情况 */
+:global(.prose img:not([class*='emoji']):not(.no-lightbox)),
+:global(.md-lightbox img) {
+  cursor: pointer !important;
+}
+
+/* 排除代码块内的图片 */
+:global(.prose pre img),
+:global(.prose code img) {
+  cursor: default !important;
+}

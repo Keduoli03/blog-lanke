@@ -30,20 +30,12 @@
   @apply font-normal text-accent hover:underline underline-offset-2;
 }
 
-.markdown a + .icon-external-link {
+.markdown a + iconify-icon {
   @apply text-secondary ml-1;
 }
 
 .markdown blockquote {
   @apply my-5 pl-4 border-l-2 border-accent/80 text-secondary italic;
-}
-
-.markdown blockquote::before {
-  content: '\e793';
-  font-family: 'iconfont';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  @apply not-italic text-accent/80;
 }
 
 .markdown blockquote > p:last-child {
@@ -88,7 +80,13 @@
 }
 
 .markdown img {
-  @apply rounded-lg bg-secondary min-h-[80px] min-w-[80px];
+  @apply rounded-lg bg-secondary min-h-[80px] min-w-[80px] cursor-pointer;
+}
+
+.markdown img.no-lightbox,
+.markdown pre img,
+.markdown code img {
+  @apply cursor-default;
 }
 
 .markdown figure {

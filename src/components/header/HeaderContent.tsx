@@ -9,6 +9,9 @@ import {
   useShouldHeaderMetaShow,
 } from './hooks'
 import { RootPortal } from '@/components/RootPortal'
+import { Icon } from '@iconify/react'
+import '@/icons/registerRi'
+import ColumnHover from './ColumnHover'
 
 export function HeaderContent() {
   return (
@@ -109,18 +112,41 @@ function HeaderMenuItem({
   title: string
   icon: string
 }) {
-  return (
+  const menuIconMap: Record<string, string> = {
+    'icon-pantone': 'ri:pantone-line',
+    'icon-archive': 'ri:archive-line',
+    'icon-flask': 'ri:flask-line',
+    'icon-ghost': 'ri:ghost-line',
+    'icon-hearts': 'ri:heart-2-line',
+    'icon-film': 'ri:film-line',
+    'icon-chat': 'ri:chat-1-line',
+  }
+  const handleMemosClick =
+    title === '说说'
+      ? () => {
+          const once = () => {
+            document.removeEventListener('swup:content:replace', once as any)
+            if (location.pathname.startsWith('/memos')) {
+              ;(window as any).__MEMOS_PAGE_INITED__ = true
+              import('@/scripts/memos-runtime.ts').then((m) =>
+                m.default ? m.default() : undefined,
+              )
+            }
+          }
+          document.addEventListener('swup:content:replace', once as any)
+        }
+      : undefined
+  const Link = (
     <a
       className={clsx('relative block px-4 py-1.5', isActive ? 'text-accent' : 'hover:text-accent')}
       href={href}
+      onClick={handleMemosClick}
     >
-      <div className="flex space-x-2">
+      <div className="flex items-center space-x-2">
         {isActive && (
-          <motion.i
-            className={clsx('iconfont', icon)}
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-          ></motion.i>
+          <motion.span initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+            <Icon icon={menuIconMap[icon] ?? 'ri:links-line'} />
+          </motion.span>
         )}
         <span>{title}</span>
       </div>
@@ -129,4 +155,6 @@ function HeaderMenuItem({
       )}
     </a>
   )
+  if (title === '专栏') return <ColumnHover>{Link}</ColumnHover>
+  return Link
 }

@@ -1,5 +1,7 @@
 import { themeAtom } from '@/store/theme'
 import { useAtom } from 'jotai'
+import { Icon } from '@iconify/react'
+import '@/icons/registerRi'
 
 export function ThemeSwitch() {
   const [theme, setTheme] = useAtom(themeAtom)
@@ -14,17 +16,14 @@ export function ThemeSwitch() {
           transform: `translateX(${left}px)`,
         }}
       ></div>
-      <div
-        className="p-[3px] flex rounded-full border border-primary"
-        role="radiogroup"
-      >
+      <div className="p-[3px] flex rounded-full border border-primary" role="radiogroup">
         <button
           className="size-[32px] flex items-center justify-center"
           type="button"
           aria-label="Switch to light theme"
           onClick={() => setTheme('light')}
         >
-          <i className="iconfont icon-sun"></i>
+          <Icon icon="ri:sun-line" />
         </button>
         <button
           className="size-[32px] flex items-center justify-center"
@@ -32,7 +31,7 @@ export function ThemeSwitch() {
           aria-label="Switch to system theme"
           onClick={() => setTheme('system')}
         >
-          <i className="iconfont icon-computer"></i>
+          <Icon icon="ri:computer-line" />
         </button>
         <button
           className="size-[32px] flex items-center justify-center"
@@ -40,7 +39,7 @@ export function ThemeSwitch() {
           aria-label="Switch to dark theme"
           onClick={() => setTheme('dark')}
         >
-          <i className="iconfont icon-moon"></i>
+          <Icon icon="ri:moon-line" />
         </button>
       </div>
     </div>

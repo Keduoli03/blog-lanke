@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 
-export function PostCardHoverOverlay() {
+export function PostCardHoverOverlay({ full = false }: { full?: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const [enter, setEnter] = useState(false)
 
@@ -43,7 +43,7 @@ export function PostCardHoverOverlay() {
       <AnimatePresence>
         {enter && (
           <motion.div
-            className="absolute inset-y-4 -inset-x-4 -z-1 bg-accent/10 rounded-lg"
+            className={`absolute ${full ? 'inset-0' : 'inset-y-4 -inset-x-4'} -z-1 bg-accent/10 rounded-lg`}
             initial={{ opacity: 0.2, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}

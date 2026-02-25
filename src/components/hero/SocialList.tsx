@@ -1,6 +1,8 @@
 import clsx from 'clsx'
 import { hero } from '@/config.json'
 import { motion } from 'framer-motion'
+import { Icon } from '@iconify/react'
+import '@/icons/registerRi'
 
 const itemVariants = {
   hidden: {
@@ -14,6 +16,12 @@ const itemVariants = {
 }
 
 export function SocialList({ className }: { className?: string }) {
+  const iconMap: Record<string, string> = {
+    'icon-github': 'ri:github-line',
+    'icon-x': 'ri:twitter-x-line',
+    'icon-mail': 'ri:mail-line',
+    'icon-at-line': 'ri:at-line',
+  }
   return (
     <motion.ul
       className={clsx(
@@ -39,7 +47,12 @@ export function SocialList({ className }: { className?: string }) {
               className="absolute inset-0 -z-1 rounded-full group-hover:scale-105 transition"
               style={{ backgroundColor: social.color }}
             ></span>
-            <i className={clsx('iconfont', social.icon)} />
+            <Icon
+              icon={
+                (social.icon?.startsWith?.('ri:') ? social.icon : iconMap[social.icon]) ??
+                'ri:links-line'
+              }
+            />
           </a>
         </motion.li>
       ))}

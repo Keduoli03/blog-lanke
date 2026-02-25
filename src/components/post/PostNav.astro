@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content'
+import { Icon } from 'astro-icon/components'
 
 interface Props {
   prev?: CollectionEntry<'posts'>
@@ -14,8 +15,11 @@ const { prev, next, class: className } = Astro.props
   <div>
     {
       prev && (
-        <a class="flex items-baseline gap-2 hover:text-accent" href={`/posts/${prev.slug}`}>
-          <i class="iconfont icon-arrow-left" />
+        <a
+          class="flex items-center gap-2 hover:text-accent"
+          href={`/posts/${(prev.data as any).slug ?? prev.slug}`}
+        >
+          <Icon name="ri:arrow-left-line" />
           <span>{prev.data.title}</span>
         </a>
       )
@@ -25,11 +29,11 @@ const { prev, next, class: className } = Astro.props
     {
       next && (
         <a
-          class="flex items-baseline justify-end gap-2 hover:text-accent"
-          href={`/posts/${next.slug}`}
+          class="flex items-center justify-end gap-2 hover:text-accent"
+          href={`/posts/${(next.data as any).slug ?? next.slug}`}
         >
           <span>{next.data.title}</span>
-          <i class="iconfont icon-arrow-right" />
+          <Icon name="ri:arrow-right-line" />
         </a>
       )
     }

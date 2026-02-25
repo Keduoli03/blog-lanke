@@ -2,6 +2,8 @@ import { motion } from 'framer-motion'
 import { useCurrentModal, useModal } from '@/components/ui/modal'
 import { useEffect, useState } from 'react'
 import { useDebounceValue } from '@/hooks/useDebounceValue'
+import { Icon } from '@iconify/react'
+import '@/icons/registerRi'
 
 let pagefind: any = null
 async function loadPagefind() {
@@ -24,12 +26,12 @@ export function SearchButton() {
 
   return (
     <button
-      className="size-9 rounded-full shadow-lg shadow-zinc-800/5 border border-primary bg-white/50 dark:bg-zinc-800/50 backdrop-blur"
+      className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-secondary/50 transition-colors text-secondary hover:text-primary"
       type="button"
       aria-label="Search"
       onClick={openModal}
     >
-      <i className="iconfont icon-search"></i>
+      <Icon icon="ri:search-line" className="text-xl" />
     </button>
   )
 }

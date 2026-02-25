@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content'
+import { Icon } from 'astro-icon/components'
 
 const projects = await getCollection('projects')
 ---
@@ -21,7 +22,7 @@ const projects = await getCollection('projects')
             <div class="p-4">
               <div class="group-hover:text-accent">
                 <span class="text-xl font-bold">{project.data.title}</span>
-                <i class="ml-2 iconfont icon-external-link" />
+                <Icon class="ml-2" name="ri:external-link-line" />
               </div>
               <p class="mt-2 text-sm line-clamp-2">{project.data.description}</p>
             </div>

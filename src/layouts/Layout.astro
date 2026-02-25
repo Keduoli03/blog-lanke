@@ -9,6 +9,7 @@ import {
 import { BackToTopFAB } from '@/components/BackToTopFAB'
 import { ToastContainer } from '@/components/ToastContainer'
 import { ModalStack } from '@/components/ui/modal'
+import Lightbox from '@/components/Lightbox.astro'
 import { site } from '@/config.json'
 import '@/styles/global.css'
 
@@ -29,6 +30,9 @@ const { title, description, image } = Astro.props
     <ThemeLoader />
     <AccentColorInjector />
     <PrintVersion />
+    <script type="module" is:inline>
+      import 'iconify-icon'
+    </script>
   </head>
   <body>
     <slot />
@@ -36,5 +40,6 @@ const { title, description, image } = Astro.props
     <BackToTopFAB client:only="react" />
     <ToastContainer client:only="react" />
     <ModalStack client:only="react" />
+    <Lightbox />
   </body>
 </html>

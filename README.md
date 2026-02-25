@@ -1,23 +1,15 @@
-# Gyoza
+# Blog Lanke
 
-Gyoza is a static blog template built with Astro and React.
+基于 [Gyoza](https://github.com/lxchapu/astro-gyoza) 修改的个人博客。
 
-![astro version](https://img.shields.io/badge/astro-4.6-red)
-![node version](https://img.shields.io/badge/node-18.18-green)
-
-Demo Site:
-
-- [gyoza.lxchapu.com](https://gyoza.lxchapu.com)
-- [www.lxchapu.com](https://www.lxchapu.com)
-
-Enjoy it!
-
-## 📷 Screenshots
-
-![Preview](https://s2.loli.net/2024/05/06/A9rzC3Uym7RwdQc.webp)
+![astro version](https://img.shields.io/badge/astro-5.0-red)
 
 ## 🎉 Features
 
+- ✅ 基于 Gyoza 主题进行二次开发
+- ✅ 集成了朋友圈功能
+- ✅ 增加了社交链接快捷入口
+- ✅ 优化了 UI 细节和交互体验
 - ✅ 有着规范的 URL 和 OpenGraph 信息，对 SEO 友好
 - ✅ 支持站点地图
 - ✅ 支持 RSS 订阅
@@ -37,7 +29,7 @@ Enjoy it!
 
 ## 📖 Documentation
 
-前往：[Documentation](https://gyoza.lxchapu.com/posts/guide)
+原主题文档：[Documentation](https://gyoza.lxchapu.com/posts/guide)
 
 ## 🚀 Project Structure
 

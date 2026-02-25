@@ -2,6 +2,10 @@
 import { hero, author } from '@/config.json'
 import { SocialList } from './SocialList'
 import Highlight from '@/components/Highlight.astro'
+import { Icon } from 'astro-icon/components'
+const defaultYiyan = '当第一颗卫星飞向大气层外，我们便以为自己终有一日会征服宇宙。'
+const yiyanSource = hero.yiyan || ''
+const yiyanIsUrl = /^https?:\/\//.test(yiyanSource)
 ---
 
 <div class="lg:-mt-16 lg:h-dvh lg:min-h-[720px]">
@@ -24,11 +28,48 @@ import Highlight from '@/components/Highlight.astro'
     </div>
 
     <div class="mt-10 lg:mt-0 lg:absolute inset-x-0 bottom-0 flex flex-col items-center">
-      <p class="text-xs text-center text-balance text-secondary">
-        {hero.yiyan}
+      <p
+        id="yiyan-text"
+        class="text-xs text-center text-balance text-secondary"
+        data-source={hero.yiyan}
+        data-default={defaultYiyan}
+      >
+        {yiyanIsUrl ? defaultYiyan : hero.yiyan || defaultYiyan}
       </p>
+      <script is:inline>
+        ;(() => {
+          const el = document.getElementById('yiyan-text')
+          if (!el) return
+          const src = el.getAttribute('data-source') || ''
+          const fallback = el.getAttribute('data-default') || el.textContent || ''
+          const setFromData = (d) => {
+            const t = (d && (d.hitokoto ?? d.text ?? d.content ?? d.sentence)) || ''
+            const from = (d && (d.from_who || d.from)) || ''
+            const text = t ? (from ? `${t} —— ${from}` : t) : fallback
+            el.textContent = text
+          }
+          const load = () => {
+            if (!/^https?:\/\//.test(src)) {
+              el.textContent = src || fallback
+              return
+            }
+            const url = src + (src.includes('?') ? '&' : '?') + '_t=' + Date.now()
+            fetch(url, { cache: 'no-store' })
+              .then((r) => r.json())
+              .then(setFromData)
+              .catch(() => {
+                el.textContent = fallback
+              })
+          }
+          load()
+          const onSwup = () => {
+            if (location.pathname === '/' || location.pathname === '') load()
+          }
+          document.addEventListener('swup:content:replace', onSwup)
+        })()
+      </script>
       <div class="mt-7 text-xl animate-bounce">
-        <i class="iconfont icon-down"></i>
+        <Icon name="ri:arrow-down-s-line" />
       </div>
     </div>
   </div>

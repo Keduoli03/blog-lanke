@@ -1,8 +1,9 @@
-@import './iconfont.css';
 @import './shiki.css';
 @import './markdown.css';
 @import './signature.css';
 @import './swup.css';
+@import './callouts.css';
+@import './memos.css';
 
 @font-face {
   font-family: 'Atkinson';
@@ -41,4 +42,18 @@ html.gray {
 
 * {
   scrollbar-width: thin;
+}
+
+/* Icon + text alignment */
+[data-icon],
+svg.iconify,
+iconify-icon {
+  vertical-align: -0.125em;
+  display: inline-block;
+}
+
+.icon-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem; /* 4px */
 }

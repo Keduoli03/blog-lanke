@@ -1,0 +1,651 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro'
+const title = '说说'
+---
+
+<PageLayout title={title}>
+  <div class="w-full px-4 md:px-8 py-16 grid gap-6 lg:grid-cols-[1fr_minmax(0,900px)_1fr]">
+    <div class="lg:col-start-2 memos memos-scope">
+      <header class="space-y-2 mb-4">
+        <h1 class="text-4xl font-bold">说说</h1>
+      </header>
+
+      <section class="memos-list">
+        <div id="memo-grid" class="memos-grid"></div>
+      </section>
+      <div id="memos-comment-global" class="comment-global d-none"></div>
+
+      <template id="memo-item-template">
+        <article class="memos-item">
+          <div class="memos-content prose dark:prose-invert"></div>
+          <div class="memos-footer">
+            <time class="memos-time"></time>
+            <button class="memos-comments"
+              >评论<span class="artalk-count" data-page-key=""></span></button
+            >
+          </div>
+          <div class="comment d-none"></div>
+        </article>
+      </template>
+
+      <div class="bb-load" id="load-more-container"></div>
+
+      <script type="module" is:inline>
+        if (!window.__MEMOS_BOOT_FROM_LAYOUT__ && !window.__MEMOS_PAGE_INITED__) {
+          window.__MEMOS_PAGE_INITED__ = true
+          const CONFIG = {
+            memos: {
+              baseUrl: 'https://memos.blueke.top/',
+              limit: 10,
+              creatorId: '1',
+              username: 'lanke',
+              userlink: 'https://memos.blueke.top',
+              commentsShow: true,
+              commentsTitle: '评论',
+            },
+            artalk: {
+              site: 'Memos',
+              server: 'https://artalk.blueke.top',
+              commentsUrl: 'https://memos.blueke.top/m/',
+            },
+            dom: {
+              gridContainer: '#memo-grid',
+              template: '#memo-item-template',
+              loadMore: '#load-more-container',
+            },
+          }
+
+          let nextToken = ''
+          const limit = parseInt(CONFIG.memos.limit, 10)
+          let memoGrid = document.querySelector(CONFIG.dom.gridContainer)
+          let memoTemplate = document.querySelector(CONFIG.dom.template)
+          let loadMoreContainer = document.querySelector(CONFIG.dom.loadMore)
+          let isLoadingFirst = false
+
+          function formatDate(date) {
+            const year = date.getFullYear()
+            const month = String(date.getMonth() + 1).padStart(2, '0')
+            const day = String(date.getDate()).padStart(2, '0')
+            const hour = String(date.getHours()).padStart(2, '0')
+            const minute = String(date.getMinutes()).padStart(2, '0')
+            return `${year}-${month}-${day} ${hour}:${minute}`
+          }
+
+          function renderMarkdownBasic(text) {
+            if (!text) return ''
+            let s = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+            s = s.replace(
+              /```([\s\S]*?)```/g,
+              (_, code) => `<pre><code>${code.replace(/&/g, '&amp;')}</code></pre>`,
+            )
+            s = s.replace(/`([^`]+)`/g, '<code>$1</code>')
+            s = s
+              .replace(/^###\s+(.*)$/gm, '<h3>$1</h3>')
+              .replace(/^##\s+(.*)$/gm, '<h2>$1</h2>')
+              .replace(/^#\s+(.*)$/gm, '<h1>$1</h1>')
+            s = s
+              .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+              .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+            s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2" class="memo-img" />')
+            s = s.replace(
+              /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+              '<a href="$2" target="_blank" rel="noopener noreferrer" class="memo-link">$1</a>',
+            )
+            s = s.replace(/^>\s+(.*)$/gm, '<blockquote>$1</blockquote>')
+            s = s.replace(/^(?:-\s.*(?:\r?\n|$))+?/gm, (block) => {
+              const items = block
+                .trim()
+                .split(/\r?\n/)
+                .map((l) => l.replace(/^-+\s?/, '').trim())
+              const li = items
+                .filter(Boolean)
+                .map((i) => `<li>${i}</li>`)
+                .join('')
+              return `<ul>${li}</ul>`
+            })
+            s = s
+              .split(/\n{2,}/)
+              .map((chunk) => {
+                if (/^\s*(<h\d|<ul|<pre|<blockquote|<img|<p)/.test(chunk)) return chunk
+                const lines = chunk
+                  .split(/\n/)
+                  .map((l) => l.trim())
+                  .filter(Boolean)
+                if (!lines.length) return ''
+                return `<p>${lines.join('<br/>')}</p>`
+              })
+              .join('\n')
+
+            return s
+          }
+
+          function renderMemoItem(memo) {
+            const isoTime = memo.displayTime || memo.createTime
+            const createdDate = isoTime ? new Date(isoTime) : new Date()
+            const memoId = String(memo.id || (memo.name || '').split('/').pop() || Date.now())
+
+            const frag = memoTemplate.content.cloneNode(true)
+            const article = frag.firstElementChild
+            article.dataset.id = memoId
+
+            const contentEl = frag.querySelector('.memos-content')
+            contentEl.innerHTML = renderMarkdownBasic(memo.content || '')
+            contentEl.querySelectorAll('img').forEach((img) => {
+              const src = img.getAttribute('src') || ''
+              if (/^\/(attachments|resources|o)\//.test(src)) {
+                img.src = `${CONFIG.memos.baseUrl}${src.slice(1)}`
+              } else if (/^(attachments|resources|o)\//.test(src)) {
+                img.src = `${CONFIG.memos.baseUrl}${src}`
+              }
+            })
+            if (Array.isArray(memo.attachments) && memo.attachments.length) {
+              const wrap = document.createElement('div')
+              wrap.className = 'memos-attachments'
+              memo.attachments.forEach((att) => {
+                const id = (att.name || '').split('/').pop()
+                const isImg = (att.type || '').startsWith('image/')
+                if (isImg) {
+                  const candidates = []
+                  if (att.externalLink) candidates.push(att.externalLink)
+                  if (id) {
+                    candidates.push(`${CONFIG.memos.baseUrl}api/v1/attachments/${id}/raw`)
+                    candidates.push(`${CONFIG.memos.baseUrl}o/${id}`)
+                  }
+                  const img = document.createElement('img')
+                  img.className = 'memo-img'
+                  let i = 0
+                  const tryNext = () => {
+                    if (i >= candidates.length) return
+                    img.src = candidates[i++]
+                  }
+                  img.addEventListener('error', tryNext)
+                  tryNext()
+                  wrap.appendChild(img)
+                } else {
+                  const a = document.createElement('a')
+                  a.href =
+                    att.externalLink ||
+                    (id ? `${CONFIG.memos.baseUrl}api/v1/attachments/${id}/raw` : '#')
+                  a.textContent = att.filename || '附件'
+                  a.target = '_blank'
+                  a.rel = 'noopener noreferrer'
+                  a.className = 'memo-link'
+                  wrap.appendChild(a)
+                }
+              })
+              contentEl.appendChild(wrap)
+            }
+            frag.querySelector('.memos-time').textContent = formatDate(createdDate)
+
+            const commentBtn = frag.querySelector('.memos-comments')
+            const commentCount = frag.querySelector('.artalk-count')
+            commentBtn.setAttribute('data-id', memoId)
+            commentCount.setAttribute('data-page-key', `/m/${memoId}`)
+            frag.querySelector('.comment').id = memoId
+
+            commentBtn.addEventListener('click', () => loadArtalk(commentBtn))
+
+            return frag
+          }
+
+          async function ensureArtalk() {
+            if (
+              !document.querySelector('link[href="https://unpkg.com/artalk@2.9.1/dist/Artalk.css"]')
+            ) {
+              const link = document.createElement('link')
+              link.rel = 'stylesheet'
+              link.href = 'https://unpkg.com/artalk@2.9.1/dist/Artalk.css'
+              document.head.appendChild(link)
+            }
+            if (window.__Artalk) return window.__Artalk
+            const mod = await import('https://esm.sh/artalk@2.9.1')
+            const Artalk = mod.default || mod
+            window.__Artalk = Artalk
+            return Artalk
+          }
+
+          async function loadArtalk(btn) {
+            const id = btn.getAttribute('data-id') || ''
+            const item = btn.closest('.memos-item')
+            if (!item) return
+            const container = document.getElementById('memos-comment-global')
+            if (!container) return
+
+            const isOpen = !container.classList.contains('d-none')
+            const currentId = container.getAttribute('data-current-id') || ''
+
+            if (isOpen && currentId === id) {
+              container.classList.add('d-none')
+              container.innerHTML = ''
+              container.removeAttribute('data-current-id')
+              window.__memosCommentId = null
+              return
+            }
+
+            container.classList.remove('d-none')
+            container.innerHTML = '<div id="artalk"></div>'
+            container.setAttribute('data-current-id', id)
+            item.insertAdjacentElement('afterend', container)
+
+            const Artalk = await ensureArtalk()
+            Artalk.init({
+              el: '#artalk',
+              pageKey: `/m/${id}`,
+              pageTitle: '',
+              site: CONFIG.artalk.site,
+              server: CONFIG.artalk.server,
+              emoticons: false,
+            })
+
+            window.__memosCommentId = id
+          }
+
+          function updateMemoList(data = []) {
+            if (!memoGrid || data.length === 0) return
+            data.forEach((memo) => memoGrid.appendChild(renderMemoItem(memo)))
+            ensureArtalk().then((Artalk) => {
+              Artalk.loadCountWidget({
+                server: CONFIG.artalk.server,
+                site: CONFIG.artalk.site,
+                countEl: '.artalk-count',
+              })
+            })
+          }
+
+          function initLoadMoreBtn() {
+            loadMoreContainer.innerHTML = '<button class="load-btn button-load">加载中…</button>'
+            const btn = loadMoreContainer.querySelector('.button-load')
+            btn.addEventListener('click', () => {
+              btn.textContent = '加载中…'
+              getNextPageMemos().then(() => (btn.textContent = '加载更多'))
+            })
+            return btn
+          }
+
+          async function getFirstPageMemos() {
+            if (isLoadingFirst) return
+            isLoadingFirst = true
+            const btn = initLoadMoreBtn()
+            const url = `${CONFIG.memos.baseUrl}api/v1/memos?creatorId=${CONFIG.memos.creatorId}&rowStatus=NORMAL&limit=${limit}`
+            try {
+              const res = await fetch(url)
+              const resdata = await res.json()
+              const list = Array.isArray(resdata) ? resdata : resdata.memos || []
+              nextToken = resdata?.nextPageToken || ''
+              updateMemoList(list)
+              if (!nextToken || list.length < limit) loadMoreContainer.innerHTML = ''
+              else btn.textContent = '加载更多'
+            } catch (err) {
+              console.error('初始加载失败:', err)
+              memoGrid.innerHTML = '<div class="memo-error">加载失败，请检查网络</div>'
+              loadMoreContainer.innerHTML = ''
+            } finally {
+              isLoadingFirst = false
+            }
+          }
+
+          async function getNextPageMemos() {
+            if (!nextToken) {
+              loadMoreContainer.innerHTML = ''
+              return
+            }
+            const url = `${CONFIG.memos.baseUrl}api/v1/memos?creatorId=${CONFIG.memos.creatorId}&rowStatus=NORMAL&limit=${limit}&pageToken=${encodeURIComponent(nextToken)}`
+            try {
+              const res = await fetch(url)
+              const resdata = await res.json()
+              const list = Array.isArray(resdata) ? resdata : resdata.memos || []
+              nextToken = resdata?.nextPageToken || ''
+              updateMemoList(list)
+              if (!nextToken || list.length < 1) loadMoreContainer.innerHTML = ''
+              const Artalk = await ensureArtalk()
+              Artalk.loadCountWidget({
+                server: CONFIG.artalk.server,
+                site: CONFIG.artalk.site,
+                countEl: '.artalk-count',
+              })
+            } catch (err) {
+              console.error('分页加载失败:', err)
+              loadMoreContainer.innerHTML = '<div class="memo-error">加载更多失败</div>'
+            }
+          }
+
+          // 点击页面空白处关闭评论容器
+          document.addEventListener('click', (e) => {
+            const t = e.target
+            const isBtn = !!t.closest('.memos-comments')
+            const isGlobal = !!t.closest('#memos-comment-global')
+            if (isBtn || isGlobal) return
+            const c1 = document.getElementById('memos-comment-global')
+            if (c1 && !c1.classList.contains('d-none')) {
+              c1.classList.add('d-none')
+              c1.innerHTML = ''
+              c1.removeAttribute('data-current-id')
+              window.__memosCommentId = null
+            }
+          })
+
+          function initMemos() {
+            memoGrid = document.querySelector(CONFIG.dom.gridContainer)
+            memoTemplate = document.querySelector(CONFIG.dom.template)
+            loadMoreContainer = document.querySelector(CONFIG.dom.loadMore)
+            if (!memoGrid || !memoTemplate) return
+            nextToken = ''
+            memoGrid.innerHTML = ''
+            if (loadMoreContainer) loadMoreContainer.innerHTML = ''
+            const c1 = document.getElementById('memos-comment-global')
+            if (c1) {
+              c1.classList.add('d-none')
+              c1.innerHTML = ''
+              c1.removeAttribute('data-current-id')
+            }
+            window.__memosCommentId = null
+            getFirstPageMemos()
+          }
+
+          window.__initMemos = initMemos
+          initMemos()
+        }
+      </script>
+    </div>
+  </div>
+</PageLayout>
+
+<style is:inline>
+  :root {
+    /* 适配本站主题变量映射 */
+    --text-primary: rgb(var(--color-text-primary));
+    --text-secondary: rgb(var(--color-text-secondary));
+    --line-divider: rgb(var(--color-border-primary));
+    --content-pane-bg: rgb(var(--color-bg-primary));
+    --text-link: rgb(var(--color-accent));
+    --theme-color: rgb(var(--color-accent));
+    --tag-bg: rgb(var(--color-accent) / 0.08);
+    /* 组件内部使用的别名 */
+    --color-border: var(--line-divider);
+    --color-bg-1: var(--content-pane-bg);
+    --text-muted: var(--text-secondary);
+    --color-link: var(--text-link);
+    --grid-gap: 16px;
+    --card-min-width: 220px;
+  }
+
+  .dark {
+    --color-border: var(--line-divider);
+    --color-bg-1: var(--content-pane-bg);
+    --text-muted: var(--text-secondary);
+    --color-link: var(--text-link);
+  }
+
+  .memos {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .memos .page-title {
+    margin: 0 !important;
+    font-size: 1.1rem !important;
+    line-height: 1.15 !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.25rem !important;
+  }
+
+  .memos .page-title :global(svg) {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+
+  .memos .page-subtitle {
+    margin: 0.12rem 0 0.4rem !important;
+    font-size: 0.85rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .d-none {
+    display: none !important;
+  }
+
+  /* 多列布局保持不变 */
+  .memos-list {
+    margin-top: 0.4rem;
+  }
+
+  .memos-grid {
+    column-count: 4;
+    column-gap: var(--grid-gap);
+    width: 100%;
+    column-width: var(--card-min-width);
+  }
+
+  /* 卡片样式保持不变 */
+  .memos-item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: var(--color-bg-1);
+    transition: box-shadow 0.2s ease;
+    break-inside: avoid;
+    margin-bottom: var(--grid-gap);
+  }
+
+  .memos-item:hover {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  }
+
+  /* 内容区域：缩小整体字体基数 */
+  .memos-content.prose {
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+    color: var(--text-primary) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex: 1;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-all !important;
+    white-space: normal !important;
+  }
+
+  .memos-content.prose h1,
+  .memos-content.prose h2,
+  .memos-content.prose h3 {
+    margin: 0.3rem 0 0.15rem !important;
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
+  }
+
+  /* 段落样式：同步缩小间距 */
+  .memos-content.prose p {
+    margin: 0.2rem 0 !important;
+  }
+
+  .memos-content.prose ul {
+    margin: 0.2rem 0 0.3rem 0.4rem !important;
+    padding-left: 1.2rem !important;
+    margin-left: 0 !important;
+  }
+
+  .memos-content.prose li {
+    margin: 0.1rem 0 !important;
+    font-size: 0.86rem !important;
+    line-height: 1.45 !important;
+    text-indent: -0.5em !important;
+    padding-left: 0.5em !important;
+  }
+
+  .memos-content.prose li::marker {
+    font-size: 0.9em !important;
+  }
+
+  .memos-content.prose blockquote {
+    margin: 0.3rem 0 !important;
+    padding: 0.2rem 0.5rem !important;
+    font-size: 0.84rem !important;
+  }
+
+  /* 图片样式保持不变 */
+  .memo-img {
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: 6px !important;
+    margin: 0.3rem 0 !important;
+  }
+
+  /* 链接样式：同步缩小 */
+  .memo-link {
+    color: var(--color-link) !important;
+    text-decoration: underline !important;
+    display: inline-block !important;
+    font-size: 0.86rem !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .comment-global {
+    width: 100%;
+    margin: 0.6rem 0;
+    padding: 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-bg-1);
+    column-span: all;
+  }
+
+  .comment {
+    width: 100%;
+    margin: 0.6rem 0;
+    padding: 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-bg-1);
+  }
+
+  /* 底部区域保持不变 */
+  .memos-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 0.5rem !important;
+    border-top: 1px solid var(--color-border);
+    line-height: 1 !important;
+  }
+
+  .memos-time {
+    font-size: 0.7rem !important;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* 评论按钮样式 */
+  .memos-comments {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.75rem !important;
+    color: var(--theme-color);
+    background: var(--tag-bg);
+    border: 1px solid var(--line-divider);
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    margin: 0 !important;
+    margin-left: auto !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    outline: none !important;
+    appearance: none !important;
+  }
+
+  .memos-comments .artalk-count {
+    margin-left: 3px !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+  }
+
+  .memos-comments:hover {
+    background: var(--theme-color);
+    border-color: var(--theme-color);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  }
+
+  /* 加载更多按钮保持不变 */
+  .bb-load {
+    margin: 1rem 0 2rem;
+    column-span: all;
+  }
+
+  .button-load {
+    width: 100% !important;
+    font-size: 0.8rem;
+    background: none;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    padding: 10px 30px;
+    letter-spacing: 0.8rem;
+    text-align: center;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+
+  .button-load:hover {
+    border-color: var(--color-link);
+    color: var(--color-link);
+  }
+
+  /* 错误提示保持不变 */
+  .memo-error {
+    text-align: center;
+    color: #ef4444;
+    padding: 1rem;
+    font-size: 0.9rem;
+    column-span: all;
+  }
+
+  /* 响应式适配保持不变 */
+  @media (max-width: 1024px) {
+    .memos-grid {
+      column-count: 2;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .memos-grid {
+      column-count: 1;
+    }
+
+    .memos-item {
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+
+    .memos-content.prose {
+      font-size: 0.86rem !important;
+    }
+
+    .memos-content.prose h1,
+    .memos-content.prose h2,
+    .memos-content.prose h3 {
+      font-size: 0.9rem !important;
+    }
+
+    .memos-time,
+    .memos-comments {
+      font-size: 0.68rem !important;
+    }
+  }
+</style>

@@ -19,7 +19,7 @@ export function rehypeHeading() {
             class: 'heading-anchor',
             ariaLabel: 'Heading Anchor',
           },
-          h('i', { class: 'iconfont icon-link' }),
+          h('iconify-icon', { icon: 'ri:links-line' }),
         )
         node.children.push(link)
         node.properties = {

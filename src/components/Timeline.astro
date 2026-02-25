@@ -1,6 +1,9 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import { getShortDate } from '@/utils/date'
+import { Icon } from 'astro-icon/components'
+import { slugify } from '@/utils/content'
+import { PostCardHoverOverlay } from '@/components/post/PostCardHoverOverlay'
 
 interface Props {
   posts: CollectionEntry<'posts'>[]
@@ -14,7 +17,7 @@ const groupedPosts = posts.reduce<
     posts: CollectionEntry<'posts'>[]
   }[]
 >((acc, cur) => {
-  const year = cur.data.date.getFullYear()
+  const year = (cur.data.date as Date).getFullYear()
   const lastYearGroup = acc[acc.length - 1]
   if (lastYearGroup && lastYearGroup.year === year) {
     lastYearGroup.posts.push(cur)
@@ -28,29 +31,59 @@ const groupedPosts = posts.reduce<
 }, [])
 ---
 
-<section>
+<section id="archives-timeline">
   {
     groupedPosts.map((year) => (
-      <div class="relative py-10">
+      <div class="relative py-10" data-year={year.year}>
         <h3
           class="absolute -top-3 -left-8 text-[7rem] text-transparent leading-none font-bold pointer-events-none select-none font-['Atkinson']"
           style="-webkit-text-stroke: 2px rgb(var(--color-text-primary) / 0.1);"
         >
           {year.year}
         </h3>
-        <ul class="space-y-4">
+        <ul class="space-y-1">
           {year.posts.map((post) => (
-            <li class="flex items-baseline space-x-2">
-              <span class="shrink-0 text-gray-600 dark:text-gray-300 text-sm">
-                {getShortDate(post.data.date)}
-              </span>
-              <a
-                class="hover:text-accent/80 hover:underline underline-offset-2"
-                href={`/posts/${post.slug}`}
-              >
-                {post.data.title}
-              </a>
-              {post.data.sticky > 0 && <i class="iconfont icon-pushpin text-red-500" />}
+            <li
+              class="flex"
+              data-category={post.data.category || ''}
+              data-tags={(post.data.tags || []).join(',')}
+            >
+              <div class="relative w-full py-3 px-4 rounded-lg flex items-center justify-between gap-2">
+                <PostCardHoverOverlay full client:only="react" />
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="shrink-0 text-gray-600 dark:text-gray-300 text-sm">
+                    {getShortDate(post.data.date as Date)}
+                  </span>
+                  {post.data.category && (
+                    <a
+                      class="shrink-0 px-2 py-0.5 rounded-md bg-accent/10 text-accent text-[11px] hover:bg-accent/20"
+                      href={`/categories/${slugify(post.data.category)}`}
+                      data-pagefind-filter="category"
+                    >
+                      {post.data.category}
+                    </a>
+                  )}
+                  <a
+                    class="truncate hover:text-accent/80 hover:underline underline-offset-2"
+                    href={`/posts/${post.slug}`}
+                    title={post.data.title}
+                  >
+                    {post.data.title}
+                  </a>
+                  {post.data.sticky > 0 && <Icon class="text-red-500" name="ri:pushpin-2-line" />}
+                </div>
+                <div class="shrink-0 hidden sm:flex flex-wrap gap-1 justify-end">
+                  {post.data.tags.map((tag) => (
+                    <a
+                      class="px-2 py-0.5 rounded-md bg-accent/10 text-accent text-[11px] hover:bg-accent/20"
+                      href={`/tags/${slugify(tag)}`}
+                      data-pagefind-filter="tag"
+                    >
+                      #{tag}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </li>
           ))}
         </ul>

@@ -1,0 +1,30 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro'
+import SectionBlock from '@/components/SectionBlock.astro'
+import { getColumnsFromFolder } from '@/utils/content'
+
+const columns = await getColumnsFromFolder()
+---
+
+<PageLayout title="专栏">
+  <div class="max-w-[900px] mx-auto px-4 md:px-8 py-16">
+    <header class="space-y-2 mb-6">
+      <h1 class="text-4xl font-bold">专栏</h1>
+      <p>共 {columns.length} 个专栏。</p>
+    </header>
+    <SectionBlock title="所有专栏">
+      <ul class="grid sm:grid-cols-2 gap-4">
+        {
+          columns.map((c) => (
+            <li class="rounded-lg p-4 bg-secondary hover:bg-secondary/70 transition">
+              <a class="block" href={`/columns/${c.slug}`}>
+                <div class="font-bold text-lg">{c.title}</div>
+                <div class="text-secondary text-sm mt-1">{c.items.length} 篇</div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </SectionBlock>
+  </div>
+</PageLayout>

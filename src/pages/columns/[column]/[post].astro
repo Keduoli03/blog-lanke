@@ -1,0 +1,228 @@
+---
+import type { GetStaticPaths } from 'astro'
+import { getCollection } from 'astro:content'
+import { getColumnsFromFolder } from '@/utils/content'
+import MarkdownLayout from '@/layouts/MarkdownLayout.astro'
+import MarkdownWrapper from '@/components/MarkdownWrapper.astro'
+import SectionBlock from '@/components/SectionBlock.astro'
+import PostMetaInfo from '@/components/post/PostMetaInfo.astro'
+import { PostToc } from '@/components/post/PostToc'
+import { ReadingProgress } from '@/components/post/ReadingProgress'
+
+export const getStaticPaths = (async () => {
+  const columns = await getColumnsFromFolder()
+  const posts = await getCollection('posts')
+  const paths: any[] = []
+  for (const col of columns) {
+    for (const it of col.items) {
+      const seg = it.slug.split('/').pop()!
+      const p = posts.find((e) => e.slug === it.slug)
+      if (!p) continue
+      paths.push({ params: { column: col.slug, post: seg }, props: { column: col, post: p } })
+    }
+  }
+  return paths
+}) satisfies GetStaticPaths
+
+const { column, post } = Astro.props as {
+  column: {
+    slug: string
+    title: string
+    base: string
+    items: Array<{ slug: string; title: string }>
+  }
+  post: any
+}
+const itemsTyped = (
+  column.items as Array<{ slug: string; title: string; index?: string; level?: number }>
+).map((it) => ({
+  ...it,
+  seg: it.slug.split('/').pop()!,
+  level: it.level ?? 1,
+}))
+const { Content, remarkPluginFrontmatter, headings } = await post.render()
+const mdSlug = `/columns/${column.slug}/${post.slug.split('/').pop()!}`
+const currentIndex = (column.items as any[]).find((i) => i.slug === post.slug)?.index as
+  | string
+  | undefined
+const topKey = currentIndex ? currentIndex.split('.')[0] : undefined
+function num(n?: string) {
+  const v = Number(n)
+  return Number.isFinite(v) ? v : Number.MAX_SAFE_INTEGER
+}
+const groups = Object.values(
+  itemsTyped.reduce(
+    (acc, it) => {
+      const [a, b, c] = (it.index || '').split('.')
+      const k1 = a || 'others'
+      if (!acc[k1])
+        acc[k1] = {
+          key: k1,
+          title: '',
+          items: [] as typeof itemsTyped,
+          second: {} as Record<string, typeof itemsTyped>,
+        }
+      acc[k1].items.push(it)
+      if (!acc[k1].title && it.level === 1) acc[k1].title = it.title || it.seg
+      if (b) {
+        const k2 = `${a}.${b}`
+        if (!acc[k1].second[k2]) acc[k1].second[k2] = []
+        acc[k1].second[k2].push(it)
+      }
+      return acc
+    },
+    {} as Record<
+      string,
+      {
+        key: string
+        title: string
+        items: typeof itemsTyped
+        second: Record<string, typeof itemsTyped>
+      }
+    >,
+  ),
+).sort((a, b) => num(a.key) - num(b.key))
+---
+
+<MarkdownLayout
+  title={`${column.title} · ${post.data.title}`}
+  description={post.data.summary}
+  image={(post.data.cover || undefined) as string | undefined}
+  mdTitle={post.data.title}
+  mdDescription={post.data.summary || ''}
+  mdSlug={mdSlug}
+>
+  <div class="w-full px-4 md:px-8 py-16 grid gap-8 lg:grid-cols-[1fr_minmax(0,900px)_1fr]">
+    <aside class="hidden xl:block lg:col-start-1 justify-self-end w-[260px]" data-pagefind-ignore>
+      <div class="sticky top-20">
+        <SectionBlock title="专栏目录">
+          <ul class="space-y-2">
+            {
+              groups.map((g) => (
+                <li>
+                  {g.key === 'others' ? (
+                    <ul class="space-y-2">
+                      {g.items.map((it) => (
+                        <li>
+                          <a
+                            class:list={[
+                              'block px-3 py-1 rounded-md hover:text-accent hover:bg-secondary/60',
+                              it.slug === post.slug && 'bg-accent/10 text-accent',
+                            ]}
+                            href={`/columns/${column.slug}/${it.seg}`}
+                          >
+                            {(it.index ? it.index + '. ' : '') + (it.title || it.seg)}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <details open={g.key === topKey}>
+                      <summary class="px-3 py-1 rounded-md hover:text-accent hover:bg-secondary/60 cursor-pointer select-none flex items-center justify-between">
+                        <span>
+                          {g.key}. {g.title || `第 ${g.key} 章`}
+                        </span>
+                        <svg
+                          class="col-arrow size-4 opacity-70 transition-transform"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path fill="currentColor" d="M9 6l6 6-6 6" />
+                        </svg>
+                      </summary>
+                      <div class="mt-1 space-y-2">
+                        {Object.keys(g.second)
+                          .sort((x, y) => num(x.split('.')[1]) - num(y.split('.')[1]))
+                          .map((k2) => {
+                            const items = g.second[k2].sort((a, b) => {
+                              const ca = (a.index || '').split('.')[2]
+                              const cb = (b.index || '').split('.')[2]
+                              return num(ca) - num(cb)
+                            })
+                            const t2 =
+                              items.find((it) => (it.index || '').split('.').length === 2)?.title ||
+                              k2
+                            return (
+                              <details
+                                open={
+                                  String(currentIndex || '').startsWith(k2 + '.') ||
+                                  (currentIndex || '') === k2
+                                }
+                              >
+                                <summary class="px-3 py-1 rounded-md hover:text-accent hover:bg-secondary/60 cursor-pointer select-none flex items-center justify-between">
+                                  <span>
+                                    {k2}. {t2}
+                                  </span>
+                                  <svg
+                                    class="col-arrow size-4 opacity-70 transition-transform"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                  >
+                                    <path fill="currentColor" d="M9 6l6 6-6 6" />
+                                  </svg>
+                                </summary>
+                                <ul class="mt-1 space-y-2">
+                                  {items
+                                    .filter((it) =>
+                                      it.index ? it.index.split('.').length >= 2 : false,
+                                    )
+                                    .map((it) => (
+                                      <li>
+                                        <a
+                                          class:list={[
+                                            'block px-3 py-1 rounded-md hover:text-accent hover:bg-secondary/60',
+                                            it.slug === post.slug && 'bg-accent/10 text-accent',
+                                          ]}
+                                          href={`/columns/${column.slug}/${it.seg}`}
+                                          style={{
+                                            paddingLeft: `${((it.index ? it.index.split('.').length : 1) - 2) * 16}px`,
+                                          }}
+                                        >
+                                          {(it.index ? it.index + '. ' : '') + (it.title || it.seg)}
+                                        </a>
+                                      </li>
+                                    ))}
+                                </ul>
+                              </details>
+                            )
+                          })}
+                      </div>
+                    </details>
+                  )}
+                </li>
+              ))
+            }
+          </ul>
+        </SectionBlock>
+      </div>
+    </aside>
+    <div class="min-w-0 lg:col-start-2">
+      <header class="space-y-2 mb-4">
+        <h1 class="text-3xl font-bold">{post.data.title}</h1>
+        <PostMetaInfo
+          date={post.data.date as Date}
+          lastMod={post.data.lastMod}
+          words={remarkPluginFrontmatter.words}
+          readingMinutes={remarkPluginFrontmatter.readingMinutes}
+        />
+      </header>
+      <MarkdownWrapper>
+        <Content />
+      </MarkdownWrapper>
+    </div>
+    <div class="hidden xl:block lg:col-start-3 justify-self-start w-[260px]" data-pagefind-ignore>
+      <aside class="sticky top-20">
+        <SectionBlock title="目录">
+          <PostToc headings={headings} client:idle />
+          <hr class="my-2 border-primary max-w-[100px]" />
+          <ReadingProgress client:idle />
+        </SectionBlock>
+      </aside>
+    </div>
+  </div>
+</MarkdownLayout>
+<style>
+  details[open] summary .col-arrow {
+    transform: rotate(90deg);
+  }
+</style>

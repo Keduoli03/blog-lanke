@@ -10,6 +10,7 @@ import TagList from '@/components/TagList.astro'
 import CategoryList from '@/components/CategoryList.astro'
 import type { CollectionEntry } from 'astro:content'
 import Hero from '@/components/hero/Hero.astro'
+import { Icon } from 'astro-icon/components'
 
 export const getStaticPaths = (async () => {
   const sortedPosts = await getSortedPosts()
@@ -49,8 +50,8 @@ const getPageUrl = (page: number) => {
 <PageLayout>
   <div>
     {currentPage === 1 && <Hero />}
-    <div class="max-w-[1100px] px-4 md:px-8 py-20 mx-auto grid lg:grid-cols-[auto_300px] gap-10">
-      <div class="min-w-0">
+    <div class="w-full px-4 md:px-8 py-20 grid gap-10 lg:grid-cols-[1fr_minmax(0,900px)_1fr]">
+      <div class="min-w-0 lg:col-start-2">
         <SectionBlock title="最新发布">
           <PostList posts={data} />
           {
@@ -60,25 +61,7 @@ const getPageUrl = (page: number) => {
           }
         </SectionBlock>
       </div>
-      <div>
-        <aside class="md:sticky md:top-20 space-y-10">
-          <SectionBlock title="分类">
-            <CategoryList categories={allCategories} />
-          </SectionBlock>
-          <SectionBlock title="热门标签">
-            <TagList tags={hotTags} />
-            {
-              allTags.length > hotTags.length && (
-                <div class="mt-2 text-right">
-                  <a class="text-sm text-secondary hover:text-accent" href="/tags">
-                    更多标签 <i class="iconfont icon-arrow-right" />
-                  </a>
-                </div>
-              )
-            }
-          </SectionBlock>
-        </aside>
-      </div>
+      <!-- sidebar removed on homepage per request -->
     </div>
   </div>
 </PageLayout>

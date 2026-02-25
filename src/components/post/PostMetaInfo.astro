@@ -1,5 +1,6 @@
 ---
 import { RelativeDate } from './RelativeDate'
+import { Icon } from 'astro-icon/components'
 
 interface Props {
   date: Date
@@ -12,18 +13,18 @@ interface Props {
 const { date, lastMod, words, readingMinutes, class: className } = Astro.props
 ---
 
-<div class="flex flex-wrap gap-2 text-sm text-secondary" class:list={[className]}>
-  <div>
-    <i class="iconfont icon-calendar"></i>
+<div class="flex flex-wrap gap-3 text-sm text-secondary" class:list={[className]}>
+  <div class="icon-inline">
+    <Icon name="ri:calendar-2-line" />
     <RelativeDate date={date} client:idle />
     {lastMod && <span class="text-xs">(已编辑)</span>}
   </div>
-  <div>
-    <i class="iconfont icon-file-list"></i>
+  <div class="icon-inline">
+    <Icon name="ri:file-text-line" />
     <span>{words} 字</span>
   </div>
-  <div>
-    <i class="iconfont icon-timer"></i>
+  <div class="icon-inline">
+    <Icon name="ri:time-line" />
     <span>{Math.ceil(readingMinutes)} 分钟</span>
   </div>
 </div>

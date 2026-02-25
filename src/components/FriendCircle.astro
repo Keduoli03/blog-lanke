@@ -1,0 +1,41 @@
+---
+import '@/styles/components/friend-circle.css'
+---
+
+<div class="friend-circle-container mt-12">
+  <div class="friend-circle-header mb-6">
+    <h2 class="text-2xl font-bold flex items-center gap-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="text-accent"
+        ><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path
+          d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+        ></path></svg
+      >
+      朋友圈
+    </h2>
+    <p class="text-sm text-secondary mt-2">这里展示最近朋友们的更新动态...</p>
+  </div>
+
+  <div id="friend-circle-lite-root"></div>
+</div>
+
+<script is:inline>
+  window.UserConfig = {
+    private_api_url: 'https://circle-of-friends-iota.vercel.app/',
+    page_turning_number: 12,
+    error_img:
+      'https://fastly.jsdelivr.net/gh/Rock-Candy-Tea/Friend-Circle-Frontend/logo.png',
+  }
+</script>
+<script>
+  import '@/scripts/cycle.js'
+</script>

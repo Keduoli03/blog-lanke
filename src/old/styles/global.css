@@ -1,0 +1,412 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@import './lightbox.css';
+@import './callout.css';
+@import './gcard.css';
+@import './aplayer.css';
+
+/* 禁用移动端不必要的触摸行为 */
+html,
+body {
+  /* 禁用橡皮筋效果（iOS Safari 中的弹性滚动） */
+  overscroll-behavior: none;
+  /* 禁用触摸时的高亮效果 */
+  -webkit-tap-highlight-color: transparent;
+  /* 禁用文本选择时的放大镜效果 */
+  -webkit-touch-callout: none;
+  /* 禁用双击缩放 */
+  touch-action: manipulation;
+}
+
+/* 默认允许文本选择；仅在交互控件上禁用选择避免误触 */
+button,
+.nav-link,
+.icon-container,
+#sidebar-toggle,
+.toggle-pill,
+.sd-close,
+.sd-search {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 确保主要内容区域与输入可选中 */
+.content-pane,
+article,
+.prose,
+input,
+textarea,
+[contenteditable] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+:root {
+  --page-width: 60rem;
+  --sidebar-width: 4rem;
+  --sidebar-extend-width: 8rem;
+  --content-rail-gap: 1.5rem;
+  --rail-width: 12rem;
+  --page-bg: hsl(var(--primary-hue), 45%, 96%);
+  --sidebar-bg: hsl(var(--primary-hue), 15%, 99.5%);
+  --content-pane-bg: hsl(0, 0%, 100%);
+  --text-primary: hsl(var(--primary-hue), 20%, 18%);
+  --text-secondary: hsl(var(--primary-hue), 12%, 42%);
+  --text-link: hsl(var(--primary-hue), 75%, 44%);
+  --line-divider: hsl(var(--primary-hue), 20%, 88%);
+  --tag-bg: hsl(var(--primary-hue), 40%, 92%);
+
+  /* 主题色 */
+  --theme-color: hsl(var(--primary-hue), 75%, 44%);
+  --theme-color-rgb: var(--primary-hue), 75%, 44%;
+  --theme-color-light: hsl(var(--primary-hue), 75%, 65%);
+
+  /* 浮动面板和主题选择器相关颜色 */
+  --float-panel-bg: hsl(0, 0%, 100%);
+  --color-selection-bar: linear-gradient(
+    to right,
+    oklch(0.8 0.1 0),
+    oklch(0.8 0.1 30),
+    oklch(0.8 0.1 60),
+    oklch(0.8 0.1 90),
+    oklch(0.8 0.1 120),
+    oklch(0.8 0.1 150),
+    oklch(0.8 0.1 180),
+    oklch(0.8 0.1 210),
+    oklch(0.8 0.1 240),
+    oklch(0.8 0.1 270),
+    oklch(0.8 0.1 300),
+    oklch(0.8 0.1 330),
+    oklch(0.8 0.1 360)
+  );
+
+  /* 侧边栏图标颜色 */
+  --sidebar-icon-bg: hsl(var(--primary-hue), 25%, 94%);
+  --sidebar-icon-symbol: hsl(var(--primary-hue), 12%, 35%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-bg: hsl(var(--primary-hue), 18%, 12%);
+    --sidebar-bg: hsl(var(--primary-hue), 16%, 16%);
+    --content-pane-bg: hsl(var(--primary-hue), 15%, 20%);
+    --text-primary: hsl(var(--primary-hue), 18%, 88%);
+    --text-secondary: hsl(var(--primary-hue), 12%, 65%);
+    --text-link: hsl(var(--primary-hue), 80%, 75%);
+    --line-divider: hsl(var(--primary-hue), 15%, 28%);
+    --tag-bg: hsl(var(--primary-hue), 22%, 26%);
+    --theme-color: hsl(var(--primary-hue), 80%, 75%);
+    --theme-color-rgb: var(--primary-hue), 80%, 75%;
+    --theme-color-light: hsl(var(--primary-hue), 80%, 85%);
+    --float-panel-bg: hsl(var(--primary-hue), 15%, 20%);
+    --color-selection-bar: linear-gradient(
+      to right,
+      oklch(0.7 0.1 0),
+      oklch(0.7 0.1 30),
+      oklch(0.7 0.1 60),
+      oklch(0.7 0.1 90),
+      oklch(0.7 0.1 120),
+      oklch(0.7 0.1 150),
+      oklch(0.7 0.1 180),
+      oklch(0.7 0.1 210),
+      oklch(0.7 0.1 240),
+      oklch(0.7 0.1 270),
+      oklch(0.7 0.1 300),
+      oklch(0.7 0.1 330)
+    );
+    --sidebar-icon-bg: hsl(var(--primary-hue), 15%, 24%);
+    --sidebar-icon-symbol: hsl(var(--primary-hue), 18%, 88%);
+  }
+}
+
+html.dark {
+  /* 深色模式 */
+  --page-bg: hsl(var(--primary-hue), 18%, 12%);
+  --sidebar-bg: hsl(var(--primary-hue), 16%, 16%);
+  --content-pane-bg: hsl(var(--primary-hue), 15%, 20%);
+  --text-primary: hsl(var(--primary-hue), 18%, 88%);
+  --text-secondary: hsl(var(--primary-hue), 12%, 65%);
+  --text-link: hsl(var(--primary-hue), 80%, 75%);
+  --line-divider: hsl(var(--primary-hue), 15%, 28%);
+  --tag-bg: hsl(var(--primary-hue), 22%, 26%);
+
+  /* 主题色 */
+  --theme-color: hsl(var(--primary-hue), 80%, 75%);
+  --theme-color-rgb: var(--primary-hue), 80%, 75%;
+  --theme-color-light: hsl(var(--primary-hue), 80%, 85%);
+
+  /* 浮动面板和主题选择器相关颜色 */
+  --float-panel-bg: hsl(var(--primary-hue), 15%, 20%);
+  --color-selection-bar: linear-gradient(
+    to right,
+    oklch(0.7 0.1 0),
+    oklch(0.7 0.1 30),
+    oklch(0.7 0.1 60),
+    oklch(0.7 0.1 90),
+    oklch(0.7 0.1 120),
+    oklch(0.7 0.1 150),
+    oklch(0.7 0.1 180),
+    oklch(0.7 0.1 210),
+    oklch(0.7 0.1 240),
+    oklch(0.7 0.1 270),
+    oklch(0.7 0.1 300),
+    oklch(0.7 0.1 330),
+    oklch(0.7 0.1 360)
+  );
+
+  /* 侧边栏图标颜色 */
+  --sidebar-icon-bg: hsl(var(--primary-hue), 15%, 24%);
+  --sidebar-icon-symbol: hsl(var(--primary-hue), 18%, 88%);
+}
+
+/* --- Base Styles --- */
+html {
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+  background-color: var(--page-bg);
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  background-color: var(--page-bg);
+  color: var(--text-primary);
+  font-size: 16px;
+  line-height: 1.7;
+  transition:
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
+}
+
+a {
+  color: var(--text-link);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: hsl(var(--primary-hue), 10%, 75%);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--primary-hue), 15%, 65%);
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--primary-hue), 10%, 35%);
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--primary-hue), 15%, 45%);
+}
+
+/* --- 主题切换动画 --- */
+/* 基础设置：规范混合模式，不再全局禁用动画 */
+/*
+::view-transition-old(root),
+::view-transition-new(root) {
+  mix-blend-mode: normal;
+}
+
+
+.vt-page { view-transition-name: page; will-change: transform; backface-visibility: hidden; transform: translateZ(0); }
+html.to-dark .vt-page, html.to-light .vt-page { view-transition-name: none !important; }
+
+html:not(.to-dark):not(.to-light) ::view-transition-new(page) { 
+  animation: page-rise-in 300ms cubic-bezier(0.2, 0.8, 0.2, 1) both; 
+  transform-origin: 50% 50%;
+}
+html:not(.to-dark):not(.to-light) ::view-transition-old(page) { 
+  animation: page-rise-out 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both; 
+  transform-origin: 50% 50%;
+}
+*/
+
+/* Swup Transitions */
+.swup-transition-fade {
+  transition:
+    opacity 0.36s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 0.35s ease;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* Outgoing */
+html.is-changing.is-leaving .swup-transition-fade {
+  opacity: 0;
+  transform: translateY(14px) scale(0.985);
+  filter: blur(3px);
+}
+/* Incoming */
+html.is-changing.is-entering .swup-transition-fade {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: enter-rise 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes page-rise-in {
+  0% {
+    transform: scale(0.96);
+  }
+  60% {
+    transform: translateY(-12px) scale(1);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes page-rise-out {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-12px) scale(0.985);
+  }
+}
+@keyframes enter-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+    filter: blur(3px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Layout baseline moved to global to avoid FOUC on navigation */
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+}
+.main-content {
+  flex: 1;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+.page-outer-container {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+}
+.content-pane {
+  width: 100%;
+  max-width: var(--page-width);
+  background-color: var(--content-pane-bg);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.02),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  flex-shrink: 0;
+}
+html.dark .content-pane {
+  border: 1px solid var(--line-divider);
+  box-shadow: none;
+}
+@media (min-width: 1024px) {
+  .main-content {
+    padding: 2rem;
+    margin-left: var(--content-left-margin-base);
+  }
+  .content-pane {
+    padding: 2rem;
+  }
+}
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .main-content {
+    margin-left: var(--content-left-margin-tablet);
+  }
+}
+@media (max-width: 1023px) {
+  .main-content {
+    margin-left: 0 !important;
+    padding: 1rem;
+    padding-top: 4rem;
+  }
+  .content-pane {
+    padding: 1rem;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1440px) {
+  :root {
+    --page-width: clamp(
+      48rem,
+      calc(
+        100vw - var(--sidebar-width) - var(--rail-width, 0px) - var(--content-rail-gap, 0px) - 4rem
+      ),
+      60rem
+    );
+  }
+}
+
+/* 向外扩散动画（出现） */
+@keyframes reveal {
+  from {
+    clip-path: circle(0 at var(--x) var(--y));
+  }
+  to {
+    clip-path: circle(150vmax at var(--x) var(--y));
+  }
+}
+
+/* 向内收缩动画（消失） */
+@keyframes conceal {
+  from {
+    clip-path: circle(150vmax at var(--x) var(--y));
+  }
+  to {
+    clip-path: circle(0 at var(--x) var(--y));
+  }
+}
+
+/* 切换到深色模式时：新视图(深色)执行“展开”动画 */
+html.to-dark::view-transition-new(root) {
+  animation: reveal 0.5s ease-out forwards !important;
+  z-index: 1;
+}
+
+/* 切换到浅色模式时：旧视图(深色)执行“收缩”动画 */
+html.to-light::view-transition-old(root) {
+  animation: conceal 0.5s ease-in forwards !important;
+  z-index: 1;
+}

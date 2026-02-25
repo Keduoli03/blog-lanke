@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components'
+
 interface Props {
   current: number
   total: number
@@ -18,6 +20,12 @@ if (current < total - 2) items.push({ isButton: false, icon: 'more' })
 if (current < total) items.push({ isButton: true, page: total })
 if (current < total)
   items.push({ isButton: true, page: current + 1, icon: 'right', label: '下一页' })
+
+const iconMap: Record<string, string> = {
+  left: 'ri:arrow-left-line',
+  right: 'ri:arrow-right-line',
+  more: 'ri:more-2-line',
+}
 ---
 
 <div class="mt-12 flex items-center justify-center gap-2">
@@ -30,7 +38,7 @@ if (current < total)
             href={getPageUrl(item.page!)}
             aria-label={item.label}
           >
-            {item.icon ? <i class={`iconfont icon-${item.icon}`} /> : item.page}
+            {item.icon ? <Icon name={iconMap[item.icon!]} /> : item.page}
           </a>
         )
       } else {
@@ -39,7 +47,7 @@ if (current < total)
             class="size-8 rounded-lg flex items-center justify-center cursor-default select-none"
             class:list={[{ 'text-white bg-accent dark:text-black': item.page === current }]}
           >
-            {item.icon ? <i class={`iconfont icon-${item.icon}`} /> : item.page}
+            {item.icon ? <Icon name={iconMap[item.icon!]} /> : item.page}
           </span>
         )
       }
