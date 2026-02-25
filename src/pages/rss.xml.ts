@@ -5,12 +5,13 @@ import { getSortedPosts } from '@/utils/content'
 
 export async function GET(context: APIContext) {
   const sortedPosts = await getSortedPosts()
+  const filteredPosts = sortedPosts.filter((post) => !post.data.unlisted)
 
   return rss({
     title: site.title,
     description: site.description,
     site: context.site!,
-    items: sortedPosts.map((post) => ({
+    items: filteredPosts.map((post) => ({
       link: `/posts/${post.slug}`,
       title: post.data.title,
       pubDate: post.data.date,

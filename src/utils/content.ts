@@ -7,20 +7,6 @@ async function getAllPosts() {
     if (import.meta.env.PROD && data.draft) {
       return false
     }
-    // 2. 过滤未列出文章 (unlisted: true)
-    // 注意：unlisted 文章不应出现在列表（首页、归档、RSS），但可以通过链接直接访问
-    // 如果 getAllPosts 用于生成列表，则应过滤。
-    // 但如果用于生成静态路径（getStaticPaths），则不能过滤 unlisted，否则无法生成页面。
-    // 通常 getAllPosts 被用于列表展示，所以这里过滤 unlisted 是合理的。
-    // 但为了生成页面，我们需要另一个函数或者参数控制。
-
-    // 修正：Astro 的 getCollection 默认用于生成页面和列表。
-    // 如果我们在这里过滤了 unlisted，那么 unlisted 的文章将无法生成静态页面（404）。
-    // 所以，getAllPosts 应该包含 unlisted，但在展示列表（如首页、归档）时再过滤。
-
-    // 但是，用户需求是 "不想让他们在这里（首页和归档）显示"。
-    // 所以我们需要区分 "所有存在的文章" 和 "所有展示的文章"。
-
     return true
   })
 
