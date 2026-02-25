@@ -10,7 +10,7 @@ export function HeaderMeta() {
     <AnimatePresence>
       {shouldShow && (
         <motion.div
-          className="absolute inset-0 z-1 flex items-center justify-between md:px-10"
+          className="absolute inset-0 z-10 flex items-center justify-between px-4 pointer-events-none md:px-4"
           initial={{
             opacity: 0,
             y: 20,
@@ -24,11 +24,11 @@ export function HeaderMeta() {
             y: 20,
           }}
         >
-          <div className="grow min-w-0">
+          <div className="grow min-w-0 pl-14 pr-12 md:pl-20 md:pr-0 pointer-events-auto max-w-[50%]">
             <div className="text-secondary text-xs truncate">{description}</div>
             <h2 className="truncate text-lg">{title}</h2>
           </div>
-          <div className="hidden md:block min-w-0 text-right">
+          <div className="hidden md:block min-w-0 text-right pr-20 md:pr-28 pointer-events-auto max-w-[50%]">
             <div className="text-secondary text-xs truncate">{slug}</div>
             <div>{site.title}</div>
           </div>

@@ -13,18 +13,18 @@ export function Header() {
   return (
     <header className="fixed top-0 inset-x-0 h-[64px] z-10 overflow-visible">
       <BluredBackground />
-      <div className="max-w-[1100px] h-full md:px-4 mx-auto grid grid-cols-[64px_auto_auto]">
-        <div className="flex items-center justify-center">
+      <div className="max-w-[1100px] h-full md:px-4 mx-auto flex items-center justify-between relative">
+        <div className="flex items-center justify-start flex-1 min-w-0">
           {isMobile ? <HeaderDrawer /> : <AnimatedLogo />}
         </div>
-        <div className="relative flex items-center justify-center">
+        <div className="flex items-center justify-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
           {isMobile ? <AnimatedLogo /> : <HeaderContent />}
-          <HeaderMeta />
         </div>
-        <div className="flex items-center justify-end gap-2 pr-4">
+        <div className="flex items-center justify-end flex-1 min-w-0 gap-2">
           <SearchButton />
           {!isMobile && <SocialLinks />}
         </div>
+        <HeaderMeta />
       </div>
     </header>
   )

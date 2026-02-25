@@ -45,10 +45,10 @@ function AccessibleMenu() {
       <AnimatePresence>
         {shouldShow && (
           <motion.div
-            className="fixed z-10 top-12 inset-x-0 flex justify-center pointer-events-none"
-            initial={{ y: -20 }}
-            animate={{ y: 0 }}
-            exit={{ y: -20, opacity: 0 }}
+            className="fixed z-[100] top-[64px] inset-x-0 flex justify-center pointer-events-none"
+            initial={{ y: '-50%', opacity: 0 }}
+            animate={{ y: '-50%', opacity: 1 }}
+            exit={{ y: '-50%', opacity: 0 }}
           >
             <HeaderMenu isBgShow />
           </motion.div>
