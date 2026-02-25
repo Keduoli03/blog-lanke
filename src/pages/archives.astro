@@ -6,8 +6,6 @@ import { getOldestPosts } from '@/utils/content'
 import { TimelineProgress } from '@/components/TimelineProgress'
 import ArchiveFilter from '@/components/ArchiveFilter'
 import { getAllTags, getAllCategories } from '@/utils/content'
-import ColumnMenu from '@/components/columns/ColumnMenu.astro'
-
 const oldestPosts = await getOldestPosts()
 const categories = (await getAllCategories()).map((c) => c.name)
 const tags = (await getAllTags()).map((t) => t.name)

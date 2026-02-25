@@ -7,7 +7,7 @@ import '@/icons/registerRi'
 
 const contentVariants = {
   hidden: {
-    x: '-100%',
+    x: '100%',
     transition: {
       duration: 0.2,
       ease: 'easeOut',
@@ -27,7 +27,7 @@ const contentVariants = {
 const menuItemVariants = {
   hidden: {
     opacity: 0,
-    x: '-100%',
+    x: '100%',
   },
   visible: {
     opacity: 1,
@@ -61,7 +61,7 @@ export function HeaderDrawer({ zIndex = 999 }: { zIndex?: number }) {
 
             <Dialog.Content asChild>
               <motion.div
-                className="fixed left-0 inset-y-0 h-full bg-primary rounded-r-lg p-4 flex flex-col justify-center w-[260px] max-w-[80%]"
+                className="fixed right-0 inset-y-0 h-full bg-primary rounded-l-lg p-4 flex flex-col justify-center w-[200px] max-w-[80%]"
                 style={{ zIndex: contentZIndex }}
                 variants={contentVariants}
                 initial="hidden"
@@ -111,7 +111,7 @@ function DrawerContentImpl() {
   }
 
   return (
-    <ul className="mt-8 pb-8 overflow-y-auto overflow-x-hidden min-h-0">
+    <ul className="mt-8 pb-8 overflow-y-auto overflow-x-hidden min-h-0 flex flex-col">
       {menus.map((menu) => (
         <motion.li key={menu.name} variants={menuItemVariants}>
           <a className="inline-flex items-center p-2 space-x-4" href={menu.link} onClick={dismiss}>
