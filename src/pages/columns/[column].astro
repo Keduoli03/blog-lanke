@@ -1,26 +1,61 @@
 ---
 import type { GetStaticPaths } from 'astro'
 import { getColumnsFromFolder } from '@/utils/content'
+import PageLayout from '@/layouts/PageLayout.astro'
+import SectionBlock from '@/components/SectionBlock.astro'
+import { getCollection } from 'astro:content'
+import { getFormattedDate } from '@/utils/date'
 
 export const getStaticPaths = (async () => {
   const columns = await getColumnsFromFolder()
   return columns.map((c) => {
-    const first = c.items?.[0]
-    const firstSeg = first ? first.slug.split('/').pop() : null
-    return { params: { column: c.slug }, props: { base: c.base, firstSeg } }
+    return { params: { column: c.slug }, props: { column: c } }
   })
 }) satisfies GetStaticPaths
 
-const { base, firstSeg } = Astro.props as { base: string; firstSeg: string | null }
+const { column } = Astro.props
 
-if (firstSeg) {
-  return Astro.redirect(`/columns/${Astro.params.column}/${firstSeg}`)
-}
+const allPosts = await getCollection('posts')
+const postsInColumn = column.items.map((item) => {
+  const post = allPosts.find((p) => p.slug === item.slug)
+  return {
+    ...item,
+    date: post?.data.date as Date | undefined,
+    summary: post?.data.summary,
+  }
+})
 ---
 
-<html lang="zh-CN">
-  <head>
-    <meta http-equiv="refresh" content="0; url=/archives" />
-  </head>
-  <body></body>
-</html>
+<PageLayout title={column.title}>
+  <div class="max-w-[900px] mx-auto px-4 md:px-8 py-16">
+    <header class="space-y-4 mb-8">
+      <h1 class="text-4xl font-bold">{column.title}</h1>
+      <p class="text-secondary">共 {column.items.length} 篇文章</p>
+    </header>
+
+    <SectionBlock title="文章列表">
+      <div class="space-y-4">
+        {
+          postsInColumn.map((post) => (
+            <a
+              href={`/columns/${column.slug}/${post.slug.split('/').pop()}`}
+              class="block p-4 rounded-lg border border-primary hover:border-accent hover:bg-accent/5 transition group"
+            >
+              <div class="flex items-center justify-between gap-4">
+                <h3 class="text-lg font-bold group-hover:text-accent transition-colors">
+                  {post.title}
+                </h3>
+                {post.date && (
+                  <span class="text-sm text-secondary shrink-0">
+                    {getFormattedDate(post.date)}
+                  </span>
+                )}
+              </div>
+              {post.summary && <p class="mt-2 text-sm text-secondary line-clamp-2">{post.summary}</p>}
+            </a>
+          ))
+        }
+      </div>
+    </SectionBlock>
+  </div>
+</PageLayout>
