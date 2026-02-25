@@ -29,7 +29,7 @@ const { remarkPluginFrontmatter } = await entry.render()
   <div class="mt-4">
     {entry.data.summary && <p class="break-words">{entry.data.summary}</p>}
   </div>
-  <div class="mt-2 flex flex-wrap items-center justify-end gap-4 select-none">
+  <div class="mt-2 flex flex-wrap items-center justify-end gap-2 md:gap-4 select-none">
     <PostMetaInfo
       class="grow"
       date={entry.data.date as Date}

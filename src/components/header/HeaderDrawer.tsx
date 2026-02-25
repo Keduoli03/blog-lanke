@@ -61,7 +61,7 @@ export function HeaderDrawer({ zIndex = 999 }: { zIndex?: number }) {
 
             <Dialog.Content asChild>
               <motion.div
-                className="fixed right-0 inset-y-0 h-full bg-primary rounded-l-lg p-4 flex flex-col justify-center w-[200px] max-w-[80%]"
+                className="fixed right-0 inset-y-0 h-full bg-primary rounded-l-lg p-4 flex flex-col justify-center w-[140px] max-w-[80%]"
                 style={{ zIndex: contentZIndex }}
                 variants={contentVariants}
                 initial="hidden"
@@ -90,12 +90,12 @@ const TriggerButton = forwardRef<HTMLButtonElement>((props, ref) => {
   return (
     <button
       ref={ref}
-      className="size-9 rounded-full shadow-lg shadow-zinc-800/5 border border-primary bg-white/50 dark:bg-zinc-800/50 backdrop-blur"
+      className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-secondary/50 transition-colors text-secondary hover:text-primary"
       type="button"
       aria-label="Open menu"
       {...props}
     >
-      <Icon icon="ri:menu-line" />
+      <Icon icon="ri:menu-line" className="text-xl" />
     </button>
   )
 })
@@ -114,7 +114,7 @@ function DrawerContentImpl() {
     <ul className="mt-8 pb-8 overflow-y-auto overflow-x-hidden min-h-0 flex flex-col">
       {menus.map((menu) => (
         <motion.li key={menu.name} variants={menuItemVariants}>
-          <a className="inline-flex items-center p-2 space-x-4" href={menu.link} onClick={dismiss}>
+          <a className="inline-flex items-center p-2 space-x-3" href={menu.link} onClick={dismiss}>
             <Icon icon={menuIconMap[menu.icon] ?? 'ri:links-line'} />
             <span>{menu.name}</span>
           </a>

@@ -24,7 +24,7 @@ export function HeaderMeta() {
             y: 20,
           }}
         >
-          <div className="grow min-w-0 pl-14 pr-12 md:pl-20 md:pr-0 pointer-events-auto max-w-[50%]">
+          <div className="grow min-w-0 pl-0 pr-24 md:pl-20 md:pr-0 pointer-events-auto">
             <div className="text-secondary text-xs truncate">{description}</div>
             <h2 className="truncate text-lg">{title}</h2>
           </div>
