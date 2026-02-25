@@ -1,12 +1,12 @@
 ---
-title: Java简介
+title: 控制反转（IoC）与依赖注入（DI）
 description: Spring框架经久不衰的魅力
 categories:
   - 计算机
 tags:
   - SpringBoot
   - 后端
-index: 1
+column: SpringBoot
 cover:
 status: true
 pinned: false
