@@ -21,7 +21,7 @@ const columns = await getColumnsFromFolder()
             <li>
               <a
                 class="block px-3 py-2 hover:text-accent hover:bg-secondary/60 rounded"
-                href={`/columns/${c.slug}`}
+                href={`/columns/${c.slug}/${c.items[0]?.slug.split('/').pop()}`}
               >
                 {c.title}
               </a>
