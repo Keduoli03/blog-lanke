@@ -2,7 +2,6 @@ import { menus } from '@/config.json'
 import { createContext, useContext, useState, forwardRef } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { motion, AnimatePresence } from 'framer-motion'
-import clsx from 'clsx'
 import { Icon } from '@iconify/react'
 import '@/icons/registerRi'
 

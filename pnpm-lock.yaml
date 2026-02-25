@@ -141,6 +141,9 @@ importers:
       '@inquirer/prompts':
         specifier: ^5.0.2
         version: 5.5.0
+      '@types/mdast':
+        specifier: ^4.0.4
+        version: 4.0.4
       astro-icon:
         specifier: ^1.1.5
         version: 1.1.5

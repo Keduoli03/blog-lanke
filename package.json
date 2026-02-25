@@ -61,6 +61,7 @@
     "@iconify/react": "^6.0.2",
     "@iconify/types": "^2.0.0",
     "@inquirer/prompts": "^5.0.2",
+    "@types/mdast": "^4.0.4",
     "astro-icon": "^1.1.5",
     "lint-staged": "^15.2.2",
     "micromark-util-symbol": "^2.0.0",
