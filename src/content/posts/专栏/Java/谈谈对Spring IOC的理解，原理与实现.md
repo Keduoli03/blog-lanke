@@ -1,4 +1,4 @@
-﻿---
+---
 title: 谈谈对Spring IOC的理解，原理与实现
 description: 第一道
 categories:
@@ -9,9 +9,9 @@ tags:
   - SpringBoot
 column: Java面试
 cover:
-status: false
+status: 未完成
 date: 2025-05-12 11:30
-updated: 2025-05-31 23:41
+updated: 2026-02-21 14:28
 slug: '709718'
 ---
 
@@ -57,8 +57,3 @@ slug: '709718'
 具体的细节记不太清了，但是 spring 中的 bean 都是通过反射的方式生成的，同时其中包含了很多的拓展点，比如最常用的对象 BeanFactory 的拓展，对 bean 的拓展(对占位符的处理)，除此之外，ioc 最核心的也就是填充具体 bean 的属性和生命周期。(一定要背的点)
 
 最后记得结束一下: 面试官，这是我对 ioc 的整体理解，您看下还有什么问题，可以指点我一下
-
-## 拓展
-
-> [!TIP]
-> 涉及到源码... 都不会呀！慢慢学吧
