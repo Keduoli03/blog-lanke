@@ -55,9 +55,7 @@ const lastMod = (current.data.lastMod || current.data.date) as Date
 // 1. 如果 frontmatter 明确设置了 outdate: true/false，则直接使用
 // 2. 如果未设置 (undefined)，则走默认逻辑：超过 90 天显示
 const shouldShowOutdate =
-  typeof current.data.outdate === 'boolean'
-    ? current.data.outdate
-    : getDiffInDays(lastMod) > 90
+  typeof current.data.outdate === 'boolean' ? current.data.outdate : getDiffInDays(lastMod) > 90
 
 const shouldShowAiSummary = current.data.aiSummary
 ---

@@ -1,0 +1,11 @@
+<script>
+  import { initFootnoteTooltip } from '@/scripts/footnote-tooltip'
+
+  // 监听 astro:page-load 事件（支持 View Transitions）
+  document.addEventListener('astro:page-load', () => {
+    initFootnoteTooltip()
+  })
+  
+  // 首次加载初始化
+  initFootnoteTooltip()
+</script>

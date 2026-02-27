@@ -1,6 +1,15 @@
 import { h } from 'hastscript'
 import { visit } from 'unist-util-visit'
 
+function getNodeText(node) {
+  if (!node) return ''
+  if (node.type === 'text') return node.value || ''
+  if (Array.isArray(node.children)) {
+    return node.children.map(getNodeText).join('')
+  }
+  return ''
+}
+
 export function rehypeHeading() {
   return (tree) => {
     visit(tree, 'element', (node, index, parent) => {
@@ -12,6 +21,7 @@ export function rehypeHeading() {
         node.tagName === 'h5' ||
         node.tagName === 'h6'
       ) {
+        const titleText = getNodeText(node).trim()
         const link = h(
           'a',
           {
@@ -23,8 +33,17 @@ export function rehypeHeading() {
         )
         node.children.push(link)
         node.properties = {
-          ...node.properties,
+          ...(node.properties || {}),
           class: 'heading',
+          'data-title': titleText,
+        }
+        parent.children[index] = node
+      }
+      if (node.tagName === 'blockquote') {
+        const quoteText = getNodeText(node).trim()
+        node.properties = {
+          ...(node.properties || {}),
+          'data-quote': quoteText,
         }
         parent.children[index] = node
       }

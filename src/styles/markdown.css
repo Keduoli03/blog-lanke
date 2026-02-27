@@ -161,3 +161,61 @@
 .markdown h4 + * {
   @apply mt-0;
 }
+
+.markdown .heading {
+  @apply relative;
+}
+
+.markdown .heading::after {
+  content: 'H1';
+  @apply absolute right-full top-1/2 -translate-y-1/2 mr-2 text-sm font-normal text-gray-400 opacity-0 transition-opacity duration-200 pointer-events-none;
+}
+
+.markdown h2.heading::after {
+  content: 'H2';
+}
+
+.markdown h3.heading::after {
+  content: 'H3';
+}
+
+.markdown h4.heading::after {
+  content: 'H4';
+}
+
+.markdown h5.heading::after {
+  content: 'H5';
+}
+
+.markdown h6.heading::after {
+  content: 'H6';
+}
+
+.markdown .heading:hover::after {
+  @apply opacity-100;
+}
+
+.markdown blockquote {
+  @apply relative;
+}
+
+.markdown blockquote::after {
+  content: attr(data-quote);
+  @apply absolute left-0 top-full mt-2 z-10 text-xs font-normal text-secondary bg-primary/90 border border-primary rounded px-2 py-1 opacity-0 transition-opacity duration-200 pointer-events-none max-w-[80vw];
+  white-space: normal;
+}
+
+.markdown blockquote:hover::after {
+  @apply opacity-100;
+}
+
+/* 脚注悬浮提示框 */
+.footnote-tooltip {
+  @apply fixed z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 rounded-lg shadow-xl text-sm max-w-xs pointer-events-none opacity-0 transition-opacity duration-200 text-gray-700 dark:text-gray-200;
+  /* 确保提示框在最上层 */
+  z-index: 9999;
+}
+
+.footnote-tooltip.show {
+  @apply opacity-100;
+}

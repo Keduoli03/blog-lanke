@@ -51,7 +51,9 @@ const postsInColumn = column.items.map((item) => {
                   </span>
                 )}
               </div>
-              {post.summary && <p class="mt-2 text-sm text-secondary line-clamp-2">{post.summary}</p>}
+              {post.summary && (
+                <p class="mt-2 text-sm text-secondary line-clamp-2">{post.summary}</p>
+              )}
             </a>
           ))
         }

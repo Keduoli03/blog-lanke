@@ -10,6 +10,7 @@ import { BackToTopFAB } from '@/components/BackToTopFAB'
 import { ToastContainer } from '@/components/ToastContainer'
 import { ModalStack } from '@/components/ui/modal'
 import Lightbox from '@/components/Lightbox.astro'
+import FootnoteTooltip from '@/components/FootnoteTooltip.astro'
 import { site } from '@/config.json'
 import '@/styles/global.css'
 
@@ -41,5 +42,6 @@ const { title, description, image } = Astro.props
     <ToastContainer client:only="react" />
     <ModalStack client:only="react" />
     <Lightbox />
+    <FootnoteTooltip />
   </body>
 </html>
