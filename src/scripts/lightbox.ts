@@ -138,6 +138,7 @@ export class Lightbox {
       t.closest('.sidebar-logo') ||
       t.closest('#comment-section') ||
       t.closest('.artalk') ||
+      t.closest('.atk-layer-wrap') ||
       t.closest('.mobile-nav') ||
       t.closest('#mobile-navbar') ||
       t.closest('.md-lightbox-exclude') ||
