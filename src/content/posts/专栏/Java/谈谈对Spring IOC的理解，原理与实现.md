@@ -8,7 +8,7 @@ tags:
   - 面试
   - SpringBoot
 cover:
-status: false
+draft: false
 date: 2025-05-12 11:30
 updated: 2026-02-27 14:50
 slug: '709718'
