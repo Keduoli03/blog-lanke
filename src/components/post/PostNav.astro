@@ -20,10 +20,7 @@ const nUrl = nextUrl || (next ? `/posts/${(next.data as any).slug ?? next.slug}`
   <div>
     {
       prev && pUrl && (
-        <a
-          class="flex items-center gap-2 hover:text-accent"
-          href={pUrl}
-        >
+        <a class="flex items-center gap-2 hover:text-accent" href={pUrl}>
           <Icon name="ri:arrow-left-line" />
           <span>{prev.data.title}</span>
         </a>
@@ -33,10 +30,7 @@ const nUrl = nextUrl || (next ? `/posts/${(next.data as any).slug ?? next.slug}`
   <div>
     {
       next && nUrl && (
-        <a
-          class="flex items-center justify-end gap-2 hover:text-accent"
-          href={nUrl}
-        >
+        <a class="flex items-center justify-end gap-2 hover:text-accent" href={nUrl}>
           <span>{next.data.title}</span>
           <Icon name="ri:arrow-right-line" />
         </a>

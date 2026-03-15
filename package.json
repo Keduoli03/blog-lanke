@@ -38,6 +38,7 @@
     "iconify-icon": "^3.0.2",
     "jotai": "^2.8.0",
     "katex": "^0.16.10",
+    "livecodes": "^0.13.0",
     "lodash-es": "^4.17.21",
     "mdast-util-to-string": "^4.0.0",
     "pagefind": "^1.1.0",

@@ -43,5 +43,11 @@ const { title, description, image } = Astro.props
     <ModalStack client:only="react" />
     <Lightbox />
     <FootnoteTooltip />
+    <script>
+      import { initLivecodes } from '@/scripts/livecodes'
+
+      document.addEventListener('astro:page-load', () => initLivecodes())
+      initLivecodes()
+    </script>
   </body>
 </html>

@@ -77,6 +77,9 @@ importers:
       katex:
         specifier: ^0.16.10
         version: 0.16.33
+      livecodes:
+        specifier: ^0.13.0
+        version: 0.13.0
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.23
@@ -3636,6 +3639,9 @@ packages:
   listr2@8.3.3:
     resolution: {integrity: sha512-LWzX2KsqcB1wqQ4AHgYb4RsDXauQiqhjLk+6hjbaeHG4zpjjVAB6wC/gz6X0l+Du1cN3pUB5ZlrvTbhGSNnUQQ==}
     engines: {node: '>=18.0.0'}
+
+  livecodes@0.13.0:
+    resolution: {integrity: sha512-lVS373OIKwLCHYq6/re7xvkFsr+sRQP6u8wc4wQbVfss+cDnVHE19rvMC1PX+YdahsVtrdslSAmAxQ3BeYtV7Q==}
 
   loader-utils@3.3.1:
     resolution: {integrity: sha512-FMJTLMXfCLMLfJxcX9PFqX5qD88Z5MRGaZCVzfuqeZSPsyiBzs+pahDQjbIWz2QIzPZz0NX9Zy4FX3lmK6YHIg==}
@@ -9570,6 +9576,8 @@ snapshots:
       log-update: 6.1.0
       rfdc: 1.4.1
       wrap-ansi: 9.0.2
+
+  livecodes@0.13.0: {}
 
   loader-utils@3.3.1: {}
 

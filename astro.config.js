@@ -10,6 +10,8 @@ import remarkDirective from 'remark-directive'
 import { remarkSpoiler } from './src/plugins/remarkSpoiler'
 import { remarkEmbed } from './src/plugins/remarkEmbed'
 import { remarkImageSize } from './src/plugins/remarkImageSize'
+import { remarkLivecodes } from './src/plugins/remarkLivecodes'
+import { rehypeLivecodes } from './src/plugins/rehypeLivecodes'
 import tailwind from '@astrojs/tailwind'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
@@ -45,6 +47,7 @@ export default defineConfig({
       remarkDirective,
       remarkImageSize,
       remarkEmbed,
+      remarkLivecodes,
       remarkSpoiler,
       remarkReadingTime,
     ],
@@ -58,6 +61,7 @@ export default defineConfig({
       rehypeHeading,
       rehypeCodeBlock,
       rehypeCodeHighlight,
+      rehypeLivecodes,
       rehypeTableBlock,
     ],
     remarkRehype: { footnoteLabel: '参考', footnoteBackLabel: '返回正文' },
