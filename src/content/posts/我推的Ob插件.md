@@ -5,11 +5,12 @@ categories:
   - Obsidian
 description: 最近在酷安看到有伙伴分享了自己的笔记软件分享，我也就借花献佛，来推荐下我觉得很好用的 Obsidian 插件，也欢迎各位交流分享
 date: 2024-09-24 12:32
-updated: 2025-12-28 14:36
+updated: 2026-03-21 01:34
 title: 我推的Ob插件
 slug: '301279'
 tags:
   - 笔记
+draft: false
 ---
 
 ## 前言
