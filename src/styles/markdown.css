@@ -195,23 +195,6 @@
   @apply opacity-100;
 }
 
-/* LiveCodes 运行块 */
-.markdown .livecodes-runner {
-  @apply my-8 relative rounded-xl overflow-hidden border border-primary bg-primary shadow-sm transition-all duration-300;
-}
-
-.markdown .livecodes-runner:hover {
-  @apply shadow-md border-accent/50;
-}
-
-.markdown .livecodes-runner__mount {
-  @apply w-full h-full;
-}
-
-.markdown .livecodes-runner__code {
-  @apply hidden;
-}
-
 /* 脚注悬浮提示框 */
 .footnote-tooltip {
   @apply fixed z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 rounded-lg shadow-xl text-sm max-w-xs pointer-events-none opacity-0 transition-opacity duration-200 text-gray-700 dark:text-gray-200;

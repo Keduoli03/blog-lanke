@@ -60,6 +60,7 @@ export function initLivecodes() {
     let config: EmbedOptions['config'] = {
       theme: theme,
       mode: 'simple',
+      editor: 'codejar',
       layout: 'responsive',
       fontFamily: '"JetBrains Mono", "Fira Code", Consolas, monospace',
       fontSize: 14,
@@ -114,9 +115,18 @@ export function initLivecodes() {
           },
         }
       } else {
+        // For scripting languages like Python/JS/TS, we want to see console output
+        // if it's not a frontend framework
+        const isScript = true
+
         config = {
           ...config,
           activeEditor: 'script',
+          tools: {
+            enabled: ['console'],
+            active: 'console',
+            status: 'open',
+          },
           script: {
             language: lang as any,
             content: payload?.code || '',

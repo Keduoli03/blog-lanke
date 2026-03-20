@@ -13,8 +13,8 @@ pinned: false
 aiSummary: true
 outdate: true
 date: 2026-02-27 13:59
-updated: 2026-02-27 18:47
-slug: '599432'
+updated: 2026-03-11 11:53
+slug:
 ---
 
 昨天进行了一次面试，但是问到的基本没有八股，反而是一些其他很实际的问题，回答的不是很好。
@@ -92,9 +92,6 @@ TCP（Transmission Control Protocol）是一种面向连接的、可靠的、基
 4. 前端保存 Token（一般放在 localStorage）
 5. 之后每次请求在请求头中携带 Token
 6. 后端通过拦截器解析 Token 并验证合法性
-
-> 这个是因为我简历里写了，然后说了一下... 后面还被吐槽，你都用 redis 了还用这玩意...
-> 也确实，我自己除了第一次做项目，后面也没用过。结束后默默的从简历里删除了 JWT
 
 ## 有MySQL 了为什么还要用Redis
 
