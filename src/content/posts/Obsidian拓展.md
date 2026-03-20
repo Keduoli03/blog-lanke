@@ -5,7 +5,7 @@ tags:
   - 笔记
   - 博客
 cove:
-status: 已完成
+status: true
 title: Obsidian拓展
 slug: obsidiantuo-zhan
 cover: ''

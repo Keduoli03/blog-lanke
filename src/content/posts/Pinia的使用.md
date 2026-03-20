@@ -8,7 +8,7 @@ tags:
   - 前端
   - Vue
 cover:
-status: 已完成
+status: true
 date: 2025-03-23 14:39
 updated: 2025-11-25 22:26
 column: SpringBoot

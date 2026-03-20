@@ -9,9 +9,9 @@ tags:
   - SpringBoot
 column: SpringBoot
 cover:
-status: 已完成
+status: true
 date: 2025-05-28 19:59
-updated: 2026-03-21 01:57
+updated: 2026-03-21 02:24
 slug: '536923'
 ---
 

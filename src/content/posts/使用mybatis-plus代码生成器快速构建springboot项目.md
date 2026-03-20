@@ -1,5 +1,5 @@
 ---
-title: 使用mybatis代码生成器快速构建springboot项目
+title: 使用mybatis-plus代码生成器快速构建springboot项目
 description: 快速构建springboot项目
 categories:
   - 计算机
@@ -7,9 +7,9 @@ tags:
   - Java
   - SpringBoot
 cover: https://api.mtyqx.cn/tapi/random.php
-status: 已完成
+status: true
 date: 2025-03-22 17:35
-updated: 2025-05-31 23:58
+updated: 2026-03-21 02:26
 column: SpringBoot
 slug: '234253'
 ---

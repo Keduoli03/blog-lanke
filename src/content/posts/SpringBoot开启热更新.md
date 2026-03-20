@@ -9,7 +9,7 @@ tags:
   - Java
   - Vue
 cover: https://api.mtyqx.cn/tapi/random.php
-status: 已完成
+status: true
 date: 2025-03-22 19:17
 updated: 2025-12-25 18:36
 Series: SpringBoot

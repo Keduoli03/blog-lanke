@@ -7,10 +7,10 @@ tags:
   - 数据库
   - 笔记
 cover: https://api.miaomc.cn/image/get
-status: 已完成
+draft: false
 date: 2025-03-21 11:31
-updated: 2025-09-13 00:08
-slug: '179640'
+updated: 2026-03-21 02:45
+slug: 'mysql92-ban-ben-an-zhuang'
 ---
 
 电脑一重装，我的数据库又又没了，每次配置都要慢慢折腾，还经常有问题，索性写一个完整过程了。
