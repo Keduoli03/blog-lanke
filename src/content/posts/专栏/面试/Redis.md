@@ -14,7 +14,7 @@ aiSummary: true
 outdate: true
 date: 2026-02-26 11:52
 updated: 2026-03-06 13:51
-slug: '638173'
+slug: 'redis'
 ---
 
 ## Redis的持久化策略。
