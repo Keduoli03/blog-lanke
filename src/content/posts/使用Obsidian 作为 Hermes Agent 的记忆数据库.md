@@ -254,7 +254,7 @@ status: new
 博客归档和写作工作区是两个独立的 vault：
 
 - **Blog Archive**：只读，GitHub 每周同步一次新文章，不主动修改
-- **Writer's Studio**：增量积累，蓝可的文风画像、句式库、话题库都在这里
+- **Writer's Studio**：增量积累，文风画像、句式库、话题库都在这里
 
 两个 vault 共享同一套 `mem.py` CLI，切换只需 `--vault blog-archive` 或 `--vault blog-writer`。
 
