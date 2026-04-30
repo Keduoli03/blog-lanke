@@ -43,7 +43,7 @@ SM-2 算法设计得很优雅，但问题在于：笔记不像闪卡。笔记是
 
 ## LLM Wiki 是什么
 
-[Andrej Karpathy 分享过一套](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)用 Markdown 文件构建 AI 知识库的模式，核心思想是：
+[Andrej Karpathy 分享过一套](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) **用 Markdown 文件构建 AI 知识库的模式**，核心思想是：
 
 > Unlike traditional RAG (which rediscovers knowledge from scratch per query), the wiki compiles knowledge once and keeps it current. Cross-references are already there. Contradictions have already been flagged. Synthesis reflects everything ingested.
 
