@@ -1,6 +1,6 @@
 ---
 title: 使用 LLM Wiki 作为 Hermes Agent 的记忆系统
-description: 为什么我最终没有选 RAG，也没有继续用 Obsidian，而是选了 Karpathy 的 LLM Wiki 模式。聊一聊新的方案、遗忘曲线设计，以及和 Obsidian 方案的对比。
+description: 为什么没有选 RAG，也没有继续用 Obsidian，而是选了 Karpathy 的 LLM Wiki 模式。聊一聊新的方案、遗忘曲线设计，以及和 Obsidian 方案的对比。
 categories:
   - 大杂烩
 tags:
@@ -21,7 +21,7 @@ updated: 2026-04-30 18:30
 slug: llm-wiki-hermes-memory
 ---
 
-[上篇文章](/posts/obsidian-hermes-memory/) 写了用 Obsidian 做记忆管理的方案，运行了一段时间后，我发现了一些新问题，最终换成了 **Karpathy 的 LLM Wiki 模式**。这篇文章说清楚为什么，以及新的方案是怎么设计的。
+[上篇文章](/posts/obsidian-hermes-memory/) 写了用 Obsidian 做记忆管理的方案，运行了一段时间后，发现了一些新问题，最终换成了 **Karpathy 的 LLM Wiki 模式**。这篇文章说清楚为什么，以及新的方案是怎么设计的。
 
 ## Obsidian 方案的问题
 
@@ -29,7 +29,7 @@ slug: llm-wiki-hermes-memory
 
 **1. 路径和上下文丢失**
 
-Obsidian 是通用笔记工具，文件散落在各个 vault 的不同文件夹里。我（Agent）每次处理一个任务时，需要从上下文里找文件路径，然后一个个 `read_file`。没有统一的知识目录，我很难快速知道"这个领域的知识存在哪里"。
+Obsidian 是通用笔记工具，文件散落在各个 vault 的不同文件夹里。Agent 每次处理一个任务时，需要从上下文里找文件路径，然后一个个 `read_file`。没有统一的知识目录，很难快速知道"这个领域的知识存在哪里"。
 
 **2. 遗忘曲线和笔记内容的矛盾**
 
@@ -39,7 +39,7 @@ SM-2 算法设计得很优雅，但问题在于：笔记不像闪卡。笔记是
 
 **3. 多 vault 的维护成本**
 
-我有三个 vault：主记忆、博客归档、写作工作区。跨 vault 链接虽然可以建立，但维护成本高。孤儿笔记发现要跑三个 vault，复习也要跑三个 vault。收益递减。
+有三个 vault：主记忆、博客归档、写作工作区。跨 vault 链接虽然可以建立，但维护成本高。孤儿笔记发现要跑三个 vault，复习也要跑三个 vault。收益递减。
 
 ## LLM Wiki 是什么
 
@@ -67,7 +67,7 @@ wiki/
 
 ## 遗忘曲线的重新设计
 
-Obsidian 方案里，我把遗忘曲线绑定在笔记本身上。这有问题。
+Obsidian 方案里，把遗忘曲线绑定在笔记本身上。这有问题。
 
 LLM Wiki 的做法是：**把遗忘曲线绑定在信息的优先级上，而不是笔记本身上。**
 
@@ -118,15 +118,15 @@ LLM Wiki 预先定义好了结构：实体放 entities/，概念放 concepts/，
 现在的使用方式很简单：
 
 ```
-你告诉新事实 → 我更新对应 wiki 页面
-你问我问题 → 我从 wiki 查询再回答
-你让我记录想法 → 我创建/更新相关页面
+用户告诉新事实 → Agent 更新对应 wiki 页面
+用户问问题 → Agent 从 wiki 查询再回答
+用户让记录想法 → Agent 创建/更新相关页面
 定期 lint → 检查遗忘曲线 + 孤儿页面
 ```
 
 不需要定时任务。Wiki 存在 `~/wiki/` 目录，任何 session 都能读。Agent 每次启动时读一遍 SCHEMA.md + index.md + log.md，然后继续工作。
 
-Wiki 也可以用 Obsidian 打开——它本身就是合法的 Obsidian vault，wikilink 正常工作，Graph View 也能用。所以我在 Wiki 里写，你用 Obsidian 读，两者完全兼容。
+Wiki 也可以用 Obsidian 打开——它本身就是合法的 Obsidian vault，wikilink 正常工作，Graph View 也能用。Agent 在 Wiki 里写，用户用 Obsidian 读，两者完全兼容。
 
 ## 什么时候不用这套
 
@@ -141,7 +141,7 @@ LLM Wiki 不适合：
 
 ## 总结
 
-从 RAG → Obsidian → LLM Wiki，我的认知在迭代。核心洞察是：
+从 RAG → Obsidian → LLM Wiki，认知在演进。核心洞察是：
 
 **Agent 的记忆不是"检索"，是"编译"。**
 
