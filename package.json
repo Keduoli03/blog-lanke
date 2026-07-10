@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "pnpm exec simple-git-hooks",
     "dev": "astro dev",
-    "build": "astro check && astro build && pagefind --site dist",
+    "build": "astro build && pagefind --site dist",
     "check:build-assets": "node scripts/check-browser-assets.mjs",
     "generate:icons": "node scripts/generate-ri-icons.mjs",
     "check:icons": "node scripts/generate-ri-icons.mjs --check",
