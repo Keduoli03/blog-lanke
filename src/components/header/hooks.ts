@@ -63,6 +63,7 @@ export function useShouldAccessibleMenuShow() {
   const scrollY = useAtomValue(pageScrollLocationAtom)
   const scrollDirection = useAtomValue(pageScrollDirectionAtom)
   const hasMetaInfo = useHasMetaInfo()
+  const isMobile = useAtomValue(isMobileAtom)
 
-  return hasMetaInfo && scrollY >= 400 && scrollDirection === 'up'
+  return hasMetaInfo && scrollY >= 400 && scrollDirection === 'up' && !isMobile
 }
