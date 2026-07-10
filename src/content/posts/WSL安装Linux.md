@@ -1,20 +1,15 @@
 ---
 title: WSL安装Linux
-description: 摘要
-categories:
-  - 大杂烩
+summary: 摘要
+category: 大杂烩
 tags:
   - 大杂烩
-column:
-cover:
+date: '2026-04-19 15:14'
+updated: '2026-04-19 16:47'
+slug: wsl-an-zhuang-linux
 draft: true
 unlisted: true
-pinned: false
 aiSummary: true
-outdate: false
-date: 2026-04-19 15:14
-updated: 2026-04-19 16:47
-slug: 'wsl-an-zhuang-linux'
 ---
 
 使用 `wsl -v` 查看 wsl 版本

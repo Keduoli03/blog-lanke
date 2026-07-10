@@ -1,20 +1,15 @@
 ---
 title: Sharkey
-description: 摘要
-categories:
-  - 大杂烩
+summary: 摘要
+category: 大杂烩
 tags:
   - 大杂烩
-column:
-cover:
+date: '2026-05-12 00:03'
+updated: '2026-05-13 22:04'
+slug: sharkey
 draft: true
 unlisted: true
-pinned: false
 aiSummary: true
-outdate: false
-date: 2026-05-12 00:03
-updated: 2026-05-13 22:04
-slug: 'sharkey'
 ---
 
 无法上传文件/头像

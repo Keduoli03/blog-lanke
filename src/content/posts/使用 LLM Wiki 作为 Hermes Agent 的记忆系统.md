@@ -1,24 +1,18 @@
 ---
 title: 使用 LLM Wiki 作为 Hermes Agent 的记忆系统
-description: 为什么没有选 RAG，也没有继续用 Obsidian，而是选了 Karpathy 的 LLM Wiki 模式。聊一聊新的方案、遗忘曲线设计，以及和 Obsidian 方案的对比。
-categories:
-  - 大杂烩
+summary: 为什么没有选 RAG，也没有继续用 Obsidian，而是选了 Karpathy 的 LLM Wiki 模式。聊一聊新的方案、遗忘曲线设计，以及和 Obsidian 方案的对比。
+category: 大杂烩
 tags:
   - AI
   - 工具
   - Wiki
   - Hermes
   - 记忆系统
-column:
-cover: https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/FYwAUt5aQAU07-a.jpg
-draft: false
-unlisted: false
-pinned: false
-aiSummary: true
-outdate: false
-date: 2026-04-30 00:00
-updated: 2026-04-30 18:30
+date: '2026-04-30 00:00'
+updated: '2026-04-30 18:30'
 slug: llm-wiki-hermes-memory
+cover: 'https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/FYwAUt5aQAU07-a.jpg'
+aiSummary: true
 ---
 
 [上篇文章](/posts/obsidian-hermes-memory/) 写了用 Obsidian 做记忆管理的方案，运行了一段时间后，发现了一些新问题，最终换成了 **Karpathy 的 LLM Wiki 模式**。这篇文章说清楚为什么，以及新的方案是怎么设计的。

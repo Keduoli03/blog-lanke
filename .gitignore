@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# agent working docs (local only)
+docs/
+.superpowers/
+.claude/

@@ -1,20 +1,16 @@
 ---
 title: Java面试二
-description: 第二次面试
-categories:
-  - 计算机
+summary: 第二次面试
+category: 计算机
 tags:
   - Java
   - 面试
-cover:
-draft: false
+date: '2026-02-28 18:10'
+updated: '2026-03-05 15:23'
+slug: java-mian-shi-er-2
 unlisted: true
-pinned: false
 aiSummary: true
 outdate: true
-date: 2026-02-28 18:10
-updated: 2026-03-05 15:23
-slug: 'java-mian-shi-er-2'
 ---
 
 ## 项目相关

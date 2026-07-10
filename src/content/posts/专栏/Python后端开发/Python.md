@@ -1,20 +1,16 @@
 ---
 title: Python
-description: 摘要
-categories:
-  - 大杂烩
+summary: 摘要
+category: 大杂烩
 tags:
   - 大杂烩
-column:
-cover:
+date: '2026-03-09 15:16'
+updated: '2026-03-22 13:13'
+slug: python
 draft: true
 unlisted: true
-pinned: false
 aiSummary: true
 outdate: true
-date: 2026-03-09 15:16
-updated: 2026-03-22 13:13
-slug: 'python'
 ---
 
 ## 创建路由

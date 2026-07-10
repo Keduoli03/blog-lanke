@@ -1,18 +1,14 @@
 ---
 title: MyBatis
-description: 记录一下MyBatis的理解
-categories:
-  - 计算机
+summary: 记录一下MyBatis的理解
+category: 计算机
 tags:
   - 笔记
   - Java
   - SpringBoot
-column: SpringBoot
-cover:
-status: true
-date: 2025-05-28 19:59
-updated: 2026-03-21 02:24
-slug: '536923'
+date: '2025-05-28 19:59'
+updated: '2026-03-21 02:24'
+slug: 536923
 ---
 
 ---

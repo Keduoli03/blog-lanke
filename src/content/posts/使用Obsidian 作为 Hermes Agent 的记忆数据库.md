@@ -1,23 +1,17 @@
 ---
 title: 使用Obsidian 作为 Hermes Agent 的记忆数据库
-description: 为什么我最终没有选 RAG，而是用 Obsidian 做 Hermes的长期记忆管理。聊一聊两者的对比、技术细节，以及完整的实现方案。
-categories:
-  - 大杂烩
+summary: 为什么我最终没有选 RAG，而是用 Obsidian 做 Hermes的长期记忆管理。聊一聊两者的对比、技术细节，以及完整的实现方案。
+category: 大杂烩
 tags:
   - AI
   - 工具
   - Obsidian
   - Hermes
-column:
-cover: https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/FYwAUt5aQAU07-a.jpg
-draft: false
-unlisted: false
-pinned: false
-aiSummary: true
-outdate: false
-date: 2026-04-27 00:00
-updated: 2026-04-26 18:12
+date: '2026-04-27 00:00'
+updated: '2026-04-26 18:12'
 slug: obsidian-hermes-memory
+cover: 'https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/FYwAUt5aQAU07-a.jpg'
+aiSummary: true
 ---
 
 在折腾 AI Agent 的记忆系统时，我最终没有选择 RAG，而是选了 Obsidian。这篇文章说清楚为什么，以及怎么做的。

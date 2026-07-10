@@ -1,18 +1,14 @@
 ---
 title: 为 Astro 博客添加 llms.txt
-description: 参考 llmstxt.org 规范，为 Astro 静态博客生成面向 LLM 的站点索引与 Markdown 原文导出。
-categories:
-  - 博客
+summary: 参考 llmstxt.org 规范，为 Astro 静态博客生成面向 LLM 的站点索引与 Markdown 原文导出。
+category: 博客
 tags:
   - Astro
   - llms.txt
   - SEO
-column: 博客
-status: true
-date: 2026-07-10 22:30
-updated: 2026-07-10 22:30
+date: '2026-07-10 22:30'
+updated: '2026-07-10 22:30'
 slug: astro-llms-txt
-pinned: false
 ---
 
 > [!TIP]

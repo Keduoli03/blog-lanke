@@ -1,20 +1,16 @@
 ---
 title: 创建React
-description: 摘要
-categories:
-  - 大杂烩
+summary: 摘要
+category: 大杂烩
 tags:
   - 大杂烩
-column:
-cover:
+date: '2026-03-09 13:39'
+updated: '2026-03-09 19:24'
+slug: chuang-jian-react-2
 draft: true
 unlisted: true
-pinned: false
 aiSummary: true
 outdate: true
-date: 2026-03-09 13:39
-updated: 2026-03-09 19:24
-slug: 'chuang-jian-react-2'
 ---
 
 ## 创建项目

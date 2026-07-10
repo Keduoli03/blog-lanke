@@ -1,21 +1,17 @@
 ---
 title: FastAPI基础入门
-description: 摘要
-categories:
-  - 大杂烩
+summary: 摘要
+category: 大杂烩
 tags:
   - 大杂烩
-column:
-cover:
+date: '2026-03-09 13:36'
+updated: '2026-03-22 13:06'
+slug: fastapi-ji-chu-ru-men
 draft: true
 unlisted: true
-pinned: false
 aiSummary: true
 outdate: true
-date: 2026-03-09 13:36
-updated: 2026-03-22 13:06
-index: '1'
-slug: 'fastapi-ji-chu-ru-men'
+index: 1
 ---
 
 ## 快速构建项目

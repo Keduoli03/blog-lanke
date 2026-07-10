@@ -1,15 +1,13 @@
 ---
 title: Android Studio的部署
-description: 简单记录一下
-categories:
-  - 计算机
+summary: 简单记录一下
+category: 计算机
 tags:
   - 笔记
-cover: http://www.98qy.com/sjbz/api.php
-status: true
-date: 2025-03-11 19:26
-updated: 2025-09-13 00:05
-slug: '946133'
+date: '2025-03-11 19:26'
+updated: '2025-09-13 00:05'
+slug: 946133
+cover: 'http://www.98qy.com/sjbz/api.php'
 ---
 
 简单记录一下，现在都比较人性化了，安装很方便

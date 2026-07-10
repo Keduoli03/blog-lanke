@@ -1,18 +1,14 @@
 ---
 title: Entity、DTO和VO
-description: 一点笔记记录
-categories:
-  - 计算机
+summary: 一点笔记记录
+category: 计算机
 tags:
   - 笔记
   - 后端
   - SpringBoot
-column: SpringBoot
-cover:
-status: true
-date: 2025-05-30 20:35
-updated: 2026-03-21 02:32
-slug: '894321'
+date: '2025-05-30 20:35'
+updated: '2026-03-21 02:32'
+slug: 894321
 ---
 
 最近在写一个新的项目，因为打算做的正式点，不能像之前那样只是个自娱自乐的玩具，所以安全性这方面就需要注意一下。

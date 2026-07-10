@@ -1,18 +1,14 @@
 ---
 title: Pinia的使用
-description: Pinia 是 Vue 的专属状态管理库，它允许你跨组件或页面共享状态。
-categories:
-  - 计算机
+summary: Pinia 是 Vue 的专属状态管理库，它允许你跨组件或页面共享状态。
+category: 计算机
 tags:
   - 笔记
   - 前端
   - Vue
-cover:
-status: true
-date: 2025-03-23 14:39
-updated: 2025-11-25 22:26
-column: SpringBoot
-slug: '970498'
+date: '2025-03-23 14:39'
+updated: '2025-11-25 22:26'
+slug: 970498
 ---
 
 ## 一、为什么选择 Pinia？

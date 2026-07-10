@@ -1,17 +1,14 @@
 ---
 title: 使用mybatis-plus代码生成器快速构建springboot项目
-description: 快速构建springboot项目
-categories:
-  - 计算机
+summary: 快速构建springboot项目
+category: 计算机
 tags:
   - Java
   - SpringBoot
-cover: https://api.mtyqx.cn/tapi/random.php
-status: true
-date: 2025-03-22 17:35
-updated: 2026-03-21 02:26
-column: SpringBoot
-slug: '234253'
+date: '2025-03-22 17:35'
+updated: '2026-03-21 02:26'
+slug: 234253
+cover: 'https://api.mtyqx.cn/tapi/random.php'
 ---
 
 [MyBatis-Plus](https://github.com/baomidou/mybatis-plus) 是一个 [MyBatis](https://www.mybatis.org/mybatis-3/) 的增强工具，在 MyBatis 的基础上只做增强不做改变，为简化开发、提高效率而生。

@@ -1,18 +1,14 @@
 ---
 title: Java基础面试
-description: 摘要
-categories:
-  - 大杂烩
+summary: 摘要
+category: 大杂烩
 tags:
   - 大杂烩
-column:
-cover:
+date: '2026-02-19 10:12'
+updated: '2026-03-21 00:57'
+slug: java-ji-chu-mian-shi
 draft: true
-pinned: false
 aiSummary: true
-date: 2026-02-19 10:12
-updated: 2026-03-21 00:57
-slug: 'java-ji-chu-mian-shi'
 ---
 
 ## JVM

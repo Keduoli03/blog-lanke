@@ -1,17 +1,14 @@
 ---
 title: 重装电脑后恢复MySQL数据
-description: 从 IBD 文件抢救 MySQL 数据
-categories:
-  - 计算机
+summary: 从 IBD 文件抢救 MySQL 数据
+category: 计算机
 tags:
   - 数据库
   - 后端
-status: true
-pinned: false
+date: '2025-11-11 22:23'
+updated: '2025-11-11 22:48'
+slug: 718
 aiSummary: true
-date: 2025-11-11 22:23
-updated: 2025-11-11 22:48
-slug: '718'
 ---
 
 前段时间，因为痴迷三角洲，但是新赛季更新后，我就发现没有办法语音交流了，在这种需要交流配合的游戏中成为一个“哑巴”显然是致命的，所以我找了很多办法，甚至是重装了电脑，最后发现是校园网的问题....

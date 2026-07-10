@@ -1,20 +1,16 @@
 ---
 title: Redis
-description: 摘要
-categories:
-  - 大杂烩
+summary: 摘要
+category: 大杂烩
 tags:
   - 大杂烩
-column:
-cover:
+date: '2026-02-26 11:52'
+updated: '2026-03-06 13:51'
+slug: redis
 draft: true
 unlisted: true
-pinned: false
 aiSummary: true
 outdate: true
-date: 2026-02-26 11:52
-updated: 2026-03-06 13:51
-slug: 'redis'
 ---
 
 ## Redis的持久化策略。

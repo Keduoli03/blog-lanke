@@ -28,6 +28,8 @@ const title = await input({
 const content = `---
 title: ${title}
 date: ${new Date().toISOString()}
+summary:
+category:
 tags: []
 comments: true
 draft: false

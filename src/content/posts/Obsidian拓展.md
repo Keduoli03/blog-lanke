@@ -1,21 +1,13 @@
 ---
-categories:
-  - Obsidian
+title: Obsidian拓展
+summary: 最近又对笔记进行了一些优化，目前感觉还可以，简单记录一下。
+category: Obsidian
 tags:
   - 笔记
   - 博客
-cove:
-status: true
-title: Obsidian拓展
+date: '2024-11-17 13:59'
+updated: '2025-09-13 00:07'
 slug: obsidiantuo-zhan
-cover: ''
-halo:
-  site: https://www.blueke.top
-  name: 89ce33e0-365c-422c-b39b-73e8adaff2ad
-  publish: true
-date: 2024-11-17 13:59
-updated: 2025-09-13 00:07
-description: 最近又对笔记进行了一些优化，目前感觉还可以，简单记录一下。
 ---
 
 最近又对笔记进行了一些优化，目前感觉还可以，简单记录一下。 ^b9bb4d

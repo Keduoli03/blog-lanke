@@ -1,17 +1,14 @@
 ---
 title: 人与AI，爱与理性
-description: 写在《薇薇-萤石眼之歌》后
-categories:
-  - 动漫
+summary: 写在《薇薇-萤石眼之歌》后
+category: 动漫
 tags:
   - 生活
   - 动漫
-column: 动漫
-cover: https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/p2638160918.webp
-status: true
-date: 2025-05-24 15:43
-updated: 2026-03-21 02:25
-slug: '178593'
+date: '2025-05-24 15:43'
+updated: '2026-03-21 02:25'
+slug: 178593
+cover: 'https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/p2638160918.webp'
 ---
 
 写在《薇薇-萤石眼之歌》后

@@ -1,18 +1,13 @@
 ---
 title: 如何畅玩旮旯game之软件篇--串流
-description: 使用Sunshine基地班和moonlight实现
-categories:
-  - 大杂烩
+summary: 使用Sunshine基地班和moonlight实现
+category: 大杂烩
 tags:
   - 小技巧
-column:
-cover:
-status: true
-pinned: false
+date: '2025-11-08 22:46'
+updated: '2026-03-21 02:25'
+slug: 717
 aiSummary: true
-date: 2025-11-08 22:46
-updated: 2026-03-21 02:25
-slug: '717'
 ---
 
 因为偶尔想玩玩一些旮旯 game，但是安卓端的模拟器在我的实际使用中，局限性都很大，在研究了半天后，我发现还是电脑直接串流到平板上比较方便。

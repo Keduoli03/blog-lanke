@@ -1,18 +1,14 @@
 ---
 title: GET与POST请求
-description: 摘要
-categories:
-  - 大杂烩
+summary: 摘要
+category: 大杂烩
 tags:
   - 大杂烩
-column:
-cover:
-status: false
-pinned: false
+date: '2025-12-30 21:09'
+updated: '2026-03-05 14:42'
+slug: 974408
+draft: true
 aiSummary: true
-date: 2025-12-30 21:09
-updated: 2026-03-05 14:42
-slug: '974408'
 ---
 
 今天照例回顾知识点，因为时间关系，所以还是再次回顾一下 GET 和 POST 的区别吧！

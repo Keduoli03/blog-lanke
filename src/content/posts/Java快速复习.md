@@ -1,17 +1,14 @@
 ---
 title: Java快速复习
-description: 摘要
-categories:
-  - 计算机
+summary: 摘要
+category: 计算机
 tags:
   - 笔记
   - Java
-column: Java面试
-status: false
-pinned: false
-date: 2025-09-07 15:43
-updated: 2025-12-29 20:42
-slug: '247840'
+date: '2025-09-07 15:43'
+updated: '2025-12-29 20:42'
+slug: 247840
+draft: true
 ---
 
 ## java 的特点

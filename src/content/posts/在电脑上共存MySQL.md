@@ -1,19 +1,15 @@
 ---
 title: 在电脑上共存MySQL
-description: 因面试需求需使用 MySQL 5.7 版本，而本机已安装 MySQL 9.5，为此整理MySQL 5.7 与 9.5 版本共存的实操教程。
-categories:
-  - 计算机
+summary: 因面试需求需使用 MySQL 5.7 版本，而本机已安装 MySQL 9.5，为此整理MySQL 5.7 与 9.5 版本共存的实操教程。
+category: 计算机
 tags:
   - 后端
   - MySQL
-column:
-cover: https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/%E6%99%AE%E6%8B%89%E5%A8%9C-%E7%A2%A7%E8%93%9D%E6%A1%A3%E6%A1%88.jpg
-status: true
-pinned: false
+date: '2025-12-23 18:25'
+updated: '2025-12-29 20:42'
+slug: 724
+cover: 'https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/%E6%99%AE%E6%8B%89%E5%A8%9C-%E7%A2%A7%E8%93%9D%E6%A1%A3%E6%A1%88.jpg'
 aiSummary: true
-date: 2025-12-23 18:25
-updated: 2025-12-29 20:42
-slug: '724'
 ---
 
 前段时间有个面试题，要求 MySQL 版本为 5.7，而我本机上是 9.5 的版本，所以研究了一下怎么共存。

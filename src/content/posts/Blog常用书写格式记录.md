@@ -1,23 +1,43 @@
 ---
 title: Blog常用书写格式记录
-description: 部分内容只适用于本博客
-categories:
-  - 博客
+summary: 部分内容只适用于本博客
+category: 博客
 tags:
   - 笔记
   - 博客
-column: 博客
-cover:
-status: true
-date: 2025-04-23 00:47
-updated: 2026-03-21 02:29
-slug: 'blog-chang-yong-shu-xie-ge-shi-ji-lu'
+date: '2025-04-23 00:47'
+updated: '2026-03-21 02:29'
+slug: blog-chang-yong-shu-xie-ge-shi-ji-lu
 pinned: true
 ---
 
 ---
 
 下面是在 Astro 中编写 Markdown 内容时，可以使用的一些基本 Markdown 语法示例。
+
+## Frontmatter 字段
+
+写文章时建议使用以下字段，历史别名（`description`、`categories`、`status`、`column`、`sticky` 等）已不再需要。
+
+```yaml
+---
+title: 文章标题
+summary: 一句话摘要，用于列表、RSS、llms.txt
+category: 博客
+tags:
+  - Astro
+date: 2026-07-10 22:30
+updated: 2026-07-10 22:30
+slug: custom-slug
+pinned: true # 可选，置顶
+draft: true # 可选，草稿（生产环境不公开）
+unlisted: true # 可选，从列表/RSS 隐藏但可直链访问
+comments: false # 可选，默认开启评论
+aiSummary: true # 可选，显示 AI 摘要组件
+outdate: true # 可选，强制显示过时提示
+index: '1.2' # 可选，专栏文章排序
+---
+```
 
 ## 标题
 

@@ -1,13 +1,27 @@
 import { analytics } from '@/config.json'
 
+type AnalyticsConfig = {
+  enable?: boolean
+  umami?: { serverUrl?: string; websiteId?: string }
+  google?: { measurementId?: string }
+  microsoftClarity?: { projectId?: string }
+}
+
 export function WebAnalytics() {
-  if (import.meta.env.DEV || !analytics.enable) return null
+  const config = analytics as AnalyticsConfig
+  if (import.meta.env.DEV || !config.enable) return null
 
   return (
     <>
-      {analytics.umami.websiteId && <UmamiAnalytics {...analytics.umami} />}
-      {analytics.google.measurementId && <GoogleAnalytics {...analytics.google} />}
-      {analytics.microsoftClarity.projectId && <MicrosoftClarity {...analytics.microsoftClarity} />}
+      {config.umami?.websiteId && (
+        <UmamiAnalytics serverUrl={config.umami.serverUrl} websiteId={config.umami.websiteId} />
+      )}
+      {config.google?.measurementId && (
+        <GoogleAnalytics measurementId={config.google.measurementId} />
+      )}
+      {config.microsoftClarity?.projectId && (
+        <MicrosoftClarity projectId={config.microsoftClarity.projectId} />
+      )}
     </>
   )
 }

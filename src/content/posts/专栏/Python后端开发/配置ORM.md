@@ -1,20 +1,16 @@
 ---
 title: 配置ORM
-description: 摘要
-categories:
-  - 大杂烩
+summary: 摘要
+category: 大杂烩
 tags:
   - 大杂烩
-column:
-cover:
+date: '2026-03-09 15:16'
+updated: '2026-03-27 13:54'
+slug: pei-zhi-orm
 draft: true
 unlisted: true
-pinned: false
 aiSummary: true
 outdate: true
-date: 2026-03-09 15:16
-updated: 2026-03-27 13:54
-slug: 'pei-zhi-orm'
 ---
 
 ## ORM

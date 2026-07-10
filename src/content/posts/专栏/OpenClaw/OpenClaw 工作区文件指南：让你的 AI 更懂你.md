@@ -1,20 +1,15 @@
 ---
 title: OpenClaw 工作区文件指南：让你的 AI 更懂你
-description: 摘要
-categories:
-  - 大杂烩
+summary: 摘要
+category: 大杂烩
 tags:
   - 大杂烩
-column:
-cover:
+date: '2026-03-27 16:51'
+updated: '2026-03-31 22:19'
+slug: openclaw-gong-zuo-qu-wen-jian-zhi-nan-rang-ni-de-ai-geng-dong-ni
 draft: true
 unlisted: true
-pinned: false
 aiSummary: true
-outdate: false
-date: 2026-03-27 16:51
-updated: 2026-03-31 22:19
-slug: openclaw-gong-zuo-qu-wen-jian-zhi-nan-rang-ni-de-ai-geng-dong-ni
 ---
 
 ## 提要

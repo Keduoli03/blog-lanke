@@ -1,17 +1,15 @@
 ---
 title: 谈谈对Spring IOC的理解，原理与实现
-description: 第一道
-categories:
-  - 计算机
+summary: 第一道
+category: 计算机
 tags:
   - 后端
   - 面试
   - SpringBoot
-cover:
+date: '2025-05-12 11:30'
+updated: '2026-02-27 14:50'
+slug: 709718
 draft: true
-date: 2025-05-12 11:30
-updated: 2026-02-27 14:50
-slug: '709718'
 ---
 
 答题技巧：采取总分的形式

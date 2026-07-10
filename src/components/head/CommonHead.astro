@@ -34,7 +34,6 @@ const titleWithSiteSuffix = title === site.title ? title : `${title} - ${site.ti
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-{author.twitterId && <meta property="twitter:site" content={author.twitterId} />}
 {image && <meta property="twitter:image" content={new URL(image, Astro.url)} />}
 
 <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />

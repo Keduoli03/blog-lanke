@@ -1,20 +1,16 @@
 ---
 title: 控制反转（IoC）与依赖注入（DI）
-description: Spring框架经久不衰的魅力
-categories:
-  - 计算机
+summary: Spring框架经久不衰的魅力
+category: 计算机
 tags:
   - SpringBoot
   - 后端
-column: SpringBoot
-cover:
-status: false
+date: '2026-01-15 19:27'
+updated: '2026-01-15 23:46'
+slug: 230976
+draft: true
 unlisted: true
-pinned: false
 aiSummary: true
-date: 2026-01-15 19:27
-updated: 2026-01-15 23:46
-slug: '230976'
 ---
 
 > [!tip] 观前提示

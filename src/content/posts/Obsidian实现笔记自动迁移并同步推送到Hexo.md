@@ -1,17 +1,15 @@
 ---
 title: Obsidian实现笔记自动迁移并同步推送到Hexo
-categories:
-  - Obsidian
+summary: 编写了一个插件，将文件自动复制到 Hexo 的文件夹里，并自动 git push
+category: Obsidian
 tags:
   - 笔记
   - 博客
   - 前端
-status: true
-date: 2024-11-19 20:47
-updated: 2025-09-13 00:08
+date: '2024-11-19 20:47'
+updated: '2025-09-13 00:08'
 slug: obsidianshi-xian-bi-ji-zi-dong-qian-yi-bing-tong-bu-tui-song-dao-hexo
-cover: https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/img/%E8%83%8C%E8%BA%AB%E5%A6%B9%E5%A6%B9.jpg
-description: 编写了一个插件，将文件自动复制到 Hexo 的文件夹里，并自动 git push
+cover: 'https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/img/%E8%83%8C%E8%BA%AB%E5%A6%B9%E5%A6%B9.jpg'
 ---
 
 编写了一个插件，将文件自动复制到 Hexo 的文件夹里，并自动 git push

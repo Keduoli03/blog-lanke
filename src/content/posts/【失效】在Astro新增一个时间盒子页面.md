@@ -1,16 +1,12 @@
 ---
 title: 【失效】在Astro新增一个时间盒子页面
-description: 自己写了一个页面，可以记录动漫、音乐、照片等
-categories:
-  - 博客
+summary: 自己写了一个页面，可以记录动漫、音乐、照片等
+category: 博客
 tags:
   - 大杂烩
-column: 博客
-cover:
-status: true
-date: 2025-04-29 17:41
-updated: 2025-11-09 20:24
-slug: '772272'
+date: '2025-04-29 17:41'
+updated: '2025-11-09 20:24'
+slug: 772272
 ---
 
 ---
