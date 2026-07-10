@@ -89,19 +89,8 @@ const spec = defineCollection({
   }),
 })
 
-const friends = defineCollection({
-  loader: glob({ pattern: '**/*.{json,yaml,yml,toml}', base: './src/content/friends' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    avatar: z.string(),
-    link: z.string().url(),
-  }),
-})
-
 export const collections = {
   posts,
   projects,
   spec,
-  friends,
 }

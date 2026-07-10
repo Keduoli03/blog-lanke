@@ -1,7 +1,6 @@
 ---
-import { getCollection } from 'astro:content'
 import { Icon } from 'astro-icon/components'
-import { items as tsItems } from '@/content/friends/friends'
+import { items } from '@/content/friends/friends'
 
 type Friend = {
   title: string
@@ -10,21 +9,12 @@ type Friend = {
   link: string
 }
 
-const fromCollection = (await getCollection('friends')).map((f) => ({
-  title: f.data.title,
-  description: f.data.description,
-  avatar: f.data.avatar,
-  link: f.data.link,
-})) as Friend[]
-
-const fromTs = (tsItems || []).map((x: any) => ({
+const friends = (items || []).map((x: any) => ({
   title: x.title,
-  description: x.desc ?? x.description ?? '',
-  avatar: x.imgurl ?? x.avatar ?? '',
-  link: x.siteurl ?? x.link ?? '',
+  description: x.description ?? '',
+  avatar: x.avatar ?? '',
+  link: x.link ?? '',
 })) as Friend[]
-
-const friends = [...fromTs, ...fromCollection].filter((f) => f.title && f.link)
 ---
 
 <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">

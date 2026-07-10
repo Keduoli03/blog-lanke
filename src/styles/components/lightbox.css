@@ -246,13 +246,13 @@ body {
 }
 
 /* 确保选择器优先级足够高，且覆盖各种嵌套情况 */
-:global(.prose img:not([class*='emoji']):not(.no-lightbox)),
-:global(.md-lightbox img) {
+.prose img:not([class*='emoji']):not(.no-lightbox),
+.md-lightbox img {
   cursor: pointer !important;
 }
 
 /* 排除代码块内的图片 */
-:global(.prose pre img),
-:global(.prose code img) {
+.prose pre img,
+.prose code img {
   cursor: default !important;
 }
