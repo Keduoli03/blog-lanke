@@ -83,5 +83,6 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,astro,md,css,json}": "prettier --write"
-  }
+  },
+  "packageManager": "pnpm@11.5.0"
 }
