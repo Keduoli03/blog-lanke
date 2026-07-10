@@ -10,7 +10,16 @@ import {
 } from './hooks'
 import { RootPortal } from '@/components/RootPortal'
 import { Icon } from '@iconify/react'
-import '@/icons/registerRi'
+import {
+  riArchiveLine,
+  riChat1Line,
+  riFilmLine,
+  riFlaskLine,
+  riGhostLine,
+  riHeart2Line,
+  riLinksLine,
+  riPantoneLine,
+} from '@/icons/ri'
 import ColumnHover from './ColumnHover'
 
 export function HeaderContent() {
@@ -27,13 +36,16 @@ function AnimatedMenu() {
   const shouldHeaderMetaShow = useShouldHeaderMetaShow()
 
   return (
-    <AnimatePresence>
-      {!shouldHeaderMetaShow && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <HeaderMenu isBgShow={shouldBgShow} />
-        </motion.div>
+    <div
+      className={clsx(
+        'transition-opacity duration-300 motion-reduce:transition-none',
+        shouldHeaderMetaShow ? 'opacity-0 pointer-events-none' : 'opacity-100',
       )}
-    </AnimatePresence>
+      aria-hidden={shouldHeaderMetaShow}
+      inert={shouldHeaderMetaShow}
+    >
+      <HeaderMenu isBgShow={shouldBgShow} />
+    </div>
   )
 }
 
@@ -125,14 +137,14 @@ function HeaderMenuItem({
   title: string
   icon: string
 }) {
-  const menuIconMap: Record<string, string> = {
-    'icon-pantone': 'ri:pantone-line',
-    'icon-archive': 'ri:archive-line',
-    'icon-flask': 'ri:flask-line',
-    'icon-ghost': 'ri:ghost-line',
-    'icon-hearts': 'ri:heart-2-line',
-    'icon-film': 'ri:film-line',
-    'icon-chat': 'ri:chat-1-line',
+  const menuIconMap = {
+    'icon-pantone': riPantoneLine,
+    'icon-archive': riArchiveLine,
+    'icon-flask': riFlaskLine,
+    'icon-ghost': riGhostLine,
+    'icon-hearts': riHeart2Line,
+    'icon-film': riFilmLine,
+    'icon-chat': riChat1Line,
   }
 
   const handleMemosClick =
@@ -160,7 +172,7 @@ function HeaderMenuItem({
       <div className="flex items-center space-x-2">
         {isActive && (
           <motion.span initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
-            <Icon icon={menuIconMap[icon] ?? 'ri:links-line'} />
+            <Icon icon={menuIconMap[icon as keyof typeof menuIconMap] ?? riLinksLine} />
           </motion.span>
         )}
         <span>{title}</span>
@@ -174,4 +186,3 @@ function HeaderMenuItem({
   if (href === '/columns') return <ColumnHover>{Link}</ColumnHover>
   return Link
 }
-

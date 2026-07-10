@@ -1,7 +1,8 @@
 ﻿---
 import type { GetStaticPaths } from 'astro'
-import { getCollection, render } from 'astro:content'
-import { getColumnsFromFolder, getEntryPath } from '@/utils/content'
+import { render } from 'astro:content'
+import { getColumnsFromFolder, getEntryPath, getPublicPosts } from '@/utils/content'
+import { getPostUrl } from '@/utils/post-url'
 import MarkdownLayout from '@/layouts/MarkdownLayout.astro'
 import MarkdownWrapper from '@/components/MarkdownWrapper.astro'
 import SectionBlock from '@/components/SectionBlock.astro'
@@ -14,12 +15,13 @@ import PostNav from '@/components/post/PostNav.astro'
 
 export const getStaticPaths = (async () => {
   const columns = await getColumnsFromFolder()
-  const posts = await getCollection('posts')
+  const posts = await getPublicPosts()
+  const postsByPath = new Map(posts.map((entry) => [getEntryPath(entry), entry]))
   const paths: any[] = []
   for (const col of columns) {
     for (const it of col.items) {
       const seg = it.slug.split('/').pop()!
-      const p = posts.find((e) => getEntryPath(e) === it.slug)
+      const p = postsByPath.get(it.slug)
       if (!p) continue
       paths.push({ params: { column: col.slug, post: seg }, props: { column: col, post: p } })
     }
@@ -45,10 +47,9 @@ const itemsTyped = (
 }))
 const { Content, remarkPluginFrontmatter, headings } = await render(post)
 const postPath = getEntryPath(post)
-const mdSlug = `/columns/${column.slug}/${postPath.split('/').pop()!}`
+const mdSlug = getPostUrl(post)
 const currentIndex = (column.items as any[]).find((i) => i.slug === postPath)?.index as
-  | string
-  | undefined
+  string | undefined
 const topKey = currentIndex ? currentIndex.split('.')[0] : undefined
 function num(n?: string) {
   const v = Number(n)
@@ -207,7 +208,7 @@ const nextUrl = nextItem ? `/columns/${column.slug}/${nextItem.slug.split('/').p
         </SectionBlock>
       </div>
     </aside>
-    <div class="min-w-0 lg:col-start-2">
+    <div class="min-w-0 lg:col-start-2" data-pagefind-body>
       <header class="space-y-2 mb-4">
         <h1 class="text-3xl font-bold">{post.data.title}</h1>
         <PostMetaInfo

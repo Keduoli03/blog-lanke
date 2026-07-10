@@ -1,10 +1,10 @@
 ﻿---
 import type { CollectionEntry } from 'astro:content'
-import { render } from 'astro:content'
 import { PostCardHoverOverlay } from './PostCardHoverOverlay'
 import PostMetaInfo from './PostMetaInfo.astro'
 import { Icon } from 'astro-icon/components'
-import { getEntrySlug } from '@/utils/content'
+import { getPostStatsForEntry } from '@/utils/content'
+import { getPostUrl } from '@/utils/post-url'
 
 interface Props {
   entry: CollectionEntry<'posts'>
@@ -12,11 +12,11 @@ interface Props {
 
 const { entry } = Astro.props
 
-const { remarkPluginFrontmatter } = await render(entry)
-const postSlug = getEntrySlug(entry)
+const { words, readingMinutes } = getPostStatsForEntry(entry)
+const postUrl = getPostUrl(entry)
 ---
 
-<a class="group block relative py-8 focus-visible:outline-0" href={`/posts/${postSlug}`}>
+<a class="group block relative py-8 focus-visible:outline-0" href={postUrl}>
   <PostCardHoverOverlay />
   <h2 class="relative text-2xl font-bold">
     {entry.data.title}
@@ -37,8 +37,8 @@ const postSlug = getEntrySlug(entry)
       class="grow"
       date={entry.data.date as Date}
       lastMod={entry.data.lastMod}
-      words={remarkPluginFrontmatter.words}
-      readingMinutes={remarkPluginFrontmatter.readingMinutes}
+      words={words}
+      readingMinutes={readingMinutes}
     />
     <div class="group shrink-0 text-accent flex items-center gap-2">
       <span>继续阅读</span>
@@ -51,19 +51,22 @@ const postSlug = getEntrySlug(entry)
           d="M15 10L19.5 5.5L15 1"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="translate-x-[-2px] opacity-0 transition-all duration-300 delay-75 group-hover:translate-x-0 group-hover:opacity-100"></path>
+          class="translate-x-[-2px] opacity-0 transition-all duration-300 delay-75 group-hover:translate-x-0 group-hover:opacity-100"
+        ></path>
         <path
           d="M23 10L27.5 5.5L23 1"
           stroke-opacity="0.66"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="translate-x-[-3px] opacity-0 transition-all duration-300 delay-150 group-hover:translate-x-0 group-hover:opacity-100"></path>
+          class="translate-x-[-3px] opacity-0 transition-all duration-300 delay-150 group-hover:translate-x-0 group-hover:opacity-100"
+        ></path>
         <path
           d="M31 10L35.5 5.5L31 1"
           stroke-opacity="0.35"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="translate-x-[-4px] opacity-0 transition-all duration-300 delay-200 group-hover:translate-x-0 group-hover:opacity-100"></path>
+          class="translate-x-[-4px] opacity-0 transition-all duration-300 delay-200 group-hover:translate-x-0 group-hover:opacity-100"
+        ></path>
       </svg>
     </div>
   </div>

@@ -1,10 +1,11 @@
-import { useAtomValue } from 'jotai'
-import { useEffect } from 'react'
-import { getSystemTheme, changePageTheme, setLocalTheme } from '@/utils/theme'
+import { useAtom } from 'jotai'
+import { useEffect, useState } from 'react'
+import { getLocalTheme, getSystemTheme, changePageTheme, setLocalTheme } from '@/utils/theme'
 import { themeAtom } from '@/store/theme'
 
 export function ThemeProvider() {
-  const theme = useAtomValue(themeAtom)
+  const [theme, setTheme] = useAtom(themeAtom)
+  const [initialized, setInitialized] = useState(false)
 
   function handlePrefersColorSchemeChange(event: MediaQueryListEvent) {
     if (theme === 'system') {
@@ -13,6 +14,12 @@ export function ThemeProvider() {
   }
 
   useEffect(() => {
+    setTheme(getLocalTheme())
+    setInitialized(true)
+  }, [setTheme])
+
+  useEffect(() => {
+    if (!initialized) return
     setLocalTheme(theme)
 
     if (theme === 'system') {
@@ -28,7 +35,7 @@ export function ThemeProvider() {
     return () => {
       query.removeEventListener('change', handlePrefersColorSchemeChange)
     }
-  }, [theme])
+  }, [initialized, theme])
 
   return null
 }

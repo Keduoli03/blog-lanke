@@ -1,18 +1,8 @@
 ﻿import type { APIContext } from 'astro'
 import rss from '@astrojs/rss'
 import { site } from '@/config.json'
-import { getSortedPosts, getEntryPath, getEntrySlug, slugify } from '@/utils/content'
-
-function getRssItemLink(post: { id: string; filePath?: string; data?: unknown }) {
-  const entryPath = getEntryPath(post)
-  const segs = entryPath.split('/')
-  if (segs.length >= 3 && (segs[0] === '专栏' || segs[0] === 'column')) {
-    const columnSlug = slugify(segs[1])
-    const postSeg = segs[segs.length - 1]
-    return `/columns/${columnSlug}/${postSeg}`
-  }
-  return `/posts/${getEntrySlug(post)}`
-}
+import { getSortedPosts } from '@/utils/content'
+import { getPostUrl } from '@/utils/post-url'
 
 export async function GET(context: APIContext) {
   const sortedPosts = await getSortedPosts()
@@ -23,7 +13,7 @@ export async function GET(context: APIContext) {
     description: site.description,
     site: context.site!,
     items: filteredPosts.map((post) => ({
-      link: getRssItemLink(post),
+      link: getPostUrl(post),
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.summary,

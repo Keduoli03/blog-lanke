@@ -1,8 +1,8 @@
 ﻿---
 import Layout from './Layout.astro'
 import Footer from '@/components/footer/Footer.astro'
-import { Header } from '@/components/header/Header'
-import { Provider } from '@/components/provider/Provider'
+import { HeaderShell } from '@/components/header/HeaderShell'
+import { ToastContainer } from '@/components/ToastContainer'
 import 'katex/dist/katex.min.css'
 
 interface Props {
@@ -18,25 +18,29 @@ const { title, description, image, mdTitle, mdDescription, mdSlug } = Astro.prop
 ---
 
 <Layout title={title} description={description} image={image}>
-  <Provider
+  <HeaderShell
     pathName={Astro.url.pathname}
     title={mdTitle}
     description={mdDescription}
     slug={mdSlug}
-    client:only="react"
+    client:load
   />
-
-  <Header client:only="react" />
-  <main class="relative z-1 pt-16 min-h-main bg-primary">
+  <main
+    class="relative z-1 pt-16 min-h-main bg-primary"
+    data-header-title={mdTitle}
+    data-header-description={mdDescription}
+    data-header-slug={mdSlug}
+  >
     <div
       class="pointer-events-none absolute -z-1 top-0 inset-x-0 h-[350px] bg-gradient-to-r from-accent/5 to-accent/15"
       style="mask-image: linear-gradient(black, transparent);"
       aria-hidden="true"
-    ></div>
+    >
+    </div>
     <div class="swup-transition-fade">
       <slot />
     </div>
+    <ToastContainer client:idle />
   </main>
   <Footer />
 </Layout>
-

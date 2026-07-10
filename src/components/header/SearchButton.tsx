@@ -3,7 +3,7 @@ import { useCurrentModal, useModal } from '@/components/ui/modal'
 import { useEffect, useState } from 'react'
 import { useDebounceValue } from '@/hooks/useDebounceValue'
 import { Icon } from '@iconify/react'
-import '@/icons/registerRi'
+import { riSearchLine } from '@/icons/ri'
 
 let pagefind: any = null
 async function loadPagefind() {
@@ -31,7 +31,7 @@ export function SearchButton() {
       aria-label="Search"
       onClick={openModal}
     >
-      <Icon icon="ri:search-line" className="text-xl" />
+      <Icon icon={riSearchLine} className="text-xl" />
     </button>
   )
 }
@@ -88,7 +88,7 @@ function SearchPanel() {
           xmlns="http://www.w3.org/2000/svg"
           width="2em"
           viewBox="0 0 24 24"
-          className="animate-spin"
+          className="animate-spin motion-reduce:animate-none"
         >
           <path
             fill="currentColor"

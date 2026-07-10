@@ -1,11 +1,30 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Icon } from '@iconify/react'
-import '@/icons/registerRi'
+import type { IconifyIcon } from '@iconify/types'
+import { riCalendar2Line, riFolder2Line, riPriceTag3Line, riRestartLine } from '@/icons/ri'
 
 type Props = {
   categories: string[]
   tags: string[]
   years: number[]
+}
+
+const chipBase =
+  'px-2.5 py-1 rounded-md text-[13px] leading-5 select-none transition-all duration-200'
+const chipOff =
+  'bg-black/[0.04] dark:bg-white/[0.06] text-secondary hover:bg-accent/10 hover:text-accent'
+const chipOn = 'bg-accent text-white shadow-sm shadow-accent/40'
+
+function SectionTitle({ icon, children }: { icon: IconifyIcon; children: string }) {
+  return (
+    <div className="inline-flex items-center gap-2 font-bold">
+      <Icon icon={icon} className="text-accent" />
+      <span className="relative">
+        <span className="absolute -z-1 top-[30%] left-0 w-full h-[40%] bg-accent/30 -rotate-3" />
+        {children}
+      </span>
+    </div>
+  )
 }
 
 export default function ArchiveFilter({ categories, tags, years }: Props) {
@@ -20,13 +39,14 @@ export default function ArchiveFilter({ categories, tags, years }: Props) {
     if (year) params.set('year', String(year))
     const url = `${location.pathname}${params.toString() ? `?${params.toString()}` : ''}`
     history.replaceState(null, '', url)
-    // localStorage.setItem('archivesFilter', JSON.stringify({ category, tags: selectedTags, year }))
     filterTimeline(category, selectedTags, year)
   }, [category, selectedTags, year])
 
   const sortedCategories = useMemo(() => [...new Set(categories)].sort(), [categories])
   const sortedTags = useMemo(() => [...new Set(tags)].sort(), [tags])
   const sortedYears = useMemo(() => [...new Set(years)].sort((a, b) => b - a), [years])
+
+  const hasFilter = category !== null || selectedTags.length > 0 || year !== null
 
   function toggleCategory(c: string) {
     setCategory((prev) => (prev === c ? null : c))
@@ -44,35 +64,32 @@ export default function ArchiveFilter({ categories, tags, years }: Props) {
   }
 
   return (
-    <div className="rounded-xl bg-white/60 dark:bg-zinc-800/50 p-4 space-y-6">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div className="inline-flex items-center gap-2 font-bold">
-          <Icon icon="ri:folder-2-line" />
-          <span>分类</span>
-        </div>
-        <button className="text-secondary hover:text-accent" onClick={clearAll} title="清空筛选">
-          <Icon icon="ri:restart-line" />
-        </button>
+        <SectionTitle icon={riFolder2Line}>分类</SectionTitle>
+        {hasFilter && (
+          <button
+            className="inline-flex items-center gap-1 text-xs text-secondary hover:text-accent transition-colors"
+            onClick={clearAll}
+            title="清空筛选"
+          >
+            <Icon icon={riRestartLine} />
+            清空
+          </button>
+        )}
       </div>
       <div className="flex flex-wrap gap-2">
         {sortedCategories.map((c) => (
           <button
             key={c}
             onClick={() => toggleCategory(c)}
-            className={`px-2 py-0.5 rounded-md border ${
-              category === c
-                ? 'bg-accent/10 border-accent text-accent'
-                : 'border-primary hover:border-accent'
-            }`}
+            className={`${chipBase} ${category === c ? chipOn : chipOff}`}
           >
             {c}
           </button>
         ))}
       </div>
-      <div className="inline-flex items-center gap-2 font-bold mt-2">
-        <Icon icon="ri:price-tag-3-line" />
-        <span>标签</span>
-      </div>
+      <SectionTitle icon={riPriceTag3Line}>标签</SectionTitle>
       <div className="flex flex-wrap gap-2">
         {sortedTags.map((t) => {
           const active = selectedTags.includes(t)
@@ -80,31 +97,20 @@ export default function ArchiveFilter({ categories, tags, years }: Props) {
             <button
               key={t}
               onClick={() => toggleTag(t)}
-              className={`px-2 py-0.5 rounded-md border ${
-                active
-                  ? 'bg-accent/10 border-accent text-accent'
-                  : 'border-primary hover:border-accent'
-              }`}
+              className={`${chipBase} ${active ? chipOn : chipOff}`}
             >
-              {t}
+              #{t}
             </button>
           )
         })}
       </div>
-      <div className="inline-flex items-center gap-2 font-bold mt-2">
-        <Icon icon="ri:calendar-2-line" />
-        <span>年份</span>
-      </div>
+      <SectionTitle icon={riCalendar2Line}>年份</SectionTitle>
       <div className="flex flex-wrap gap-2">
         {sortedYears.map((y) => (
           <button
             key={y}
             onClick={() => toggleYear(y)}
-            className={`px-2 py-0.5 rounded-md border ${
-              year === y
-                ? 'bg-accent/10 border-accent text-accent'
-                : 'border-primary hover:border-accent'
-            }`}
+            className={`${chipBase} font-['Atkinson'] ${year === y ? chipOn : chipOff}`}
           >
             {y}
           </button>

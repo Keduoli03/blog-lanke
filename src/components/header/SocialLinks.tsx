@@ -1,9 +1,14 @@
 ﻿import { Icon } from '@iconify/react'
 import config from '@/config.json'
-import '@/icons/registerRi'
+import { riBallPenLine, riLinkM, riLinksLine, riRocket2Line, riTrainLine } from '@/icons/ri'
 import { HoverDropdown } from './HoverDropdown'
 
 const { socialLinks } = config
+const iconMap = {
+  'ri:train-line': riTrainLine,
+  'ri:ball-pen-line': riBallPenLine,
+  'ri:link-m': riLinkM,
+}
 
 export function SocialLinks() {
   if (!socialLinks || socialLinks.length === 0) return null
@@ -17,7 +22,7 @@ export function SocialLinks() {
           aria-label="Social Links"
           type="button"
         >
-          <Icon icon="ri:rocket-2-line" className="text-xl" />
+          <Icon icon={riRocket2Line} className="text-xl" />
         </button>
       }
       panelClassName="w-36 py-2 bg-white dark:bg-zinc-800 rounded-xl shadow-xl border border-primary/10 overflow-hidden"
@@ -32,7 +37,10 @@ export function SocialLinks() {
               className="flex items-center gap-3 px-4 py-2 hover:bg-secondary/50 transition-colors text-sm text-primary group"
             >
               <div className="w-7 h-7 flex items-center justify-center rounded-lg bg-secondary/30 group-hover:bg-accent/10 group-hover:text-accent transition-colors flex-shrink-0">
-                <Icon icon={link.icon} className="text-base" />
+                <Icon
+                  icon={iconMap[link.icon as keyof typeof iconMap] ?? riLinksLine}
+                  className="text-base"
+                />
               </div>
               <span className="font-medium truncate">{link.name}</span>
             </a>

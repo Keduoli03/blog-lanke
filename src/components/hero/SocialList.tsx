@@ -2,7 +2,7 @@
 import { hero } from '@/config.json'
 import { motion } from 'framer-motion'
 import { Icon } from '@iconify/react'
-import '@/icons/registerRi'
+import { riAtLine, riGithubLine, riLinksLine, riMailLine, riTwitterXLine } from '@/icons/ri'
 
 const itemVariants = {
   hidden: {
@@ -16,11 +16,12 @@ const itemVariants = {
 }
 
 export function SocialList({ className }: { className?: string }) {
-  const iconMap: Record<string, string> = {
-    'icon-github': 'ri:github-line',
-    'icon-x': 'ri:twitter-x-line',
-    'icon-mail': 'ri:mail-line',
-    'icon-at-line': 'ri:at-line',
+  const iconMap = {
+    'icon-github': riGithubLine,
+    'icon-x': riTwitterXLine,
+    'icon-mail': riMailLine,
+    'icon-at-line': riAtLine,
+    'ri:at-line': riAtLine,
   }
   return (
     <motion.ul
@@ -47,16 +48,10 @@ export function SocialList({ className }: { className?: string }) {
               className="absolute inset-0 -z-1 rounded-full group-hover:scale-105 transition"
               style={{ backgroundColor: social.color }}
             ></span>
-            <Icon
-              icon={
-                (social.icon?.startsWith?.('ri:') ? social.icon : iconMap[social.icon]) ??
-                'ri:links-line'
-              }
-            />
+            <Icon icon={iconMap[social.icon as keyof typeof iconMap] ?? riLinksLine} />
           </a>
         </motion.li>
       ))}
     </motion.ul>
   )
 }
-

@@ -29,10 +29,7 @@ const years = Array.from(new Set(oldestPosts.map((p) => (p.data.date as Date).ge
       </header>
       <Timeline posts={oldestPosts} />
     </div>
-    <div
-      class="hidden xl:block lg:col-start-3 justify-self-start w-[280px] -ml-4"
-      data-pagefind-ignore
-    >
+    <div class="hidden xl:block lg:col-start-3 justify-self-start w-[280px]" data-pagefind-ignore>
       <aside class="sticky top-20">
         <ArchiveFilter client:only="react" categories={categories} tags={tags} years={years} />
       </aside>

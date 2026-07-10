@@ -1,5 +1,4 @@
 import { useLayoutEffect, useRef } from 'react'
-import { throttle } from 'lodash-es'
 import { useSetAtom } from 'jotai'
 import { pageScrollLocationAtom, pageScrollDirectionAtom } from '@/store/scrollInfo'
 
@@ -7,9 +6,11 @@ export function PageScrollInfoProvider() {
   const setScrollLocation = useSetAtom(pageScrollLocationAtom)
   const setScrollDirection = useSetAtom(pageScrollDirectionAtom)
   const prevScrollY = useRef(0)
+  const frameRef = useRef<number | null>(null)
 
-  const scrollHandler = throttle(
-    () => {
+  useLayoutEffect(() => {
+    const updateScrollInfo = () => {
+      frameRef.current = null
       let currentTop = document.documentElement.scrollTop
 
       if (currentTop === 0) {
@@ -23,19 +24,23 @@ export function PageScrollInfoProvider() {
       setScrollDirection(prevScrollY.current - currentTop > 0 ? 'up' : 'down')
       prevScrollY.current = currentTop
       setScrollLocation(currentTop)
-    },
-    16,
-    {
-      leading: false,
-    },
-  )
+    }
 
-  useLayoutEffect(() => {
+    const scrollHandler = () => {
+      if (frameRef.current !== null) return
+      frameRef.current = window.requestAnimationFrame(updateScrollInfo)
+    }
+
     scrollHandler()
-    window.addEventListener('scroll', scrollHandler)
+    window.addEventListener('scroll', scrollHandler, { passive: true })
     return () => {
       window.removeEventListener('scroll', scrollHandler)
+      if (frameRef.current !== null) {
+        window.cancelAnimationFrame(frameRef.current)
+        frameRef.current = null
+      }
     }
-  }, [])
+  }, [setScrollDirection, setScrollLocation])
+
   return null
 }

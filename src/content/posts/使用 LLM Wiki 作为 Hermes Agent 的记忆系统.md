@@ -74,21 +74,22 @@ LLM Wiki 的做法是：**把遗忘曲线绑定在信息的优先级上，而不
 ```yaml
 ---
 title: User Profile
-priority: critical    # 优先级：critical/high/medium/low/ephemeral
-review_after: 2099-12-31  # 下次 review 时间
+priority: critical # 优先级：critical/high/medium/low/ephemeral
+review_after: 2099-12-31 # 下次 review 时间
 confidence: high
 ---
 ```
 
-| 优先级 | 含义 | Review 周期 | 衰减 |
-|--------|------|------------|------|
-| `critical` | 永久记忆，不能丢 | 90 天 | 不衰减 |
-| `high` | 重要，长期保留 | 60 天 | 很慢 |
-| `medium` | 有价值但非核心 | 30 天 | 中等 |
-| `low` | 低价值/过时 | 14 天 | 快速 |
-| `ephemeral` | 临时笔记 | 不主动 review | 立即过期 |
+| 优先级      | 含义             | Review 周期   | 衰减     |
+| ----------- | ---------------- | ------------- | -------- |
+| `critical`  | 永久记忆，不能丢 | 90 天         | 不衰减   |
+| `high`      | 重要，长期保留   | 60 天         | 很慢     |
+| `medium`    | 有价值但非核心   | 30 天         | 中等     |
+| `low`       | 低价值/过时      | 14 天         | 快速     |
+| `ephemeral` | 临时笔记         | 不主动 review | 立即过期 |
 
 每次 lint 检查时：
+
 - `ephemeral` 页面 7 天没更新 → 归档
 - `low` 页面错过 2 次 review → 归档
 - `medium` 页面 2x 周期没更新 → 降级为 low
@@ -98,14 +99,14 @@ confidence: high
 
 ## 和 Obsidian 方案的对比
 
-| 维度 | Obsidian 方案 | LLM Wiki 方案 |
-|------|-------------|--------------|
-| 存储位置 | 多 vault | 单一日 wiki |
-| 遗忘曲线 | SM-2 算法（绑定笔记） | Priority-based（绑定信息价值） |
-| 孤儿检测 | 跨 vault 扫描 | 单一日录扫描 |
-| 知识组织 | 通用笔记 | 预结构化（entities/concepts/comparisons） |
-| 维护成本 | 高（多 vault） | 低（单目录） |
-| Agent 集成 | 文件系统 + CLI | 直接读取，结构已知 |
+| 维度       | Obsidian 方案         | LLM Wiki 方案                             |
+| ---------- | --------------------- | ----------------------------------------- |
+| 存储位置   | 多 vault              | 单一日 wiki                               |
+| 遗忘曲线   | SM-2 算法（绑定笔记） | Priority-based（绑定信息价值）            |
+| 孤儿检测   | 跨 vault 扫描         | 单一日录扫描                              |
+| 知识组织   | 通用笔记              | 预结构化（entities/concepts/comparisons） |
+| 维护成本   | 高（多 vault）        | 低（单目录）                              |
+| Agent 集成 | 文件系统 + CLI        | 直接读取，结构已知                        |
 
 核心区别是：**Obsidian 是通用工具，LLM Wiki 是为 Agent 设计的知识库。**
 
@@ -148,5 +149,3 @@ LLM Wiki 不适合：
 RAG 是检索思维，每次重新找。Obsidian 是笔记思维，不区分价值。LLM Wiki 是编译思维——预先处理，持续使用，高价值信息自然沉淀，低价值信息逐渐遗忘。
 
 这套方案还在跑，后续如果有新发现再更新。
-
-

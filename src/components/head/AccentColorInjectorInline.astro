@@ -17,7 +17,12 @@ import { color as themeColor } from '@/config.json'
     function hexToRgb(hex) {
       const normalized = hex.replace('#', '').trim()
       const full =
-        normalized.length === 3 ? normalized.split('').map((v) => v + v).join('') : normalized
+        normalized.length === 3
+          ? normalized
+              .split('')
+              .map((v) => v + v)
+              .join('')
+          : normalized
       const value = Number.parseInt(full, 16)
       return [(value >> 16) & 255, (value >> 8) & 255, value & 255]
     }

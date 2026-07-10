@@ -24,6 +24,12 @@ export class Lightbox {
   }
 
   private preventScroll: ((ev: Event) => void) | null = null
+  private eventsBound = false
+  private readonly boundDocumentClick = this.handleDocumentClick.bind(this)
+  private readonly boundKeydown = this.handleKeydown.bind(this)
+  private readonly boundDragStart = this.handleDragStart.bind(this)
+  private readonly boundDragMove = this.handleDragMove.bind(this)
+  private readonly boundDragEnd = this.handleDragEnd.bind(this)
 
   // 动态获取 DOM 元素，确保页面更新后引用依然有效
   private get dialog() {
@@ -61,20 +67,23 @@ export class Lightbox {
   }
 
   private bindGlobalEvents() {
+    if (this.eventsBound) return
+    this.eventsBound = true
+
     // 使用事件委托处理所有交互，避免 DOM 更新导致事件失效
-    document.addEventListener('click', this.handleDocumentClick.bind(this), { capture: true })
-    window.addEventListener('keydown', this.handleKeydown.bind(this))
+    document.addEventListener('click', this.boundDocumentClick, { capture: true })
+    window.addEventListener('keydown', this.boundKeydown)
 
     // 拖拽事件绑定到 document，但在 handler 中检查 target
     // 注意：拖拽通常需要绑定在具体元素上，或者在 document 上根据 target 判断
     // 为了性能，我们可以动态绑定/解绑，或者直接在 document 上监听并判断
     // 这里采用：mousedown 时检查是否在 imgContainer 内
-    document.addEventListener('mousedown', this.handleDragStart.bind(this))
-    document.addEventListener('touchstart', this.handleDragStart.bind(this), { passive: false })
-    window.addEventListener('mousemove', this.handleDragMove.bind(this))
-    window.addEventListener('touchmove', this.handleDragMove.bind(this), { passive: false })
-    window.addEventListener('mouseup', this.handleDragEnd.bind(this))
-    window.addEventListener('touchend', this.handleDragEnd.bind(this))
+    document.addEventListener('mousedown', this.boundDragStart)
+    document.addEventListener('touchstart', this.boundDragStart, { passive: false })
+    window.addEventListener('mousemove', this.boundDragMove)
+    window.addEventListener('touchmove', this.boundDragMove, { passive: false })
+    window.addEventListener('mouseup', this.boundDragEnd)
+    window.addEventListener('touchend', this.boundDragEnd)
   }
 
   private handleDocumentClick(e: Event) {

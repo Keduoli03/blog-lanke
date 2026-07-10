@@ -38,7 +38,11 @@ export function HoverDropdown({
   useEffect(() => () => clearTimer(), [])
 
   return (
-    <div className={clsx('relative', containerClassName)} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+    <div
+      className={clsx('relative', containerClassName)}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
       {trigger}
       <AnimatePresence>
         {open && (
@@ -47,10 +51,7 @@ export function HoverDropdown({
             animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
             exit={{ opacity: 0, y: 8, scale: 0.96, x: '-50%' }}
             transition={{ duration: 0.18 }}
-            className={clsx(
-              'absolute top-full left-1/2 mt-2 z-50 origin-top',
-              panelClassName,
-            )}
+            className={clsx('absolute top-full left-1/2 mt-2 z-50 origin-top', panelClassName)}
           >
             {panel}
           </motion.div>
@@ -59,4 +60,3 @@ export function HoverDropdown({
     </div>
   )
 }
-

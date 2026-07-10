@@ -7,13 +7,11 @@ import {
   PrintVersion,
 } from '@/components/head'
 import { BackToTopFAB } from '@/components/BackToTopFAB'
-import { ToastContainer } from '@/components/ToastContainer'
 import { ModalStack } from '@/components/ui/modal'
 import Lightbox from '@/components/Lightbox.astro'
 import FootnoteTooltip from '@/components/FootnoteTooltipInline.astro'
 import { site } from '@/config.json'
 import '@/styles/global.css'
-import livecodesScriptUrl from '@/scripts/livecodes.ts?url'
 
 interface Props {
   title?: string
@@ -32,7 +30,7 @@ const { title, description, image } = Astro.props
     <ThemeLoader />
     <AccentColorInjector />
     <PrintVersion />
-    <script is:inline type="module">
+    <script>
       import 'iconify-icon'
     </script>
   </head>
@@ -40,14 +38,18 @@ const { title, description, image } = Astro.props
     <slot />
 
     <BackToTopFAB client:only="react" />
-    <ToastContainer client:only="react" />
-    <ModalStack client:only="react" />
+    <ModalStack client:idle />
     <Lightbox />
     <FootnoteTooltip />
-    <script is:inline type="module" define:vars={{ livecodesScriptUrl }}>
-      const { initLivecodes } = await import(livecodesScriptUrl)
-      document.addEventListener('astro:page-load', () => initLivecodes())
-      initLivecodes()
+    <script>
+      const initLivecodesOnDemand = async () => {
+        if (!document.querySelector('.livecodes-runner')) return
+        const { initLivecodes } = await import('@/scripts/livecodes')
+        initLivecodes()
+      }
+
+      document.addEventListener('astro:page-load', initLivecodesOnDemand)
+      initLivecodesOnDemand()
     </script>
   </body>
 </html>
