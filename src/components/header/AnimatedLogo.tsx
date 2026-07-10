@@ -5,14 +5,13 @@ import clsx from 'clsx'
 export function AnimatedLogo() {
   const isMobile = useIsMobile()
   const shouldHeaderMetaShow = useShouldHeaderMetaShow()
-
   const hidden = isMobile && shouldHeaderMetaShow
 
   return (
     <div
       className={clsx(
         'transition-opacity duration-300 motion-reduce:transition-none',
-        hidden ? 'opacity-0 pointer-events-none' : 'opacity-100',
+        shouldHeaderMetaShow ? 'max-md:opacity-0 max-md:pointer-events-none' : 'opacity-100',
       )}
       aria-hidden={hidden}
       inert={hidden}

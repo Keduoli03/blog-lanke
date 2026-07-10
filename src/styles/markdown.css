@@ -1,3 +1,7 @@
+.markdown {
+  @apply max-w-full min-w-0;
+}
+
 .markdown > :first-child {
   @apply mt-0;
 }
@@ -11,15 +15,15 @@
 }
 
 .markdown h1 {
-  @apply text-4xl font-extrabold mb-8;
+  @apply text-2xl md:text-4xl font-extrabold mb-8;
 }
 
 .markdown h2 {
-  @apply text-2xl font-bold mt-12 mb-6;
+  @apply text-xl md:text-2xl font-bold mt-12 mb-6;
 }
 
 .markdown h3 {
-  @apply text-xl font-semibold mt-8 mb-3;
+  @apply text-lg md:text-xl font-semibold mt-8 mb-3;
 }
 
 .markdown h4 {
@@ -27,7 +31,7 @@
 }
 
 .markdown a {
-  @apply font-normal text-accent hover:underline underline-offset-2;
+  @apply font-normal text-accent hover:underline underline-offset-2 break-words;
 }
 
 .markdown a + iconify-icon {
@@ -47,15 +51,15 @@
 }
 
 .markdown .code-block {
-  @apply relative mt-10 mb-5 bg-secondary rounded-lg;
+  @apply relative mt-10 mb-5 bg-secondary rounded-lg max-w-full;
 }
 
 .markdown .lang-tag {
-  @apply absolute right-6 -top-6 h-6 px-4 flex items-center rounded-t-lg bg-inherit text-sm;
+  @apply absolute right-4 md:right-6 -top-6 h-6 px-4 flex items-center rounded-t-lg bg-inherit text-sm;
 }
 
 .markdown pre {
-  @apply px-6 py-4 max-h-[450px] text-sm leading-relaxed overflow-auto;
+  @apply px-4 md:px-6 py-4 max-h-[450px] text-sm leading-relaxed overflow-x-auto max-w-full;
 }
 
 .markdown .table-wrapper {
@@ -168,7 +172,7 @@
 
 .markdown .heading::after {
   content: 'H1';
-  @apply absolute right-full top-1/2 -translate-y-1/2 mr-2 text-sm font-normal text-gray-400 opacity-0 transition-opacity duration-200 pointer-events-none;
+  @apply absolute right-full top-1/2 -translate-y-1/2 mr-2 text-sm font-normal text-gray-400 opacity-0 transition-opacity duration-200 pointer-events-none max-md:hidden;
 }
 
 .markdown h2.heading::after {

@@ -36,6 +36,12 @@ html {
   color: rgb(var(--color-text-primary));
   background-color: rgb(var(--color-bg-root));
   scroll-padding-top: 64px;
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 html.gray {

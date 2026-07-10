@@ -1,22 +1,23 @@
 import { useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { isMobileAtom } from '@/store/viewport'
 
 export function ViewportProvider() {
   const setIsMobile = useSetAtom(isMobileAtom)
 
-  const handleResize = (event: MediaQueryListEvent) => {
-    setIsMobile(!event.matches)
-  }
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     const query = window.matchMedia('(min-width: 768px)')
-    setIsMobile(!query.matches)
-    query.addEventListener('change', handleResize)
-    return () => {
-      query.removeEventListener('change', handleResize)
+
+    const syncViewport = (event?: MediaQueryListEvent) => {
+      setIsMobile(!(event?.matches ?? query.matches))
     }
-  }, [])
+
+    syncViewport()
+    query.addEventListener('change', syncViewport)
+    return () => {
+      query.removeEventListener('change', syncViewport)
+    }
+  }, [setIsMobile])
 
   return null
 }

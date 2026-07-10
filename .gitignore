@@ -27,3 +27,6 @@ pnpm-debug.log*
 docs/
 .superpowers/
 .claude/
+
+# Obsidian vault files
+.obsidian/

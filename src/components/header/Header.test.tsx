@@ -34,10 +34,12 @@ describe('Header reduced motion', () => {
   })
 
   it('renders the logo and primary navigation without animation callbacks', () => {
-    render(<Header />)
+    const { container } = render(<Header />)
 
     expect(screen.getByRole('img', { name: 'Site owner avatar' })).toBeTruthy()
     expect(screen.getByRole('navigation')).toBeTruthy()
+    expect(container.innerHTML).toContain('hidden md:flex')
+    expect(container.innerHTML).toContain('md:hidden')
   })
 
   it('propagates the user reduced-motion preference to retained motion components', () => {
