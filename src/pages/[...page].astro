@@ -3,14 +3,11 @@ import type { GetStaticPaths } from 'astro'
 import PageLayout from '@/layouts/PageLayout.astro'
 import PostList from '@/components/post/PostList.astro'
 import PostPagination from '@/components/post/PostPagination.astro'
-import { getSortedPosts, getHotTags, getAllCategories, getAllTags } from '@/utils/content'
+import { getSortedPosts } from '@/utils/content'
 import appConfig from '@/config.json'
 import SectionBlock from '@/components/SectionBlock.astro'
-import TagList from '@/components/TagList.astro'
-import CategoryList from '@/components/CategoryList.astro'
 import type { CollectionEntry } from 'astro:content'
 import Hero from '@/components/hero/Hero.astro'
-import { Icon } from 'astro-icon/components'
 
 export const getStaticPaths = (async () => {
   const sortedPosts = await getSortedPosts()
@@ -36,10 +33,6 @@ interface Props {
 }
 
 const { currentPage, totalPage, data } = Astro.props
-
-const hotTags = await getHotTags()
-const allTags = await getAllTags()
-const allCategories = await getAllCategories()
 
 const getPageUrl = (page: number) => {
   if (page === 1) return '/'

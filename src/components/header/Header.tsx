@@ -6,7 +6,6 @@ import { HeaderMeta } from './HeaderMeta'
 import { HeaderDrawer } from './HeaderDrawer'
 import { useIsMobile } from './hooks'
 import { SocialLinks } from './SocialLinks'
-import '@/icons/registerRi'
 import { HeadGradient } from '@/components/head-gradient'
 
 export function Header() {

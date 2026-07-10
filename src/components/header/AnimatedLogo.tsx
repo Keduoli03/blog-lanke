@@ -1,23 +1,24 @@
-import { AnimatePresence, motion } from 'framer-motion'
 import { useShouldHeaderMetaShow, useIsMobile } from './hooks'
 import { author } from '@/config.json'
+import clsx from 'clsx'
 
 export function AnimatedLogo() {
   const isMobile = useIsMobile()
   const shouldHeaderMetaShow = useShouldHeaderMetaShow()
 
-  if (!isMobile) {
-    return <Logo />
-  }
+  const hidden = isMobile && shouldHeaderMetaShow
 
   return (
-    <AnimatePresence>
-      {!shouldHeaderMetaShow && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <Logo />
-        </motion.div>
+    <div
+      className={clsx(
+        'transition-opacity duration-300 motion-reduce:transition-none',
+        hidden ? 'opacity-0 pointer-events-none' : 'opacity-100',
       )}
-    </AnimatePresence>
+      aria-hidden={hidden}
+      inert={hidden}
+    >
+      <Logo />
+    </div>
   )
 }
 

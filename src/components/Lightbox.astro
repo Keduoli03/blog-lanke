@@ -1,6 +1,5 @@
 ---
 import '@/styles/components/lightbox.css'
-import lightboxScriptUrl from '@/scripts/lightbox.ts?url'
 ---
 
 <dialog id="md-lightbox-dialog" class="md-lightbox-dialog">
@@ -107,6 +106,6 @@ import lightboxScriptUrl from '@/scripts/lightbox.ts?url'
   </div>
 </dialog>
 
-<script is:inline type="module" define:vars={{ lightboxScriptUrl }}>
-  await import(lightboxScriptUrl)
+<script>
+  import '@/scripts/lightbox'
 </script>

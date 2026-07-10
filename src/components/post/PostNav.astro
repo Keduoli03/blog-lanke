@@ -1,6 +1,7 @@
 ﻿---
 import type { CollectionEntry } from 'astro:content'
 import { Icon } from 'astro-icon/components'
+import { getPostUrl } from '@/utils/post-url'
 
 interface Props {
   prev?: CollectionEntry<'posts'> | { data: { title: string }; slug?: string }
@@ -11,13 +12,8 @@ interface Props {
 }
 
 const { prev, next, prevUrl, nextUrl, class: className } = Astro.props
-
-function resolvePostSlug(item: any) {
-  return String(item?.data?.slug ?? item?.slug ?? item?.id ?? '').replace(/\.md$/i, '')
-}
-
-const pUrl = prevUrl || (prev ? `/posts/${resolvePostSlug(prev)}` : undefined)
-const nUrl = nextUrl || (next ? `/posts/${resolvePostSlug(next)}` : undefined)
+const pUrl = prevUrl || (prev && 'id' in prev ? getPostUrl(prev) : undefined)
+const nUrl = nextUrl || (next && 'id' in next ? getPostUrl(next) : undefined)
 ---
 
 <div class="grid grid-cols-2" class:list={[className]}>

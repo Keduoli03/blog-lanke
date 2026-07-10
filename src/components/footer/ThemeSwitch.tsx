@@ -1,7 +1,7 @@
 ﻿import { themeAtom } from '@/store/theme'
 import { useAtom } from 'jotai'
 import { Icon } from '@iconify/react'
-import '@/icons/registerRi'
+import { riComputerLine, riMoonLine, riSunLine } from '@/icons/ri'
 
 export function ThemeSwitch() {
   const [theme, setTheme] = useAtom(themeAtom)
@@ -23,7 +23,7 @@ export function ThemeSwitch() {
           aria-label="Switch to light theme"
           onClick={() => setTheme('light')}
         >
-          <Icon icon="ri:sun-line" />
+          <Icon icon={riSunLine} />
         </button>
         <button
           className="size-[32px] flex items-center justify-center"
@@ -31,7 +31,7 @@ export function ThemeSwitch() {
           aria-label="Switch to system theme"
           onClick={() => setTheme('system')}
         >
-          <Icon icon="ri:computer-line" />
+          <Icon icon={riComputerLine} />
         </button>
         <button
           className="size-[32px] flex items-center justify-center"
@@ -39,10 +39,9 @@ export function ThemeSwitch() {
           aria-label="Switch to dark theme"
           onClick={() => setTheme('dark')}
         >
-          <Icon icon="ri:moon-line" />
+          <Icon icon={riMoonLine} />
         </button>
       </div>
     </div>
   )
 }
-

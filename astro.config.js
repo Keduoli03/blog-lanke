@@ -15,7 +15,7 @@ import { rehypeLivecodes } from './src/plugins/rehypeLivecodes'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
-import { rehypeHeadingIds } from '@astrojs/markdown-remark'
+import { rehypeHeadingIds, unified } from '@astrojs/markdown-remark'
 import { site } from './src/config.json'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
@@ -27,6 +27,7 @@ import icon from 'astro-icon'
 // https://astro.build/config
 export default defineConfig({
   site: site.url,
+  compressHTML: true,
   integrations: [
     react(),
     sitemap(),
@@ -34,36 +35,37 @@ export default defineConfig({
       theme: false,
       animationClass: 'swup-transition-',
       containers: ['main'],
-      morph: ['[component-export="Provider"]'],
     }),
     icon(),
   ],
   markdown: {
+    processor: unified({
+      smartypants: false,
+      remarkPlugins: [
+        remarkMath,
+        remarkDirective,
+        remarkImageSize,
+        remarkEmbed,
+        remarkLivecodes,
+        remarkSpoiler,
+        remarkReadingTime,
+      ],
+      rehypePlugins: [
+        rehypeHeadingIds,
+        rehypeKatex,
+        // Use GitHub-like palette so Important 为紫色、Warning 为橙黄等
+        [rehypeCallouts, { theme: 'github', showIndicator: true }],
+        rehypeLink,
+        rehypeImage,
+        rehypeHeading,
+        rehypeCodeBlock,
+        rehypeCodeHighlight,
+        rehypeLivecodes,
+        rehypeTableBlock,
+      ],
+      remarkRehype: { footnoteLabel: '参考', footnoteBackLabel: '返回正文' },
+    }),
     syntaxHighlight: false,
-    smartypants: false,
-    remarkPlugins: [
-      remarkMath,
-      remarkDirective,
-      remarkImageSize,
-      remarkEmbed,
-      remarkLivecodes,
-      remarkSpoiler,
-      remarkReadingTime,
-    ],
-    rehypePlugins: [
-      rehypeHeadingIds,
-      rehypeKatex,
-      // Use GitHub-like palette so Important 为紫色、Warning 为橙黄等
-      [rehypeCallouts, { theme: 'github', showIndicator: true }],
-      rehypeLink,
-      rehypeImage,
-      rehypeHeading,
-      rehypeCodeBlock,
-      rehypeCodeHighlight,
-      rehypeLivecodes,
-      rehypeTableBlock,
-    ],
-    remarkRehype: { footnoteLabel: '参考', footnoteBackLabel: '返回正文' },
   },
   vite: {
     plugins: [tailwindcss()],

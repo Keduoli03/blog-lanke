@@ -1,8 +1,7 @@
 ﻿---
-import { RelativeDate } from './RelativeDate'
 import { Icon } from 'astro-icon/components'
 import { posts } from '@/config.json'
-import { isSignificantDateUpdate } from '@/utils/date'
+import { getFormattedDate, isSignificantDateUpdate } from '@/utils/date'
 
 interface Props {
   date: Date
@@ -22,7 +21,7 @@ const isEdited = isSignificantDateUpdate(date, lastMod, posts.updateThresholdHou
 >
   <div class="icon-inline">
     <Icon name="ri:calendar-2-line" />
-    <RelativeDate date={date} client:idle />
+    <time datetime={date.toISOString()}>{getFormattedDate(date)}</time>
     {isEdited && <span class="text-xs">(已编辑)</span>}
   </div>
   <div class="icon-inline">

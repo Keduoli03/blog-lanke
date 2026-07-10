@@ -7,6 +7,7 @@ import {
   riArchiveLine,
   riChat1Line,
   riFilmLine,
+  riFlaskLine,
   riGhostLine,
   riHeart2Line,
   riLinksLine,
@@ -114,7 +115,7 @@ function DrawerContentImpl() {
   const menuIconMap = {
     'icon-pantone': riPantoneLine,
     'icon-archive': riArchiveLine,
-    'icon-flask': riLinksLine,
+    'icon-flask': riFlaskLine,
     'icon-ghost': riGhostLine,
     'icon-hearts': riHeart2Line,
     'icon-film': riFilmLine,

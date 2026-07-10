@@ -34,8 +34,10 @@ slug: 'mysql92-ban-ben-an-zhuang'
 9. 保持默认，下一步![MySQL9.2版本安装-202503211147|450](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/MySQL9.2%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85-202503211147.png)
 10. 这里给了两个示例数据库，可以勾选看一下，不选也没什么![MySQL9.2版本安装-202503211149|450](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/MySQL9.2%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85-202503211149.png)
 11. 点击 `excute`，正常情况下会全部通过 ![MySQL9.2版本安装-202503211150|450](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/MySQL9.2%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85-202503211150.png) 但如果你和我一样，那就很可能是因为你的 MySQL 配置文件中出现了中文(log 中有中文乱码)
-    > 解决方法：进入到 `C:\ProgramData\MySQL` 下，找到你所安装的数据库，找到 `my.ini` 文件，将所有中文换成英文
-    > 如果权限不足无法保存，右键该文件=>属性=>安全=>将用户权限全勾上即可
+
+> 解决方法：进入到 `C:\ProgramData\MySQL` 下，找到你所安装的数据库，找到 `my.ini` 文件，将所有中文换成英文
+> 如果权限不足无法保存，右键该文件=>属性=>安全=>将用户权限全勾上即可
+
 12. 点击下一步 ![MySQL9.2版本安装-202503211213|450](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/MySQL9.2%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85-202503211213.png)
 13. 点击 finish 安装即可完成
 

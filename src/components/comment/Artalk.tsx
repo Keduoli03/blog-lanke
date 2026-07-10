@@ -5,6 +5,10 @@ export function Artalk({ server, site }: { server: string; site: string }) {
 
   useEffect(() => {
     if (!ref.current) return
+
+    const normalizePageKey = (pathname: string) => pathname.replace(/\/+$/, '') || '/'
+    const pageKey = normalizePageKey(window.location.pathname)
+
     const ensureCss = () => {
       if (!document.querySelector('link[href="https://unpkg.com/artalk@2.9.1/dist/Artalk.css"]')) {
         const link = document.createElement('link')
@@ -43,6 +47,7 @@ export function Artalk({ server, site }: { server: string; site: string }) {
       if (destroyed) return
       instance = Artalk.init({
         el: ref.current!,
+        pageKey,
         server,
         site,
         darkMode: document.documentElement.getAttribute('data-theme') === 'dark',

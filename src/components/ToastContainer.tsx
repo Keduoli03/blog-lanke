@@ -1,7 +1,7 @@
 import { ToastContainer as ReactToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Icon } from '@iconify/react'
-import '@/icons/registerRi'
+import { riCloseLine } from '@/icons/ri'
 
 export function ToastContainer() {
   return (
@@ -27,7 +27,7 @@ function CloseButton({
       className="text-lg opacity-50 hover:opacity-100"
       onClick={closeToast}
     >
-      <Icon icon="ri:close-line" />
+      <Icon icon={riCloseLine} />
     </button>
   )
 }

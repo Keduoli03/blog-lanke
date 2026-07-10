@@ -22,25 +22,29 @@ function getTheme(): 'light' | 'dark' {
   return 'light'
 }
 
-let instances: any[] = []
+const instances = new Map<HTMLElement, any>()
 
-export function initLivecodes() {
-  // 销毁旧实例
-  instances.forEach((instance) => {
+export async function initLivecodes() {
+  for (const [runner, instance] of instances) {
+    if (runner.isConnected) continue
     try {
       if (instance && typeof instance.destroy === 'function') {
         instance.destroy()
       }
     } catch (e) {
       console.error(e)
+    } finally {
+      instances.delete(runner)
+      runner.removeAttribute('data-lc-init')
+      runner.removeAttribute('data-lc-initializing')
     }
-  })
-  instances = []
+  }
 
   const theme = getTheme()
-  const runners = document.querySelectorAll<HTMLElement>('.livecodes-runner:not([data-lc-init])')
-  runners.forEach((runner) => {
-    runner.setAttribute('data-lc-init', '1')
+  const runners = document.querySelectorAll<HTMLElement>(
+    '.livecodes-runner:not([data-lc-init]):not([data-lc-initializing])',
+  )
+  const initializations = Array.from(runners, async (runner) => {
     const mount = runner.querySelector<HTMLElement>('.livecodes-runner__mount')
     const dataEl = runner.querySelector<HTMLScriptElement>('.livecodes-runner__data')
     if (!mount || !dataEl) return
@@ -140,13 +144,21 @@ export function initLivecodes() {
     mount.style.height = `${height}px`
     mount.style.width = '100%'
 
-    createPlayground(mount, {
-      template: lcTemplate as any,
-      config: config,
-    }).then((playground) => {
-      instances.push(playground)
-    })
+    runner.setAttribute('data-lc-initializing', '1')
+    try {
+      const playground = await createPlayground(mount, {
+        template: lcTemplate as any,
+        config: config,
+      })
+      instances.set(runner, playground)
+      runner.setAttribute('data-lc-init', '1')
+    } catch (error) {
+      console.error('LiveCodes 初始化失败', error)
+    } finally {
+      runner.removeAttribute('data-lc-initializing')
+    }
   })
+  await Promise.all(initializations)
 }
 
 // 监听主题变化，动态更新已存在的 LiveCodes 实例

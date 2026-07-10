@@ -36,19 +36,25 @@ export function HeaderMetaInfoProvider({
   }, [pathName, title, description, slug, setDescription, setPathName, setSlug, setTitle])
 
   useEffect(() => {
-    const syncPathFromLocation = (source: string) => {
+    const syncRouteFromDocument = (source: string) => {
       const pathname = window.location.pathname
       const normalized = normalizePath(pathname)
+      const main = document.querySelector<HTMLElement>('main[data-header-title]')
       if (DEV) console.log('[header:path:event]', { source, pathname, normalized })
       setPathName(normalized)
+      if (main) {
+        setTitle(main.dataset.headerTitle ?? '')
+        setDescription(main.dataset.headerDescription ?? '')
+        setSlug(main.dataset.headerSlug ?? '')
+      }
     }
 
-    const onPopstate = () => syncPathFromLocation('popstate')
-    const onAstroPageLoad = () => syncPathFromLocation('astro:page-load')
-    const onSwupReplace = () => syncPathFromLocation('swup:content:replace')
-    const onSwupReplaced = () => syncPathFromLocation('swup:contentReplaced')
+    const onPopstate = () => syncRouteFromDocument('popstate')
+    const onAstroPageLoad = () => syncRouteFromDocument('astro:page-load')
+    const onSwupReplace = () => syncRouteFromDocument('swup:content:replace')
+    const onSwupReplaced = () => syncRouteFromDocument('swup:contentReplaced')
 
-    syncPathFromLocation('mount')
+    syncRouteFromDocument('mount')
     window.addEventListener('popstate', onPopstate)
     document.addEventListener('astro:page-load', onAstroPageLoad)
     document.addEventListener('swup:content:replace', onSwupReplace)
@@ -60,7 +66,7 @@ export function HeaderMetaInfoProvider({
       document.removeEventListener('swup:content:replace', onSwupReplace)
       document.removeEventListener('swup:contentReplaced', onSwupReplaced)
     }
-  }, [setPathName])
+  }, [setDescription, setPathName, setSlug, setTitle])
 
   return null
 }
