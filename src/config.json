@@ -1,19 +1,19 @@
 {
   "site": {
     "url": "https://blog.blueke.top",
-    "title": "Lanke",
-    "description": "Lanke的博客。",
-    "keywords": "Lanke,blog,Astro,theme",
+    "title": "Ditto",
+    "description": "Ditto的博客。",
+    "keywords": "Ditto,blog,Astro,theme",
     "lang": "zh-CN",
     "favicon": "/favicon.ico",
     "appleTouchIcon": "/apple-touch-icon.png"
   },
   "author": {
-    "name": "Lanke",
+    "name": "Ditto",
     "avatar": "https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/%E5%A4%B4%E5%83%8F.webp"
   },
   "hero": {
-    "name": "Lanke",
+    "name": "Ditto",
     "bio": "关山难越，萍水相逢",
     "description": "分享文章与生活。",
     "socials": [
@@ -109,7 +109,7 @@
   },
   "artalk": {
     "server": "https://artalk.blueke.top",
-    "site": "Lanke"
+    "site": "blog"
   },
   "sponsor": {
     "wechat": "https://object.lxchapu.com/bed%2F2024%2F0507_6e3e8f73df2d4e6d.webp"
