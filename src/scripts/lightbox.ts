@@ -151,6 +151,8 @@ export class Lightbox {
       t.closest('.mobile-nav') ||
       t.closest('#mobile-navbar') ||
       t.closest('.md-lightbox-exclude') ||
+      t.closest('#friend-circle-lite-root') ||
+      t.closest('.friend-circle-container') ||
       t.closest('pre') ||
       t.closest('code')
 
@@ -192,6 +194,9 @@ export class Lightbox {
       !isUiIcon &&
       !imgEl.hasAttribute('data-no-lightbox') &&
       !imgEl.classList.contains('no-lightbox') &&
+      !imgEl.closest('.md-lightbox-exclude') &&
+      !imgEl.closest('#friend-circle-lite-root') &&
+      !imgEl.closest('.friend-circle-container') &&
       !imgEl.closest('pre') &&
       !imgEl.closest('code')
     )
@@ -298,6 +303,8 @@ export class Lightbox {
         el.closest('.mobile-nav') ||
         el.closest('#mobile-navbar') ||
         el.closest('.md-lightbox-exclude') ||
+        el.closest('#friend-circle-lite-root') ||
+        el.closest('.friend-circle-container') ||
         el.classList.contains('atk-captcha-img')
       )
         return
