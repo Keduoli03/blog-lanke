@@ -40,6 +40,8 @@ describe('Header reduced motion', () => {
     expect(screen.getByRole('navigation')).toBeTruthy()
     expect(container.innerHTML).toContain('hidden md:flex')
     expect(container.innerHTML).toContain('md:hidden')
+    expect(container.innerHTML).toContain('pointer-events-none')
+    expect(container.innerHTML).toContain('pointer-events-auto')
   })
 
   it('propagates the user reduced-motion preference to retained motion components', () => {
