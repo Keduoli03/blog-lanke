@@ -4,7 +4,7 @@ export default function runMemos() {
       baseUrl: 'https://memos.blueke.top/',
       limit: 10,
       creatorId: '1',
-      username: 'lanke',
+      username: 'ditto',
       userlink: 'https://memos.blueke.top',
       commentsShow: true,
       commentsTitle: '评论',
