@@ -1,65 +1,63 @@
-# Blog Lanke
+# Ditto's Blog
 
-基于 [Gyoza](https://github.com/lxchapu/astro-gyoza) 修改的个人博客。
+基于 [Gyoza](https://github.com/lxchapu/astro-gyoza) 主题二次开发的个人博客，源码：[blog-lanke](https://github.com/Keduoli03/blog-lanke)。
 
-![astro version](https://img.shields.io/badge/astro-5.0-red)
+![astro version](https://img.shields.io/badge/astro-7.0-red)
 
-## 🎉 Features
+## ✨ Features
 
-- ✅ 基于 Gyoza 主题进行二次开发
-- ✅ 集成了朋友圈功能
-- ✅ 增加了社交链接快捷入口
-- ✅ 优化了 UI 细节和交互体验
-- ✅ 有着规范的 URL 和 OpenGraph 信息，对 SEO 友好
-- ✅ 支持站点地图
-- ✅ 支持 RSS 订阅
-- ✅ 支持夜间模式
-- ✅ 特殊日期变灰
-- ✅ 简单干净的配色和主题
-- ✅ 支持评论系统
-- ✅ 支持代码高亮
+- 基于 Gyoza 主题深度定制，大幅重构交互与视觉
+- Swup 页面过渡动画，流畅的 SPA 体验
+- 朋友圈（Memos）集成
+- 社交链接快捷入口
+- 夜间模式 / 强调色切换
+- 评论系统（Artalk）
+- RSS 订阅 & 站点地图
+- LLMs.txt 支持
+- Pagefind 全文搜索
+- SEO 友好的 URL 与 OpenGraph 信息
+- 响应式设计，移动端深度适配
 
 ## 🔧 Tech Stack
 
-- [Astro](https://astro.build/)
-- [React](https://reactjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [Jotai](https://jotai.org/)
+- [Astro 7](https://astro.build/)
+- [React 19](https://reactjs.org/)
+- [Tailwind CSS 4](https://tailwindcss.com/)
+- [Swup](https://swup.js.org/)
+- [Artalk](https://artalk.js.org/)
 
-## 📖 Documentation
+## 🚀 Quick Start
 
-原主题文档：[Documentation](https://gyoza.lxchapu.com/posts/guide)
-
-## 🚀 Project Structure
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   ├── pages/
-│   ├── plugins/
-│   ├── store/
-│   ├── styles/
-│   ├── utils/
-│   └── config.json
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+```bash
+pnpm i
+pnpm dev
 ```
 
-网站配置保存在 `config.json` 文件。
+访问 `localhost:4321`。
 
-## 🧞 Commands
+## 📦 Build & Deploy
 
-| Command        | Action                                       |
-| :------------- | :------------------------------------------- |
-| `pnpm i`       | Installs dependencies                        |
-| `pnpm dev`     | Starts local dev server at `localhost:4321`  |
-| `pnpm build`   | Build your production site to `./dist/`      |
-| `pnpm preview` | Preview your build locally, before deploying |
-| `pnpm format`  | Format code using Prettier                   |
-\n--- Auto test Sat May 30 05:54:22 AM CST 2026 ---
+```bash
+pnpm build    # 构建到 ./dist/
+pnpm preview  # 本地预览
+```
+
+部署于 [Vercel](https://vercel.com/)，推送到 `main` 分支自动部署。
+
+## 📂 Project Structure
+
+```text
+src/
+├── components/       # 组件
+├── content/          # 文章 & 配置
+├── layouts/          # 页面布局
+├── pages/            # 路由页面
+├── scripts/          # 前端脚本
+├── styles/           # 样式
+├── utils/            # 工具函数
+└── config.json       # 站点配置
+```
+
+## 📝 License
+
+MIT
