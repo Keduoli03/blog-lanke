@@ -5,27 +5,38 @@ import { Icon } from 'astro-icon/components'
 const projects = await getCollection('projects')
 ---
 
-<ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
+<ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
   {
     projects.map((project) => (
       <li>
-        <a href={project.data.link} target="_blank" rel="noopener noreferrer external">
-          <div class="rounded-lg bg-accent/10 overflow-hidden group">
-            <div class="aspect-video overflow-hidden">
-              <img
-                class="size-full object-cover transition-transform group-hover:scale-110"
-                src={project.data.image}
-                alt={`Project cover: ${project.data.title}`}
-                loading="lazy"
+        <a
+          href={project.data.link}
+          target="_blank"
+          rel="noopener noreferrer external"
+          class="group block h-full rounded-xl border border-primary bg-primary overflow-hidden transition-all duration-300 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/10 hover:-translate-y-0.5"
+        >
+          <div class="aspect-video overflow-hidden bg-accent/5">
+            <img
+              class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+              src={project.data.image}
+              alt={`Project cover: ${project.data.title}`}
+              loading="lazy"
+            />
+          </div>
+          <div class="p-5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-lg font-bold transition-colors duration-200 group-hover:text-accent">
+                {project.data.title}
+              </span>
+              <Icon
+                class="shrink-0 text-secondary transition-colors duration-200 group-hover:text-accent"
+                name="ri:external-link-line"
+                size={16}
               />
             </div>
-            <div class="p-4">
-              <div class="group-hover:text-accent">
-                <span class="text-xl font-bold">{project.data.title}</span>
-                <Icon class="ml-2" name="ri:external-link-line" />
-              </div>
-              <p class="mt-2 text-sm line-clamp-2">{project.data.description}</p>
-            </div>
+            <p class="mt-2 text-sm text-secondary leading-relaxed line-clamp-2">
+              {project.data.description}
+            </p>
           </div>
         </a>
       </li>

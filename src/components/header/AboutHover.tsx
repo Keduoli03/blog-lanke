@@ -1,11 +1,11 @@
-﻿import ColumnQuickMenu from './ColumnQuickMenu'
+import AboutQuickMenu from './AboutQuickMenu'
 import { HoverDropdown } from './HoverDropdown'
 
-export default function ColumnHover({ children }: { children: React.ReactNode }) {
+export default function AboutHover({ children }: { children: React.ReactNode }) {
   return (
     <HoverDropdown
       trigger={children}
-      panel={<ColumnQuickMenu />}
+      panel={<AboutQuickMenu />}
       closeDelay={200}
       panelClassName="min-w-[112px] w-max"
     />

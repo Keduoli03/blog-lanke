@@ -22,7 +22,7 @@ export default function ColumnQuickMenu() {
   }, [])
 
   return (
-    <div className="w-[168px] rounded-lg border border-primary bg-primary shadow-lg">
+    <div className="w-full rounded-lg bg-gradient-to-b from-zinc-50/80 to-white/90 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur-md dark:from-zinc-900/80 dark:to-zinc-800/90 dark:ring-zinc-100/10">
       <ul className="py-1 text-sm">
         {cols === null ? (
           <li className="px-3 py-2 text-secondary">加载中...</li>
@@ -32,7 +32,7 @@ export default function ColumnQuickMenu() {
           cols.map((c) => (
             <li key={c.slug}>
               <a
-                className="block px-3 py-1.5 text-center hover:text-accent hover:bg-secondary/60 rounded"
+                className="block whitespace-nowrap px-3 py-1.5 text-center hover:text-accent hover:bg-secondary/60 rounded"
                 href={`/columns/${c.slug}`}
               >
                 {c.title}

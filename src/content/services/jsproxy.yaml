@@ -1,0 +1,4 @@
+title: 网页代理
+description: 基于 ServiceWorker 的在线网页代理，可在浏览器内访问被屏蔽的网站。
+icon: ri:global-line
+link: https://jsproxy.ditto.dpdns.org/

@@ -80,6 +80,16 @@ const projects = defineCollection({
   }),
 })
 
+const services = defineCollection({
+  loader: glob({ pattern: '**/*.{json,yaml,yml,toml}', base: './src/content/services' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    icon: z.string(),
+    link: z.string().url(),
+  }),
+})
+
 const spec = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/spec' }),
   schema: z.object({
@@ -92,5 +102,6 @@ const spec = defineCollection({
 export const collections = {
   posts,
   projects,
+  services,
   spec,
 }

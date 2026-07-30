@@ -1,0 +1,4 @@
+title: Cloudflare Random Hitokoto
+description: 使用 Cloudflare 规则实现的不限请求次数的随机一言 API，数据自动更新。
+image: https://hitokoto.blueke.dpdns.org/og.png
+link: https://github.com/Keduoli03/Cloudflare-Random-Hitokoto

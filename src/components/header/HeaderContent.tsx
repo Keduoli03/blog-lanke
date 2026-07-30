@@ -21,6 +21,7 @@ import {
   riPantoneLine,
 } from '@/icons/ri'
 import ColumnHover from './ColumnHover'
+import AboutHover from './AboutHover'
 
 export function HeaderContent() {
   return (
@@ -184,5 +185,6 @@ function HeaderMenuItem({
   )
 
   if (href === '/columns') return <ColumnHover>{Link}</ColumnHover>
+  if (href === '/about') return <AboutHover>{Link}</AboutHover>
   return Link
 }

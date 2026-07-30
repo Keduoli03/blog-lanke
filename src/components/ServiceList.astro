@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content'
+import { Icon } from 'astro-icon/components'
+
+const services = await getCollection('services')
+---
+
+<ul class="space-y-1">
+  {
+    services.map((service) => (
+      <li>
+        <a
+          href={service.data.link}
+          target="_blank"
+          rel="noopener noreferrer external"
+          class="group flex items-center gap-4 rounded-xl px-4 py-3.5 transition-colors duration-200 hover:bg-secondary/50"
+        >
+          <div class="shrink-0 flex items-center justify-center size-10 rounded-lg bg-accent/10 text-accent transition-colors duration-200 group-hover:bg-accent/20">
+            <Icon name={service.data.icon} size={20} />
+          </div>
+          <div class="min-w-0 grow">
+            <div class="font-medium truncate transition-colors duration-200 group-hover:text-accent">
+              {service.data.title}
+            </div>
+            <p class="mt-0.5 text-sm text-secondary truncate">{service.data.description}</p>
+          </div>
+          <Icon
+            class="shrink-0 text-secondary opacity-40 transition-all duration-200 group-hover:opacity-100 group-hover:text-accent"
+            name="ri:external-link-line"
+            size={16}
+          />
+        </a>
+      </li>
+    ))
+  }
+</ul>
