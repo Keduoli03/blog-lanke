@@ -8,28 +8,47 @@ const services = await getCollection('services')
 <ul class="space-y-1">
   {
     services.map((service) => (
-      <li>
+      <li class="group flex items-center gap-2 rounded-xl transition-colors duration-200 hover:bg-secondary/50">
         <a
           href={service.data.link}
           target="_blank"
           rel="noopener noreferrer external"
-          class="group flex items-center gap-4 rounded-xl px-4 py-3.5 transition-colors duration-200 hover:bg-secondary/50"
+          class="group/service flex min-w-0 grow items-center gap-4 py-3.5 pl-4"
         >
-          <div class="shrink-0 flex items-center justify-center size-10 rounded-lg bg-accent/10 text-accent transition-colors duration-200 group-hover:bg-accent/20">
+          <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors duration-200 group-hover/service:bg-accent/20">
             <Icon name={service.data.icon} size={20} />
           </div>
           <div class="min-w-0 grow">
-            <div class="font-medium truncate transition-colors duration-200 group-hover:text-accent">
+            <div class="truncate font-medium transition-colors duration-200 group-hover/service:text-accent">
               {service.data.title}
             </div>
-            <p class="mt-0.5 text-sm text-secondary truncate">{service.data.description}</p>
+            <p class="mt-0.5 truncate text-sm text-secondary">{service.data.description}</p>
           </div>
-          <Icon
-            class="shrink-0 text-secondary opacity-40 transition-all duration-200 group-hover:opacity-100 group-hover:text-accent"
-            name="ri:external-link-line"
-            size={16}
-          />
         </a>
+        <div class="flex shrink-0 flex-col items-center pr-3">
+          <a
+            href={service.data.link}
+            target="_blank"
+            rel="noopener noreferrer external"
+            class="flex size-7 items-center justify-center rounded-md text-secondary opacity-50 transition-all duration-200 hover:bg-accent/10 hover:text-accent hover:opacity-100"
+            aria-label={`访问 ${service.data.title}`}
+            title="访问服务"
+          >
+            <Icon name="ri:external-link-line" size={16} />
+          </a>
+          {service.data.repository && (
+            <a
+              href={service.data.repository}
+              target="_blank"
+              rel="noopener noreferrer external"
+              class="flex size-7 items-center justify-center rounded-md text-secondary opacity-50 transition-all duration-200 hover:bg-accent/10 hover:text-accent hover:opacity-100"
+              aria-label={`在 GitHub 查看 ${service.data.title} 的源代码`}
+              title="查看源代码"
+            >
+              <Icon name="ri:github-line" size={16} />
+            </a>
+          )}
+        </div>
       </li>
     ))
   }

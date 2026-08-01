@@ -87,6 +87,7 @@ const services = defineCollection({
     description: z.string(),
     icon: z.string(),
     link: z.string().url(),
+    repository: z.string().url().optional(),
   }),
 })
 
