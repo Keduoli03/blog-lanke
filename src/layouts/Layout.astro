@@ -1,4 +1,4 @@
----
+﻿---
 import {
   CommonHead,
   WebAnalytics,
@@ -30,15 +30,119 @@ const { title, description, image } = Astro.props
     <ThemeLoader />
     <AccentColorInjector />
     <PrintVersion />
+    <script is:inline>
+      ;(() => {
+        try {
+          const key = `gyoza-scroll:${window.location.pathname}`
+          const scrollY = Number(sessionStorage.getItem(key))
+          if (!Number.isFinite(scrollY) || scrollY < 60) return
+          const opacity = Math.max(0, Math.min(1, (scrollY - 60) / 60))
+          document.documentElement.dataset.restoredScroll = 'scrolled'
+          document.documentElement.style.setProperty('--restored-header-opacity', String(opacity))
+        } catch {
+          // Ignore unavailable session storage.
+        }
+      })()
+    </script>
+    <style is:inline>
+      html:not([data-header-ready]) [data-header-menu],
+      html:not([data-header-ready]) [data-header-meta],
+      html:not([data-header-ready]) [data-header-logo] {
+        transition: none !important;
+      }
+
+      html[data-restored-scroll='scrolled'] [data-header-background] {
+        opacity: var(--restored-header-opacity, 1) !important;
+      }
+
+      html[data-restored-scroll='scrolled'] [data-header-menu] {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transition: none !important;
+        html[data-restored-scroll='scrolled'] [data-back-to-top-rocket] {
+          opacity: 1 !important;
+          transform: scale(1) !important;
+          pointer-events: auto !important;
+          transition: none !important;
+        }
+      }
+
+      html[data-restored-scroll='scrolled'] [data-header-meta] {
+        opacity: 1 !important;
+        translate: 0 0 !important;
+        transform: translateY(0) !important;
+        transition: none !important;
+      }
+
+      @media (max-width: 767px) {
+        html[data-restored-scroll='scrolled'] [data-header-logo] {
+          opacity: 0 !important;
+          pointer-events: none !important;
+          transition: none !important;
+        }
+      }
+
+      [data-reading-progress] {
+        position: relative;
+      }
+
+      html[data-restored-reading-progress] [data-reading-progress] > span {
+        visibility: hidden;
+      }
+
+      html[data-restored-reading-progress] [data-reading-progress]::after {
+        content: var(--restored-reading-progress);
+        position: absolute;
+        inset: 0;
+        font-size: 0.875rem;
+      }
+    </style>
+    <slot name="head" />
     <script>
       import 'iconify-icon'
     </script>
-    <script defer src="https://umami.blueke.top/script.js" data-website-id="381b2283-cb7d-4fb6-bf43-f818198d9eb4"></script>
+    <script
+      defer
+      src="https://umami.blueke.top/script.js"
+      data-website-id="381b2283-cb7d-4fb6-bf43-f818198d9eb4"></script>
   </head>
   <body>
     <slot />
 
-    <BackToTopFAB client:only="react" />
+    <script is:inline>
+      ;(() => {
+        function restoreReadingProgress() {
+          const root = document.documentElement
+          root.removeAttribute('data-restored-reading-progress')
+
+          const article = document.querySelector('#markdown-wrapper')
+          const progress = document.querySelector('[data-reading-progress]')
+          if (!(article instanceof HTMLElement) || !(progress instanceof HTMLElement)) return
+
+          let scrollY = window.scrollY
+          if (scrollY === 0) {
+            try {
+              scrollY =
+                Number(sessionStorage.getItem(`gyoza-scroll:${window.location.pathname}`)) || 0
+            } catch {
+              // Ignore unavailable session storage.
+            }
+          }
+
+          const fullHeight = article.offsetHeight + article.offsetTop - window.innerHeight
+          const percent =
+            fullHeight <= 0
+              ? 100
+              : Math.max(0, Math.min(100, Math.floor((scrollY / fullHeight) * 100)))
+          root.style.setProperty('--restored-reading-progress', `"\u8fdb\u5ea6 ${percent}%"`)
+          root.setAttribute('data-restored-reading-progress', '')
+        }
+
+        restoreReadingProgress()
+        document.addEventListener('swup:contentReplaced', restoreReadingProgress)
+      })()
+    </script>
+    <BackToTopFAB client:load />
     <ModalStack client:idle />
     <Lightbox />
     <FootnoteTooltip />

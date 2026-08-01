@@ -101,9 +101,9 @@ const isMdContentEmpty = typeof md.body === 'string' ? md.body.trim().length ===
         >
           <aside class="sticky top-20">
             <SectionBlock title="目录">
-              <PostToc headings={headings} client:idle />
+              <PostToc headings={headings} client:load />
               <hr class="my-2 border-primary max-w-[100px]" />
-              <ReadingProgress client:idle />
+              <ReadingProgress client:load />
             </SectionBlock>
           </aside>
         </div>

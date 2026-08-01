@@ -1,5 +1,6 @@
 ﻿import { useState } from 'react'
 import { menus } from '@/config.json'
+import { useEffect, useRef } from 'react'
 import { clsx } from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
@@ -9,7 +10,7 @@ import {
   useShouldHeaderMetaShow,
 } from './hooks'
 import { RootPortal } from '@/components/RootPortal'
-import { Icon } from '@iconify/react'
+import { StaticIcon } from './StaticIcon'
 import {
   riArchiveLine,
   riChat1Line,
@@ -23,34 +24,32 @@ import {
 import ColumnHover from './ColumnHover'
 import AboutHover from './AboutHover'
 
-export function HeaderContent() {
+export function HeaderContent({ initialPathName = '/' }: { initialPathName?: string }) {
   return (
     <>
-      <AnimatedMenu />
-      <AccessibleMenu />
+      <AnimatedMenu initialPathName={initialPathName} />
+      <AccessibleMenu initialPathName={initialPathName} />
     </>
   )
 }
 
-function AnimatedMenu() {
+function AnimatedMenu({ initialPathName }: { initialPathName: string }) {
   const shouldBgShow = useShouldHeaderMenuBgShow()
   const shouldHeaderMetaShow = useShouldHeaderMetaShow()
 
   return (
     <div
-      className={clsx(
-        'transition-opacity duration-300 motion-reduce:transition-none',
-        shouldHeaderMetaShow ? 'opacity-0 pointer-events-none' : 'opacity-100',
-      )}
+      data-header-menu
+      className={clsx('', shouldHeaderMetaShow ? 'opacity-0 pointer-events-none' : 'opacity-100')}
       aria-hidden={shouldHeaderMetaShow}
       inert={shouldHeaderMetaShow}
     >
-      <HeaderMenu isBgShow={shouldBgShow} />
+      <HeaderMenu isBgShow={shouldBgShow} initialPathName={initialPathName} />
     </div>
   )
 }
 
-function AccessibleMenu() {
+function AccessibleMenu({ initialPathName }: { initialPathName: string }) {
   const shouldShow = useShouldAccessibleMenuShow()
 
   return (
@@ -63,7 +62,7 @@ function AccessibleMenu() {
             animate={{ y: '-50%', opacity: 1 }}
             exit={{ y: '-50%', opacity: 0 }}
           >
-            <HeaderMenu isBgShow />
+            <HeaderMenu isBgShow initialPathName={initialPathName} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -77,15 +76,17 @@ function normalizePath(value: string) {
   return cleaned === '' ? '/' : cleaned
 }
 
-function HeaderMenu({ isBgShow }: { isBgShow: boolean }) {
+function HeaderMenu({ isBgShow, initialPathName }: { isBgShow: boolean; initialPathName: string }) {
   const pathName = usePathName()
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
   const [radius, setRadius] = useState(0)
+  const [hasHydrated, setHasHydrated] = useState(false)
 
-  const currentPath = normalizePath(pathName || '/')
+  useEffect(() => setHasHydrated(true), [])
   const isMenuActive = (href: string) => {
     const target = normalizePath(href)
+    const currentPath = normalizePath(hasHydrated ? pathName || initialPathName : initialPathName)
     if (target === '/') return currentPath === '/'
     return currentPath === target || currentPath.startsWith(`${target}/`)
   }
@@ -101,6 +102,7 @@ function HeaderMenu({ isBgShow }: { isBgShow: boolean }) {
 
   return (
     <nav
+      data-header-pill
       className={clsx('relative rounded-full group pointer-events-auto duration-200', {
         'bg-gradient-to-b from-zinc-50/70 to-white/90 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur-md dark:from-zinc-900/70 dark:to-zinc-800/90 dark:ring-zinc-100/10':
           isBgShow,
@@ -148,6 +150,12 @@ function HeaderMenuItem({
     'icon-chat': riChat1Line,
   }
 
+  const hasMounted = useRef(false)
+
+  useEffect(() => {
+    hasMounted.current = true
+  }, [])
+
   const handleMemosClick =
     href === '/memos'
       ? () => {
@@ -172,8 +180,15 @@ function HeaderMenuItem({
     >
       <div className="flex items-center space-x-2">
         {isActive && (
-          <motion.span initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
-            <Icon icon={menuIconMap[icon as keyof typeof menuIconMap] ?? riLinksLine} />
+          <motion.span
+            initial={hasMounted.current ? { y: 8, opacity: 0, scale: 0.92 } : false}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 420, damping: 24 }}
+          >
+            <StaticIcon
+              icon={menuIconMap[icon as keyof typeof menuIconMap] ?? riLinksLine}
+              className="size-4 shrink-0"
+            />
           </motion.span>
         )}
         <span>{title}</span>

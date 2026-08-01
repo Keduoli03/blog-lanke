@@ -58,9 +58,9 @@ describe('Header reduced motion', () => {
     expect(screen.getByText('reduced')).toBeTruthy()
   })
 
-  it('gives the active menu icon y and opacity enter animation semantics', () => {
+  it('only animates the active menu icon after the initial hydration', () => {
     expect(headerContentSource).toMatch(
-      /\{isActive && \(\s*<motion\.span\s+initial=\{\{ y: 10, opacity: 0 \}\}\s+animate=\{\{ y: 0, opacity: 1 \}\}>/,
+      /initial=\{hasMounted\.current \? \{ y: 8, opacity: 0, scale: 0\.92 \} : false\}/,
     )
   })
 })

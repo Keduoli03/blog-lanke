@@ -3,10 +3,16 @@ import { animate } from 'framer-motion'
 import { getDaysInYear, getDiffInDays, getStartOfDay, getStartOfYear } from '@/utils/date'
 
 export function TimelineProgress() {
-  const [currentYear, setCurrentYear] = useState(0)
-  const [dayOfYear, setDayOfYear] = useState(0)
-  const [percentOfYear, setPercentOfYear] = useState(0)
-  const [percentOfToday, setPercentOfToday] = useState(0)
+  const [currentYear, setCurrentYear] = useState(() => new Date().getFullYear())
+  const [dayOfYear, setDayOfYear] = useState(() =>
+    getDiffInDays(getStartOfYear(new Date()), new Date()),
+  )
+  const [percentOfYear, setPercentOfYear] = useState(
+    () => (dayOfYear / getDaysInYear(new Date())) * 100,
+  )
+  const [percentOfToday, setPercentOfToday] = useState(
+    () => ((new Date().getTime() - getStartOfDay(new Date()).getTime()) / 86400 / 1000) * 100,
+  )
 
   const updateInfo = () => {
     const now = new Date()
@@ -53,10 +59,11 @@ function CountUp({
   duration?: number
 }) {
   const node = useRef<HTMLSpanElement>(null)
-  const prev = useRef(0)
+  const prev = useRef(to)
 
   useEffect(() => {
     if (!node.current) return
+    if (prev.current === to) return
 
     const control = animate(prev.current, to, {
       duration,
@@ -72,5 +79,9 @@ function CountUp({
     }
   }, [to, decimals, duration])
 
-  return <span ref={node}></span>
+  return (
+    <span ref={node} suppressHydrationWarning>
+      {to.toFixed(decimals)}
+    </span>
+  )
 }

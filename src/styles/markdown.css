@@ -1,4 +1,4 @@
-.markdown {
+﻿.markdown {
   @apply max-w-full min-w-0;
 }
 
@@ -167,7 +167,7 @@
 }
 
 .markdown .heading {
-  @apply relative;
+  @apply relative scroll-mt-24;
 }
 
 .markdown .heading::after {
@@ -199,13 +199,76 @@
   @apply opacity-100;
 }
 
-/* 脚注悬浮提示框 */
+/* 鑴氭敞鎮诞鎻愮ず锟?*/
 .footnote-tooltip {
   @apply fixed z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 rounded-lg shadow-xl text-sm max-w-xs pointer-events-none opacity-0 transition-opacity duration-200 text-gray-700 dark:text-gray-200;
-  /* 确保提示框在最上层 */
+  /* 纭繚鎻愮ず妗嗗湪鏈€涓婂眰 */
   z-index: 9999;
 }
 
 .footnote-tooltip.show {
   @apply opacity-100;
+}
+
+/* Keep Expressive Code functionality while matching the site's existing code block style. */
+.markdown .expressive-code {
+  @apply relative mt-10 mb-5 max-w-full;
+}
+
+.markdown .expressive-code .frame,
+.markdown .expressive-code pre {
+  @apply max-w-full rounded-lg;
+  background: rgb(var(--color-bg-secondary)) !important;
+  box-shadow: none !important;
+}
+
+.markdown .expressive-code pre {
+  @apply max-h-[450px] overflow-x-auto;
+}
+
+/* Keep Expressive Code's native title, but match the compact legacy tab. */
+.markdown .expressive-code .frame {
+  box-shadow: none !important;
+}
+
+.markdown .expressive-code .frame.has-title {
+  margin-top: 2rem;
+  overflow: visible;
+}
+
+.markdown .expressive-code .frame.has-title .header {
+  position: absolute !important;
+  inset: auto 1.5rem 100% auto !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.markdown .expressive-code .frame.has-title .header::before,
+.markdown .expressive-code .frame.has-title .title::after {
+  display: none !important;
+}
+
+.markdown .expressive-code .frame.has-title .title {
+  height: 2rem;
+  display: flex !important;
+  align-items: center;
+  margin: 0 !important;
+  padding: 0 1rem !important;
+  border: 0 !important;
+  border-radius: 0.5rem 0.5rem 0 0 !important;
+  background: rgb(var(--color-bg-secondary)) !important;
+  color: rgb(var(--color-text-secondary));
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.markdown .expressive-code .frame.has-title pre {
+  border-radius: 0.5rem !important;
+}
+
+.markdown .expressive-code .frame.has-title .copy {
+  inset-block-start: 0.5rem;
 }

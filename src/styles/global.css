@@ -44,6 +44,37 @@ body {
   max-width: 100%;
 }
 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: page-color-fade-out 140ms ease-out both;
+}
+
+::view-transition-new(root) {
+  animation: page-color-fade-in 240ms ease-in both;
+}
+
+@keyframes page-color-fade-out {
+  to {
+    opacity: 0.82;
+  }
+}
+
+@keyframes page-color-fade-in {
+  from {
+    opacity: 0.82;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
 html.gray {
   filter: grayscale(1);
 }

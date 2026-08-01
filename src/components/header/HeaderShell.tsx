@@ -18,7 +18,7 @@ export function HeaderShell(props: HeaderShellProps) {
   return (
     <HeaderMotionConfig>
       <Provider {...props} />
-      <Header />
+      <Header {...props} />
     </HeaderMotionConfig>
   )
 }

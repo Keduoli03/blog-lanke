@@ -243,9 +243,9 @@ const nextUrl = nextItem ? `/columns/${column.slug}/${nextItem.slug.split('/').p
     <div class="hidden xl:block lg:col-start-3 justify-self-start w-65" data-pagefind-ignore>
       <aside class="sticky top-20">
         <SectionBlock title="目录">
-          <PostToc headings={headings} client:idle />
+          <PostToc headings={headings} client:load />
           <hr class="my-2 border-primary max-w-25" />
-          <ReadingProgress client:idle />
+          <ReadingProgress client:load />
         </SectionBlock>
       </aside>
     </div>

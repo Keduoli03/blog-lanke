@@ -31,7 +31,7 @@ describe('HeaderMetaInfoProvider Swup synchronization', () => {
     history.replaceState(null, '', '/posts/article-slug')
 
     await act(async () => {
-      document.dispatchEvent(new Event('swup:content:replace'))
+      document.dispatchEvent(new Event('swup:contentReplaced'))
     })
 
     expect(screen.getByRole('status').textContent).toBe(

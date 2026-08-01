@@ -12,6 +12,14 @@ const tags = (await getAllTags()).map((t) => t.name)
 const years = Array.from(new Set(oldestPosts.map((p) => (p.data.date as Date).getFullYear()))).sort(
   (a, b) => b - a,
 )
+const requestedCategory = Astro.url.searchParams.get('category')
+const initialCategory =
+  requestedCategory && categories.includes(requestedCategory) ? requestedCategory : null
+const initialTags = (Astro.url.searchParams.get('tags') ?? '')
+  .split(',')
+  .filter((tag) => tags.includes(tag))
+const requestedYear = Number(Astro.url.searchParams.get('year'))
+const initialYear = years.includes(requestedYear) ? requestedYear : null
 ---
 
 <PageLayout title="归档">
@@ -23,6 +31,43 @@ const years = Array.from(new Set(oldestPosts.map((p) => (p.data.date as Date).ge
             <Highlight>归档</Highlight>
           </h1>
         </div>
+        <script is:inline>
+          ;(() => {
+            const applyInitialFilters = () => {
+              const params = new URLSearchParams(window.location.search)
+              const category = params.get('category')
+              const tags = (params.get('tags') ?? '').split(',').filter(Boolean)
+              const yearParam = params.get('year')
+              const year = yearParam ? Number(yearParam) : null
+              if (!category && tags.length === 0 && year === null) return
+
+              const timeline = document.getElementById('archives-timeline')
+              if (!timeline) return
+              const items = Array.from(timeline.querySelectorAll('li[data-category]'))
+              for (const item of items) {
+                const itemCategory = item.dataset.category ?? ''
+                const itemTags = (item.dataset.tags ?? '').split(',').filter(Boolean)
+                const itemYear = Number(item.closest('[data-year]')?.dataset.year)
+                const matches =
+                  (!category || itemCategory === category) &&
+                  (tags.length === 0 || tags.every((tag) => itemTags.includes(tag))) &&
+                  (year === null || itemYear === year)
+                item.hidden = !matches
+              }
+              for (const group of timeline.querySelectorAll('[data-year]')) {
+                group.hidden = !Array.from(group.querySelectorAll('li[data-category]')).some(
+                  (item) => !item.hidden,
+                )
+              }
+            }
+
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', applyInitialFilters, { once: true })
+            } else {
+              applyInitialFilters()
+            }
+          })()
+        </script>
         <p>共产出 {oldestPosts.length} 篇文章，再接再厉。</p>
         <hr class="w-[100px] border-primary" />
         <TimelineProgress client:load />
@@ -31,7 +76,15 @@ const years = Array.from(new Set(oldestPosts.map((p) => (p.data.date as Date).ge
     </div>
     <div class="hidden xl:block lg:col-start-3 justify-self-start w-[280px]" data-pagefind-ignore>
       <aside class="sticky top-20">
-        <ArchiveFilter client:only="react" categories={categories} tags={tags} years={years} />
+        <ArchiveFilter
+          client:load
+          categories={categories}
+          tags={tags}
+          years={years}
+          initialCategory={initialCategory}
+          initialTags={initialTags}
+          initialYear={initialYear}
+        />
       </aside>
     </div>
   </div>

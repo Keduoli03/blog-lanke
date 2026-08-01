@@ -1,15 +1,38 @@
-import { site } from '@/config.json'
+﻿import { site } from '@/config.json'
 import { useHeaderMetaInfo, useShouldHeaderMetaShow } from './hooks'
 import clsx from 'clsx'
+import { useEffect, useState } from 'react'
 
-export function HeaderMeta() {
-  const { title, description, slug } = useHeaderMetaInfo()
+export function HeaderMeta({
+  title: initialTitle = '',
+  description: initialDescription = '',
+  slug: initialSlug = '',
+}: {
+  title?: string
+  description?: string
+  slug?: string
+}) {
+  const liveMetaInfo = useHeaderMetaInfo()
   const shouldShow = useShouldHeaderMetaShow()
+  const [hasHydrated, setHasHydrated] = useState(false)
+
+  useEffect(() => {
+    setHasHydrated(true)
+  }, [])
+
+  const { title, description, slug } = hasHydrated
+    ? liveMetaInfo
+    : {
+        title: initialTitle,
+        description: initialDescription,
+        slug: initialSlug,
+      }
 
   return (
     <div
+      data-header-meta
       className={clsx(
-        'absolute inset-0 z-10 flex items-center justify-between px-4 pointer-events-none md:px-4 transition-[opacity,transform] duration-300 motion-reduce:transition-none motion-reduce:transform-none',
+        'absolute inset-0 z-10 flex items-center justify-between px-4 pointer-events-none md:px-4 motion-reduce:transition-none motion-reduce:transform-none',
         shouldShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5',
       )}
       aria-hidden={!shouldShow}

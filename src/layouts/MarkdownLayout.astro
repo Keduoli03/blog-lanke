@@ -1,4 +1,4 @@
-﻿---
+---
 import Layout from './Layout.astro'
 import Footer from '@/components/footer/Footer.astro'
 import { HeaderShell } from '@/components/header/HeaderShell'
@@ -18,6 +18,53 @@ const { title, description, image, mdTitle, mdDescription, mdSlug } = Astro.prop
 ---
 
 <Layout title={title} description={description} image={image}>
+  <style slot="head" is:inline>
+    .markdown .expressive-code .frame {
+      box-shadow: none !important;
+    }
+
+    .markdown .expressive-code .frame.has-title {
+      margin-top: 2rem;
+      overflow: visible;
+    }
+
+    .markdown .expressive-code .frame.has-title .header {
+      position: absolute !important;
+      inset: auto 1.5rem 100% auto !important;
+      display: flex !important;
+      justify-content: flex-end !important;
+      padding: 0 !important;
+      background: transparent !important;
+      border: 0 !important;
+    }
+
+    .markdown .expressive-code .frame.has-title .header::before,
+    .markdown .expressive-code .frame.has-title .title::after {
+      display: none !important;
+    }
+
+    .markdown .expressive-code .frame.has-title .title {
+      height: 2rem;
+      display: flex !important;
+      align-items: center;
+      margin: 0 !important;
+      padding: 0 1rem !important;
+      border: 0 !important;
+      border-radius: 0.5rem 0.5rem 0 0 !important;
+      background: rgb(var(--color-bg-secondary)) !important;
+      color: rgb(var(--color-text-secondary));
+      font-size: 0.875rem;
+      line-height: 1;
+    }
+
+    .markdown .expressive-code .frame.has-title pre {
+      border-radius: 0.5rem !important;
+    }
+
+    .markdown .expressive-code .frame.has-title .copy {
+      inset-block-start: 0.5rem;
+    }
+  </style>
   <HeaderShell
     pathName={Astro.url.pathname}
     title={mdTitle}
@@ -43,4 +90,88 @@ const { title, description, image, mdTitle, mdDescription, mdSlug } = Astro.prop
     <ToastContainer client:idle />
   </main>
   <Footer />
+  <script>
+    function syncHeadingAnchors() {
+      document.querySelectorAll<HTMLElement>('.markdown .heading[id]').forEach((heading) => {
+        const anchor = heading.querySelector<HTMLAnchorElement>(':scope > .heading-anchor')
+        if (!anchor) return
+        anchor.href = `#${heading.id}`
+      })
+    }
+
+    function ensureImageCaptions() {
+      document
+        .querySelectorAll<HTMLImageElement>('.markdown figure > img[title]')
+        .forEach((image) => {
+          const title = image.title.trim()
+          const figure = image.parentElement
+          if (
+            !title ||
+            !(figure instanceof HTMLElement) ||
+            figure.querySelector(':scope > figcaption')
+          ) {
+            return
+          }
+          const caption = document.createElement('figcaption')
+          caption.textContent = title
+          image.insertAdjacentElement('afterend', caption)
+        })
+    }
+    function scrollToHeading(hash: string, behavior: ScrollBehavior = 'smooth') {
+      if (!hash) return
+
+      const heading = document.getElementById(decodeURIComponent(hash.slice(1)))
+      if (!heading) return
+
+      const fixedNavigationBottom = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-site-header], [data-header-pill]'),
+      ).reduce((bottom, element) => Math.max(bottom, element.getBoundingClientRect().bottom), 64)
+      const top = Math.max(
+        0,
+        heading.getBoundingClientRect().top + window.scrollY - fixedNavigationBottom - 32,
+      )
+      window.scrollTo({ top, behavior })
+    }
+
+    function restoreHashPosition() {
+      if (!location.hash) return
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => scrollToHeading(location.hash, 'auto')),
+      )
+    }
+
+    const markdownWindow = window as Window & { __markdownAnchorNavigationAttached?: boolean }
+    if (!markdownWindow.__markdownAnchorNavigationAttached) {
+      markdownWindow.__markdownAnchorNavigationAttached = true
+      window.addEventListener(
+        'click',
+        (event) => {
+          const source = event.target
+          if (!(source instanceof Element)) return
+
+          const anchor = source.closest<HTMLAnchorElement>('a[href^="#"]')
+          if (!anchor?.hash) return
+
+          const heading = document.getElementById(decodeURIComponent(anchor.hash.slice(1)))
+          if (!heading) return
+          event.stopPropagation()
+
+          event.preventDefault()
+          history.pushState(null, '', anchor.hash)
+          scrollToHeading(anchor.hash)
+        },
+        { capture: true },
+      )
+    }
+
+    syncHeadingAnchors()
+    ensureImageCaptions()
+    restoreHashPosition()
+    document.addEventListener('astro:page-load', syncHeadingAnchors)
+    document.addEventListener('astro:page-load', ensureImageCaptions)
+    document.addEventListener('astro:page-load', restoreHashPosition)
+    document.addEventListener('swup:contentReplaced', syncHeadingAnchors)
+    document.addEventListener('swup:contentReplaced', ensureImageCaptions)
+    document.addEventListener('swup:contentReplaced', restoreHashPosition)
+  </script>
 </Layout>

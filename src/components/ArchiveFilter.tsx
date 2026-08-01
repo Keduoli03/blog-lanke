@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Icon } from '@iconify/react'
 import type { IconifyIcon } from '@iconify/types'
 import { riCalendar2Line, riFolder2Line, riPriceTag3Line, riRestartLine } from '@/icons/ri'
+import { StaticIcon } from '@/components/header/StaticIcon'
 
 type Props = {
   categories: string[]
   tags: string[]
   years: number[]
+  initialCategory?: string | null
+  initialTags?: string[]
+  initialYear?: number | null
 }
 
 const chipBase =
@@ -18,7 +21,7 @@ const chipOn = 'bg-accent text-white shadow-sm shadow-accent/40'
 function SectionTitle({ icon, children }: { icon: IconifyIcon; children: string }) {
   return (
     <div className="inline-flex items-center gap-2 font-bold">
-      <Icon icon={icon} className="text-accent" />
+      <StaticIcon icon={icon} className="size-5 text-accent" />
       <span className="relative">
         <span className="absolute -z-1 top-[30%] left-0 w-full h-[40%] bg-accent/30 -rotate-3" />
         {children}
@@ -27,10 +30,17 @@ function SectionTitle({ icon, children }: { icon: IconifyIcon; children: string 
   )
 }
 
-export default function ArchiveFilter({ categories, tags, years }: Props) {
-  const [category, setCategory] = useState<string | null>(null)
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [year, setYear] = useState<number | null>(null)
+export default function ArchiveFilter({
+  categories,
+  tags,
+  years,
+  initialCategory = null,
+  initialTags = [],
+  initialYear = null,
+}: Props) {
+  const [category, setCategory] = useState<string | null>(initialCategory)
+  const [selectedTags, setSelectedTags] = useState<string[]>(() => initialTags)
+  const [year, setYear] = useState<number | null>(initialYear)
 
   useEffect(() => {
     const params = new URLSearchParams()
@@ -73,7 +83,7 @@ export default function ArchiveFilter({ categories, tags, years }: Props) {
             onClick={clearAll}
             title="清空筛选"
           >
-            <Icon icon={riRestartLine} />
+            <StaticIcon icon={riRestartLine} className="size-4" />
             清空
           </button>
         )}

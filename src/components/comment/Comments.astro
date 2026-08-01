@@ -3,7 +3,7 @@ import { Artalk } from './Artalk'
 import { artalk } from '@/config.json'
 ---
 
-<div id="comments">
+<div id="comments" class="min-h-40">
   {
     artalk?.server && artalk?.site && (
       <Artalk server={artalk.server} site={artalk.site} client:visible />

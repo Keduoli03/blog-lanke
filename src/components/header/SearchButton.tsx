@@ -2,8 +2,8 @@ import { motion } from 'framer-motion'
 import { useCurrentModal, useModal } from '@/components/ui/modal'
 import { useEffect, useState } from 'react'
 import { useDebounceValue } from '@/hooks/useDebounceValue'
-import { Icon } from '@iconify/react'
 import { riSearchLine } from '@/icons/ri'
+import { StaticIcon } from './StaticIcon'
 
 let pagefind: any = null
 async function loadPagefind() {
@@ -31,7 +31,7 @@ export function SearchButton() {
       aria-label="Search"
       onClick={openModal}
     >
-      <Icon icon={riSearchLine} className="text-xl" />
+      <StaticIcon icon={riSearchLine} className="size-5" />
     </button>
   )
 }

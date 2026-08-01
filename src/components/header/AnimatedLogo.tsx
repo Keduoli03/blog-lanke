@@ -1,4 +1,4 @@
-import { useShouldHeaderMetaShow, useIsMobile } from './hooks'
+﻿import { useShouldHeaderMetaShow, useIsMobile } from './hooks'
 import { author } from '@/config.json'
 import clsx from 'clsx'
 
@@ -9,8 +9,9 @@ export function AnimatedLogo() {
 
   return (
     <div
+      data-header-logo
       className={clsx(
-        'transition-opacity duration-300 motion-reduce:transition-none',
+        '',
         shouldHeaderMetaShow ? 'max-md:opacity-0 max-md:pointer-events-none' : 'opacity-100',
       )}
       aria-hidden={hidden}

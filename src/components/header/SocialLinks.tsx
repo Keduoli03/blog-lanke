@@ -2,6 +2,7 @@
 import config from '@/config.json'
 import { riBallPenLine, riLinkM, riLinksLine, riRocket2Line, riTrainLine } from '@/icons/ri'
 import { HoverDropdown } from './HoverDropdown'
+import { StaticIcon } from './StaticIcon'
 
 const { socialLinks } = config
 const iconMap = {
@@ -22,7 +23,7 @@ export function SocialLinks() {
           aria-label="Social Links"
           type="button"
         >
-          <Icon icon={riRocket2Line} className="text-xl" />
+          <StaticIcon icon={riRocket2Line} className="size-5" />
         </button>
       }
       panelClassName="w-36 py-2 bg-white dark:bg-zinc-800 rounded-xl shadow-xl border border-primary/10 overflow-hidden"

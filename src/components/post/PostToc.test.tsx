@@ -98,6 +98,16 @@ describe('PostToc', () => {
     expect(secondRect).toHaveBeenCalledOnce()
   })
 
+  it('selects the restored position synchronously without animating from the default state', () => {
+    scrollY = 520
+    renderToc()
+
+    const second = screen.getByRole('link', { name: 'Second' })
+    expect(second.getAttribute('aria-current')).toBe('location')
+    expect(second.className).not.toContain('transition-opacity')
+    expect(requestAnimationFrameMock).not.toHaveBeenCalled()
+  })
+
   it('coalesces multiple scroll events into one animation frame', () => {
     renderToc()
     act(flushFrame)

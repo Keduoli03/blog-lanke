@@ -1,9 +1,8 @@
 import { useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { pageScrollLocationAtom } from '@/store/scrollInfo'
-import { AnimatePresence, motion } from 'framer-motion'
-import { Icon } from '@iconify/react'
 import { riChat1Line, riRocket2Line } from '@/icons/ri'
+import { StaticIcon } from '@/components/header/StaticIcon'
 
 export function BackToTopFAB() {
   const scrollY = useAtomValue(pageScrollLocationAtom)
@@ -20,12 +19,44 @@ export function BackToTopFAB() {
 
   return (
     <div className="fixed right-4 bottom-6 z-10">
-      <AnimatePresence>{isShow && <Buttons hasComments={hasComments} />}</AnimatePresence>
+      <Buttons hasComments={hasComments} isVisible={isShow} />
     </div>
   )
 }
 
-function Buttons({ hasComments }: { hasComments: boolean }) {
+function FabButton({
+  children,
+  label,
+  onClick,
+  isVisible,
+  dataAttribute,
+}: {
+  children: ReactNode
+  label: string
+  onClick: () => void
+  isVisible: boolean
+  dataAttribute?: string
+}) {
+  return (
+    <button
+      data-back-to-top-rocket={dataAttribute}
+      className="size-10 flex items-center justify-center rounded-full shadow-lg shadow-zinc-800/5 border border-primary bg-white/50 dark:bg-zinc-800/50 backdrop-blur cursor-pointer transition-[opacity,transform] duration-200 ease-out"
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'scale(1)' : 'scale(0.8)',
+        pointerEvents: isVisible ? 'auto' : 'none',
+      }}
+      type="button"
+      aria-label={label}
+      tabIndex={isVisible ? 0 : -1}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  )
+}
+
+function Buttons({ hasComments, isVisible }: { hasComments: boolean; isVisible: boolean }) {
   const handleBackToTop = () => {
     window.scrollTo({
       top: 0,
@@ -42,29 +73,18 @@ function Buttons({ hasComments }: { hasComments: boolean }) {
   return (
     <div className="flex flex-col gap-3 items-end">
       {hasComments && (
-        <motion.button
-          className="size-10 flex items-center justify-center rounded-full shadow-lg shadow-zinc-800/5 border border-primary bg-white/50 dark:bg-zinc-800/50 backdrop-blur cursor-pointer"
-          type="button"
-          aria-label="Go to comments"
-          onClick={handleScrollToComments}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0 }}
-        >
-          <Icon icon={riChat1Line} />
-        </motion.button>
+        <FabButton label="Go to comments" onClick={handleScrollToComments} isVisible={isVisible}>
+          <StaticIcon icon={riChat1Line} className="size-5" />
+        </FabButton>
       )}
-      <motion.button
-        className="size-10 flex items-center justify-center rounded-full shadow-lg shadow-zinc-800/5 border border-primary bg-white/50 dark:bg-zinc-800/50 backdrop-blur cursor-pointer"
-        type="button"
-        aria-label="Back to top"
+      <FabButton
+        label="Back to top"
         onClick={handleBackToTop}
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0 }}
+        isVisible={isVisible}
+        dataAttribute=""
       >
-        <Icon icon={riRocket2Line} />
-      </motion.button>
+        <StaticIcon icon={riRocket2Line} className="size-5" />
+      </FabButton>
     </div>
   )
 }

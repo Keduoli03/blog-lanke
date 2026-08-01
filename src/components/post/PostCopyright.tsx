@@ -1,7 +1,6 @@
 ﻿import { author, site, posts } from '@/config.json'
 import { getFormattedDateTime, isSignificantDateUpdate } from '@/utils/date'
 import { AnimatedSignature } from '../AnimatedSignature'
-import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 function getPostUrl(slug: string) {
@@ -19,20 +18,16 @@ export function PostCopyright({
   date: Date
   lastMod?: Date
 }) {
-  const [displayTimeStr, setDisplayTimeStr] = useState('')
   const url = getPostUrl(slug)
   const isEdited = isSignificantDateUpdate(date, lastMod, posts.updateThresholdHours)
   const displayDate = isEdited && lastMod ? lastMod : date
   const timeLabel = isEdited ? '最后修改时间' : '发布时间'
 
+  const displayTimeStr = getFormattedDateTime(displayDate)
   function handleCopyUrl() {
     navigator.clipboard.writeText(url)
     toast.success('已复制文章链接')
   }
-
-  useEffect(() => {
-    setDisplayTimeStr(getFormattedDateTime(displayDate))
-  }, [displayDate])
 
   return (
     <section className="text-xs leading-loose text-secondary break-words">

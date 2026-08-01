@@ -1,6 +1,11 @@
-import { useLayoutEffect, useRef } from 'react'
+﻿import { useLayoutEffect, useRef } from 'react'
 import { useSetAtom } from 'jotai'
-import { pageScrollLocationAtom, pageScrollDirectionAtom } from '@/store/scrollInfo'
+import {
+  pageScrollLocationAtom,
+  pageScrollDirectionAtom,
+  getStoredPageScroll,
+  storePageScroll,
+} from '@/store/scrollInfo'
 
 export function PageScrollInfoProvider() {
   const setScrollLocation = useSetAtom(pageScrollLocationAtom)
@@ -9,7 +14,7 @@ export function PageScrollInfoProvider() {
   const frameRef = useRef<number | null>(null)
 
   useLayoutEffect(() => {
-    const updateScrollInfo = () => {
+    const updateScrollInfo = (isInitial = false) => {
       frameRef.current = null
       let currentTop = document.documentElement.scrollTop
 
@@ -21,20 +26,47 @@ export function PageScrollInfoProvider() {
         }
       }
 
-      setScrollDirection(prevScrollY.current - currentTop > 0 ? 'up' : 'down')
+      if (isInitial && currentTop === 0) {
+        currentTop = getStoredPageScroll()
+      }
+
+      if (!isInitial) {
+        setScrollDirection(prevScrollY.current - currentTop > 0 ? 'up' : 'down')
+      }
       prevScrollY.current = currentTop
       setScrollLocation(currentTop)
+      storePageScroll(currentTop)
     }
 
     const scrollHandler = () => {
       if (frameRef.current !== null) return
-      frameRef.current = window.requestAnimationFrame(updateScrollInfo)
+      frameRef.current = window.requestAnimationFrame(() => updateScrollInfo())
     }
 
-    scrollHandler()
+    updateScrollInfo(true)
+    // Swup can replace the page after the browser has already restored scroll.
+    // Synchronize from the actual document position so the header does not keep
+    // the previous article's "scrolled" state on the next route.
+    const syncNavigationScroll = () => updateScrollInfo()
+    document.addEventListener('astro:page-load', syncNavigationScroll)
+    document.addEventListener('swup:contentReplaced', syncNavigationScroll)
+    let releaseFrame: number | null = null
+    const readyFrame = window.requestAnimationFrame(() => {
+      document.documentElement.setAttribute('data-header-ready', '')
+      releaseFrame = window.requestAnimationFrame(() => {
+        document.documentElement.removeAttribute('data-restored-scroll')
+      })
+    })
+    const persistScroll = () => storePageScroll(document.documentElement.scrollTop)
     window.addEventListener('scroll', scrollHandler, { passive: true })
+    window.addEventListener('pagehide', persistScroll)
     return () => {
       window.removeEventListener('scroll', scrollHandler)
+      window.removeEventListener('pagehide', persistScroll)
+      document.removeEventListener('astro:page-load', syncNavigationScroll)
+      document.removeEventListener('swup:contentReplaced', syncNavigationScroll)
+      window.cancelAnimationFrame(readyFrame)
+      if (releaseFrame !== null) window.cancelAnimationFrame(releaseFrame)
       if (frameRef.current !== null) {
         window.cancelAnimationFrame(frameRef.current)
         frameRef.current = null

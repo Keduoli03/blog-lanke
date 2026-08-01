@@ -14,11 +14,12 @@ describe('PageScrollInfoProvider', () => {
     const addEventListener = vi.spyOn(window, 'addEventListener')
 
     const view = render(<PageScrollInfoProvider />)
+    const initialFrameCount = requestFrame.mock.calls.length
     window.dispatchEvent(new Event('scroll'))
     window.dispatchEvent(new Event('scroll'))
     window.dispatchEvent(new Event('scroll'))
 
-    expect(requestFrame).toHaveBeenCalledTimes(1)
+    expect(requestFrame).toHaveBeenCalledTimes(initialFrameCount + 1)
     expect(addEventListener).toHaveBeenCalledWith('scroll', expect.any(Function), {
       passive: true,
     })

@@ -1,16 +1,17 @@
 import type { MarkdownHeading } from 'astro'
 import clsx from 'clsx'
-import { startTransition, useEffect, useRef, useState } from 'react'
+import { startTransition, useLayoutEffect, useRef, useState } from 'react'
 
 function useActiveItem() {
+  const [isReady, setIsReady] = useState(false)
   const [activeItem, setActiveItem] = useState('')
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let headingOffsets: Array<{ id: string; offset: number }> = []
     let frameId: number | null = null
     let shouldMeasure = true
 
-    const updateActiveItem = (currentScrollY: number) => {
+    const updateActiveItem = (currentScrollY: number, deferUpdate = true) => {
       const readingPosition = currentScrollY + 80
       let low = 0
       let high = headingOffsets.length - 1
@@ -27,12 +28,17 @@ function useActiveItem() {
       }
 
       const nextActiveItem = activeIndex >= 0 ? headingOffsets[activeIndex].id : ''
-      startTransition(() => {
+      const commit = () => {
         setActiveItem((current) => (current === nextActiveItem ? current : nextActiveItem))
-      })
+      }
+      if (deferUpdate) {
+        startTransition(commit)
+      } else {
+        commit()
+      }
     }
 
-    const runFrame = () => {
+    const runFrame = (deferUpdate = true) => {
       frameId = null
       const currentScrollY = window.scrollY
 
@@ -50,13 +56,13 @@ function useActiveItem() {
           .sort((a, b) => a.offset - b.offset)
       }
 
-      updateActiveItem(currentScrollY)
+      updateActiveItem(currentScrollY, deferUpdate)
     }
 
     const scheduleFrame = (remeasure = false) => {
       shouldMeasure ||= remeasure
       if (frameId !== null) return
-      frameId = requestAnimationFrame(runFrame)
+      frameId = requestAnimationFrame(() => runFrame())
     }
 
     const scheduleMeasure = () => scheduleFrame(true)
@@ -66,7 +72,8 @@ function useActiveItem() {
     window.addEventListener('resize', scheduleMeasure)
     document.addEventListener('astro:page-load', scheduleMeasure)
     document.addEventListener('swup:contentReplaced', scheduleMeasure)
-    scheduleMeasure()
+    runFrame(false)
+    const readyTimer = window.setTimeout(() => setIsReady(true), 0)
 
     return () => {
       window.removeEventListener('scroll', scheduleScrollUpdate)
@@ -74,14 +81,15 @@ function useActiveItem() {
       document.removeEventListener('astro:page-load', scheduleMeasure)
       document.removeEventListener('swup:contentReplaced', scheduleMeasure)
       if (frameId !== null) cancelAnimationFrame(frameId)
+      window.clearTimeout(readyTimer)
     }
   }, [])
 
-  return activeItem
+  return { activeItem, isReady }
 }
 
 export function PostToc({ headings }: { headings: MarkdownHeading[] }) {
-  const activeItem = useActiveItem()
+  const { activeItem, isReady } = useActiveItem()
 
   return (
     <ul
@@ -98,6 +106,7 @@ export function PostToc({ headings }: { headings: MarkdownHeading[] }) {
           text={item.text}
           depth={item.depth}
           isActive={item.slug === activeItem}
+          animate={isReady}
         />
       ))}
     </ul>
@@ -109,15 +118,17 @@ export function TocItem({
   text,
   depth,
   isActive,
+  animate,
 }: {
   slug: string
   text: string
   depth: number
   isActive: boolean
+  animate: boolean
 }) {
   const itemRef = useRef<HTMLLIElement>(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isActive) return
     const $item = itemRef.current
     if (!$item) return
@@ -150,7 +161,8 @@ export function TocItem({
       ></span>
       <a
         className={clsx(
-          'inline-block pl-8 opacity-60 transition-opacity duration-300 focus-visible:opacity-100',
+          'inline-block pl-8 opacity-60 focus-visible:opacity-100',
+          animate && 'transition-opacity duration-300',
           isActive
             ? 'opacity-100'
             : 'group-hover:opacity-100 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100',

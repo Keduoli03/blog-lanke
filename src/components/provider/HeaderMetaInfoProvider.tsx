@@ -1,4 +1,4 @@
-﻿import { useSetAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { pathNameAtom, metaTitleAtom, metaDescriptionAtom, metaSlugAtom } from '@/store/metaInfo'
 
@@ -51,19 +51,16 @@ export function HeaderMetaInfoProvider({
 
     const onPopstate = () => syncRouteFromDocument('popstate')
     const onAstroPageLoad = () => syncRouteFromDocument('astro:page-load')
-    const onSwupReplace = () => syncRouteFromDocument('swup:content:replace')
     const onSwupReplaced = () => syncRouteFromDocument('swup:contentReplaced')
 
     syncRouteFromDocument('mount')
     window.addEventListener('popstate', onPopstate)
     document.addEventListener('astro:page-load', onAstroPageLoad)
-    document.addEventListener('swup:content:replace', onSwupReplace)
     document.addEventListener('swup:contentReplaced', onSwupReplaced)
 
     return () => {
       window.removeEventListener('popstate', onPopstate)
       document.removeEventListener('astro:page-load', onAstroPageLoad)
-      document.removeEventListener('swup:content:replace', onSwupReplace)
       document.removeEventListener('swup:contentReplaced', onSwupReplaced)
     }
   }, [setDescription, setPathName, setSlug, setTitle])

@@ -23,14 +23,27 @@ import { render } from 'astro:content'
 export const getStaticPaths = (async () => {
   const sortedPosts = await getSortedPosts()
 
-  return sortedPosts.map((post, index) => ({
-    params: { slug: getEntrySlug(post) },
-    props: getPostRouteProps(
+  return sortedPosts.flatMap((post, index) => {
+    const props = getPostRouteProps(
       post,
       index > 0 ? sortedPosts[index - 1] : undefined,
       index < sortedPosts.length - 1 ? sortedPosts[index + 1] : undefined,
-    ),
-  }))
+    )
+    const slug = getEntrySlug(post)
+    const legacyTitlePath = post.data.title
+
+    return [
+      { params: { slug }, props },
+      ...(legacyTitlePath && legacyTitlePath !== slug
+        ? [
+            {
+              params: { slug: legacyTitlePath },
+              props: { redirect: getPostUrl(post) },
+            },
+          ]
+        : []),
+    ]
+  })
 }) satisfies GetStaticPaths
 
 interface Props {
@@ -151,9 +164,9 @@ const shouldShowAiSummary = current?.data.aiSummary
         >
           <aside class="sticky top-20">
             <SectionBlock title="目录">
-              <PostToc headings={headings} client:idle />
+              <PostToc headings={headings} client:load />
               <hr class="my-2 border-primary max-w-[100px]" />
-              <ReadingProgress client:idle />
+              <ReadingProgress client:load />
             </SectionBlock>
             <ActionAside client:idle />
           </aside>
