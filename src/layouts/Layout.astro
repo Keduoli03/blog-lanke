@@ -73,6 +73,17 @@ const { title, description, image } = Astro.props
         transform: translateY(0) !important;
         transition: none !important;
       }
+      /* Routes without actual article metadata must not inherit the compact article header. */
+      body:not(:has(main[data-header-title]:not([data-header-title='']))) [data-header-menu] {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+
+      body:not(:has(main[data-header-title]:not([data-header-title='']))) [data-header-meta] {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        translate: 0 1.25rem !important;
+      }
 
       @media (max-width: 767px) {
         html[data-restored-scroll='scrolled'] [data-header-logo] {
