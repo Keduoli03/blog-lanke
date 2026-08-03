@@ -118,11 +118,11 @@ const shouldShowAiSummary = current?.data.aiSummary
         <div class="min-w-0 lg:col-start-2">
           <header class="space-y-4">
             {current.data.cover && (
-              <div class="overflow-hidden rounded-xl border border-secondary/40 shadow-sm">
+              <div class="flex max-h-[680px] items-center justify-center overflow-hidden rounded-xl border border-secondary/40 bg-black/5 shadow-sm">
                 <img
                   src={current.data.cover}
                   alt={current.data.title}
-                  class="w-full h-auto object-cover"
+                  class="block h-auto max-h-[min(58vh,680px)] max-w-full w-auto object-contain"
                   loading="eager"
                 />
               </div>
