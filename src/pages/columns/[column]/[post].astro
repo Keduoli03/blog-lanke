@@ -214,11 +214,11 @@ const nextUrl = nextItem ? `/columns/${column.slug}/${nextItem.slug.split('/').p
       <header class="space-y-2 mb-4">
         {
           post.data.cover && (
-            <div class="mb-4 flex max-h-[680px] items-center justify-center overflow-hidden rounded-xl border border-secondary/40 bg-black/5 shadow-sm">
+            <div class="mb-4 overflow-hidden rounded-xl">
               <img
                 src={post.data.cover}
                 alt={post.data.title}
-                class="block h-auto max-h-[min(58vh,680px)] max-w-full w-auto object-contain"
+                class="block h-[min(58vh,680px)] w-full object-cover"
                 loading="eager"
               />
             </div>
