@@ -9,6 +9,7 @@ date: '2025-03-17 13:55'
 updated: '2026-03-21 02:24'
 slug: 965179
 cover: 'https://imgapi.xl0408.top/index.php'
+draft: false
 ---
 
 博客运行了也有一年多了，但是几乎没有人访问多少有点寂寞了，所以来折腾一下搜索引擎收录

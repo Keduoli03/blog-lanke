@@ -10,6 +10,7 @@ updated: '2025-12-29 20:42'
 slug: 724
 cover: 'https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/%E6%99%AE%E6%8B%89%E5%A8%9C-%E7%A2%A7%E8%93%9D%E6%A1%A3%E6%A1%88.jpg'
 aiSummary: true
+draft: false
 ---
 
 前段时间有个面试题，要求 MySQL 版本为 5.7，而我本机上是 9.5 的版本，所以研究了一下怎么共存。

@@ -12,6 +12,7 @@ updated: '2025-12-25 18:36'
 slug: 437763
 cover: 'https://api.mtyqx.cn/tapi/random.php'
 Series: SpringBoot
+draft: false
 ---
 
 在 Spring Boot 中实现热更新（热部署）可以显著提升开发效率，以下是几种主流的实现方案及详细配置步骤

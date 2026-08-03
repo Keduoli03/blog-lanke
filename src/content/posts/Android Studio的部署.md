@@ -8,6 +8,7 @@ date: '2025-03-11 19:26'
 updated: '2025-09-13 00:05'
 slug: 946133
 cover: 'http://www.98qy.com/sjbz/api.php'
+draft: false
 ---
 
 简单记录一下，现在都比较人性化了，安装很方便

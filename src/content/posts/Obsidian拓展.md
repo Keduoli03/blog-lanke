@@ -8,6 +8,7 @@ tags:
 date: '2024-11-17 13:59'
 updated: '2025-09-13 00:07'
 slug: obsidiantuo-zhan
+draft: false
 ---
 
 最近又对笔记进行了一些优化，目前感觉还可以，简单记录一下。 ^b9bb4d

@@ -12,6 +12,7 @@ updated: '2026-04-26 18:12'
 slug: obsidian-hermes-memory
 cover: 'https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/FYwAUt5aQAU07-a.jpg'
 aiSummary: true
+draft: false
 ---
 
 在折腾 AI Agent 的记忆系统时，我最终没有选择 RAG，而是选了 Obsidian。这篇文章说清楚为什么，以及怎么做的。

@@ -9,6 +9,7 @@ tags:
 date: '2026-07-10 22:30'
 updated: '2026-07-10 22:30'
 slug: astro-llms-txt
+draft: false
 ---
 
 > [!TIP]

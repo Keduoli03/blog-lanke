@@ -13,6 +13,7 @@ updated: '2026-04-30 18:30'
 slug: llm-wiki-hermes-memory
 cover: 'https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/FYwAUt5aQAU07-a.jpg'
 aiSummary: true
+draft: false
 ---
 
 [上篇文章](/posts/obsidian-hermes-memory/) 写了用 Obsidian 做记忆管理的方案，运行了一段时间后，发现了一些新问题，最终换成了 **Karpathy 的 LLM Wiki 模式**。这篇文章说清楚为什么，以及新的方案是怎么设计的。

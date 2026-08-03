@@ -9,6 +9,7 @@ tags:
 date: '2025-03-23 14:39'
 updated: '2025-11-25 22:26'
 slug: 970498
+draft: false
 ---
 
 ## 一、为什么选择 Pinia？

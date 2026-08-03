@@ -8,7 +8,6 @@ date: '2026-03-27 16:51'
 updated: '2026-03-31 22:19'
 slug: openclaw-gong-zuo-qu-wen-jian-zhi-nan-rang-ni-de-ai-geng-dong-ni
 draft: true
-unlisted: true
 aiSummary: true
 ---
 

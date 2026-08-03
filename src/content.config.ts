@@ -33,7 +33,7 @@ const toDate = z
   })
 
 const posts = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
+  loader: glob({ pattern: ['**/*.md', '!**/.obsidian/**'], base: './src/content/posts' }),
   schema: z
     .object({
       title: z.string(),
@@ -44,7 +44,7 @@ const posts = defineCollection({
       category: z.string().optional(),
       tags: z.array(z.string()).default([]),
       comments: z.boolean().default(true),
-      draft: z.boolean().default(false),
+      draft: z.boolean().default(true),
       pinned: z.boolean().default(false),
       index: z
         .union([z.string(), z.number()])

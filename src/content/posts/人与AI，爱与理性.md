@@ -9,6 +9,7 @@ date: '2025-05-24 15:43'
 updated: '2026-03-21 02:25'
 slug: 178593
 cover: 'https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/p2638160918.webp'
+draft: false
 ---
 
 写在《薇薇-萤石眼之歌》后

@@ -8,7 +8,6 @@ date: '2026-02-26 11:52'
 updated: '2026-03-06 13:51'
 slug: redis
 draft: true
-unlisted: true
 aiSummary: true
 outdate: true
 ---
