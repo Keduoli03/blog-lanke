@@ -212,6 +212,18 @@ const nextUrl = nextItem ? `/columns/${column.slug}/${nextItem.slug.split('/').p
     </aside>
     <div class="min-w-0 lg:col-start-2" data-pagefind-body>
       <header class="space-y-2 mb-4">
+        {
+          post.data.cover && (
+            <div class="overflow-hidden rounded-xl border border-secondary/40 shadow-sm mb-4">
+              <img
+                src={post.data.cover}
+                alt={post.data.title}
+                class="w-full h-auto object-cover"
+                loading="eager"
+              />
+            </div>
+          )
+        }
         <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold break-words">{post.data.title}</h1>
         <PostMetaInfo
           date={post.data.date as Date}
