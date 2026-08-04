@@ -7,7 +7,7 @@ let error_img = 'https://fastly.jsdelivr.net/gh/Rock-Candy-Tea/Friend-Circle-Fro
 export function initFriendCircle() {
   const UserConfig = window.UserConfig || {}
   boundary = UserConfig.page_turning_number || 15
-  const private_api_url = UserConfig.private_api_url || 'https://circle-of-friends-iota.vercel.app/'
+  const private_api_url = UserConfig.private_api_url || 'https://api.friend.blueke.top/'
   error_img =
     UserConfig.error_img ||
     'https://fastly.jsdelivr.net/gh/Rock-Candy-Tea/Friend-Circle-Frontend/logo.png'
