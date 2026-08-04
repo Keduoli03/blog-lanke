@@ -1,11 +1,4 @@
-export const items = [
-  {
-    title: 'Astro',
-    avatar: 'https://avatars.githubusercontent.com/u/44914786?s=48&v=4',
-    description: '一个现代化的静态站点生成框架',
-    link: 'https://github.com/withastro/astro',
-    tags: ['框架'],
-  },
+export const friends = [
   {
     title: '天影大侠的小站',
     avatar: 'https://weavatar.com/avatar/7388ea4765a319d5f83fea61c3236384?s=1000',
@@ -20,13 +13,6 @@ export const items = [
     description: '又菜又爱学',
     link: 'https://ikamusume7.org',
     rss: 'https://ikamusume7.org/rss.xml',
-    tags: ['友链'],
-  },
-  {
-    title: 'M次元',
-    avatar: 'https://cravatar.com/avatar/e067b11317af75ad0eff9db62d927096?s=80&d=blank',
-    description: '小声记录小事',
-    link: 'https://mmxza.com/',
     tags: ['友链'],
   },
   {
@@ -105,16 +91,8 @@ export const items = [
     title: '蘇 SU',
     avatar: 'https://suus.me/avatar.webp',
     description: '在数字的海洋中，寻找属于自己的星辰。',
-    link: 'https://suus.me/',
-    rss: 'https://suus.me/rss.xml',
-    tags: ['友链'],
-  },
-  {
-    title: 'Evilrabbit Blog',
-    avatar: 'https://blog.yujiay.wang/images/site/BlogHsvg.png',
-    description: '爱 Coding 爱生活',
-    link: 'https://blog.yujiay.wang/',
-    rss: 'https://blog.yujiay.wang/atom.xml',
+    link: 'https://suus.me',
+    rss: 'https://suus.me/index.xml',
     tags: ['友链'],
   },
   {
@@ -130,5 +108,23 @@ export const items = [
     description: '追求源于热爱',
     link: 'https://blog.toastbubble.top/',
     tags: ['友链'],
+  },
+]
+
+export const lostFriends = [
+  {
+    title: 'M次元',
+    avatar: 'https://cravatar.com/avatar/e067b11317af75ad0eff9db62d927096?s=80&d=blank',
+    description: '小声记录小事',
+    link: 'https://mmxza.com/',
+    tags: ['已失联'],
+  },
+  {
+    title: 'Evilrabbit Blog',
+    avatar: 'https://blog.yujiay.wang/images/site/BlogHsvg.png',
+    description: '爱 Coding 爱生活',
+    link: 'https://blog.yujiay.wang/',
+    rss: 'https://blog.yujiay.wang/atom.xml',
+    tags: ['已失联'],
   },
 ]

@@ -1,6 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components'
-import { items } from '@/content/friends/friends'
+import { friends, lostFriends } from '@/content/friends/friends'
 
 type Friend = {
   title: string
@@ -9,17 +9,21 @@ type Friend = {
   link: string
 }
 
-const friends = (items || []).map((x: any) => ({
-  title: x.title,
-  description: x.description ?? '',
-  avatar: x.avatar ?? '',
-  link: x.link ?? '',
-})) as Friend[]
+const toFriends = (list: any[]) =>
+  (list || []).map((x: any) => ({
+    title: x.title,
+    description: x.description ?? '',
+    avatar: x.avatar ?? '',
+    link: x.link ?? '',
+  })) as Friend[]
+
+const activeFriends = toFriends(friends)
+const lostFriendList = toFriends(lostFriends)
 ---
 
 <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
   {
-    friends.map((friend) => (
+    activeFriends.map((friend) => (
       <li>
         <a href={friend.link} target="_blank" rel="noopener noreferrer external">
           <div class="p-4 flex gap-2 bg-accent/10 rounded-lg group">
@@ -40,3 +44,35 @@ const friends = (items || []).map((x: any) => ({
     ))
   }
 </ul>
+
+{
+  lostFriendList.length > 0 && (
+    <section class="mt-12">
+      <h2 class="text-2xl font-bold mb-4">已失联的朋友</h2>
+      <p class="text-sm text-secondary mb-6">这些站点暂时无法联系，仍然保留在这里。</p>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
+        {lostFriendList.map((friend) => (
+          <li>
+            <a href={friend.link} target="_blank" rel="noopener noreferrer external">
+              <div class="p-4 flex gap-2 bg-accent/10 rounded-lg group">
+                <img
+                  class="shrink-0 size-16 object-contain rounded-full"
+                  src={friend.avatar}
+                  alt={`Friend avatar: ${friend.title}`}
+                  loading="lazy"
+                />
+                <div class="min-w-0 grow">
+                  <div class="truncate font-bold text-xl group-hover:text-accent">
+                    {friend.title}
+                  </div>
+                  <div class="text-sm line-clamp-2">{friend.description}</div>
+                </div>
+                <Icon class="shrink-0 group-hover:text-accent" name="ri:external-link-line" />
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

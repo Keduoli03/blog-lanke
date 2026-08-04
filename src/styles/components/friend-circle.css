@@ -32,8 +32,84 @@ html {
   --cycle-shadow: rgba(0, 0, 0, 0.3);
 }
 
-#friend-circle-lite-root {
-  width: 100%;
+/* 朋友圈布局：左侧动态，右侧控制台 */
+.friend-circle-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.friend-circle-sidebar {
+  position: sticky;
+  top: 5rem;
+}
+
+.friend-circle-sidebar-card {
+  padding: 1rem;
+  border: 1px solid var(--cycle-border);
+  border-radius: 0.75rem;
+  background: var(--cycle-container-bg);
+  box-shadow: 0 4px 14px var(--cycle-shadow);
+}
+
+.friend-circle-sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--cycle-text-color);
+}
+
+.friend-circle-status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgb(34 197 94 / 0.15);
+}
+
+.friend-circle-sidebar-description {
+  margin: 0.75rem 0 1rem;
+  color: var(--cycle-author-color);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.friend-circle-sidebar-links {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.friend-circle-sidebar-links a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--cycle-border);
+  border-radius: 0.5rem;
+  color: var(--cycle-text-color);
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.friend-circle-sidebar-links a:hover {
+  border-color: var(--cycle-hover-color);
+  color: var(--cycle-hover-color);
+  transform: translateX(2px);
+}
+
+@media screen and (max-width: 900px) {
+  .friend-circle-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .friend-circle-sidebar {
+    position: static;
+  }
 }
 
 #random-article {
