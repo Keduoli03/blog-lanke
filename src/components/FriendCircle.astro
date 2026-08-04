@@ -30,30 +30,16 @@ import cycleScriptUrl from '@/scripts/cycle.js?url'
     <div id="friend-circle-lite-root"></div>
   </div>
 
-  <aside class="friend-circle-sidebar" aria-label="朋友圈控制台">
-    <div class="friend-circle-sidebar-card">
-      <div class="friend-circle-sidebar-title">
-        <span class="friend-circle-status-dot"></span>
-        朋友圈控制台
-      </div>
-      <p class="friend-circle-sidebar-description">
-        API 服务提供文章聚合、友链状态和接口调试功能。
-      </p>
-      <div class="friend-circle-sidebar-links">
-        <a href="https://api.friend.blueke.top/" target="_blank" rel="noopener noreferrer">
-          <span>打开 API 控制台</span>
-          <span aria-hidden="true">↗</span>
-        </a>
-        <a href="https://api.friend.blueke.top/all" target="_blank" rel="noopener noreferrer">
-          <span>查看全部动态</span>
-          <span aria-hidden="true">↗</span>
-        </a>
-        <a href="https://api.friend.blueke.top/friend" target="_blank" rel="noopener noreferrer">
-          <span>查看全部友链</span>
-          <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-    </div>
+  <aside class="friend-circle-sidebar" aria-label="朋友圈链接">
+    <a
+      class="friend-circle-api-link"
+      href="https://api.friend.blueke.top/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span>查看全部朋友圈</span>
+      <span aria-hidden="true">↗</span>
+    </a>
   </aside>
 </div>
 
