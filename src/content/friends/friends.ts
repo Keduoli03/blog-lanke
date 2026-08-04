@@ -92,7 +92,7 @@ export const friends = [
     avatar: 'https://suus.me/avatar.webp',
     description: '在数字的海洋中，寻找属于自己的星辰。',
     link: 'https://suus.me',
-    rss: 'https://suus.me/index.xml',
+    rss: 'https://suus.me/atom.xml',
     tags: ['友链'],
   },
   {
