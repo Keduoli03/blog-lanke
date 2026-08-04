@@ -3,9 +3,9 @@ import '@/styles/components/friend-circle.css'
 import cycleScriptUrl from '@/scripts/cycle.js?url'
 ---
 
-<div class="friend-circle-layout">
-  <div class="friend-circle-container md-lightbox-exclude">
-    <div class="friend-circle-header mb-6">
+<div class="friend-circle-container md-lightbox-exclude">
+  <div class="friend-circle-header">
+    <div class="friend-circle-header-left">
       <h2 class="text-2xl font-bold flex items-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -26,11 +26,6 @@ import cycleScriptUrl from '@/scripts/cycle.js?url'
       </h2>
       <p class="text-sm text-secondary mt-2">这里展示最近朋友们的更新动态...</p>
     </div>
-
-    <div id="friend-circle-lite-root"></div>
-  </div>
-
-  <aside class="friend-circle-sidebar" aria-label="朋友圈链接">
     <a
       class="friend-circle-api-link"
       href="https://api.friend.blueke.top/"
@@ -40,7 +35,9 @@ import cycleScriptUrl from '@/scripts/cycle.js?url'
       <span>查看全部朋友圈</span>
       <span aria-hidden="true">↗</span>
     </a>
-  </aside>
+  </div>
+
+  <div id="friend-circle-lite-root"></div>
 </div>
 
 <script is:inline>

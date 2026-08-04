@@ -32,44 +32,38 @@ html {
   --cycle-shadow: rgba(0, 0, 0, 0.3);
 }
 
-/* 朋友圈布局：左侧动态，右侧极简链接 */
-.friend-circle-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 240px;
-  gap: 2rem;
-  align-items: start;
-}
-
-.friend-circle-sidebar {
-  position: sticky;
-  top: 5rem;
+/* 朋友圈标题栏：标题在左，链接在右（同一行） */
+.friend-circle-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .friend-circle-api-link {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.4rem 0;
-  font-weight: 700;
-  color: var(--cycle-text-color);
+  gap: 0.25rem;
+  flex-shrink: 0;
+  padding-top: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cycle-author-color);
   text-decoration: none;
+  white-space: nowrap;
   transition: 0.2s ease;
 }
 
 .friend-circle-api-link:hover {
   color: var(--cycle-hover-color);
-  transform: translateX(2px);
 }
 
 @media screen and (max-width: 900px) {
-  .friend-circle-layout {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .friend-circle-sidebar {
-    position: static;
+  .friend-circle-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }
 
