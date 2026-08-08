@@ -117,6 +117,13 @@ export const friends = [
     link: 'https://blog.toastbubble.top/',
     tags: ['友链'],
   },
+  {
+    title: '小曦的园子',
+    avatar: 'https://img.xiaoxi.ac.cn/logo.png',
+    description: '打理好自己的小园子',
+    link: 'https://xiaoxi.ac.cn',
+    tags: ['友链'],
+  },
 ]
 
 export const lostFriends = [
