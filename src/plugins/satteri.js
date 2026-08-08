@@ -2,6 +2,32 @@
 import getReadingTime from 'reading-time'
 import katex from 'katex'
 import { fromHtml } from 'hast-util-from-html'
+import fs from 'node:fs'
+import path from 'node:path'
+
+// 构建 posts 文件名/slug -> 文章 URL 的映射（本地 .md 相对链接自动转绝对路径用）
+let postUrlMap = null
+function getPostUrlMap() {
+  if (postUrlMap) return postUrlMap
+  postUrlMap = new Map()
+  const dir = path.join(process.cwd(), 'src/content/posts')
+  if (!fs.existsSync(dir)) return postUrlMap
+  for (const file of fs.readdirSync(dir)) {
+    if (!file.endsWith('.md')) continue
+    const raw = fs.readFileSync(path.join(dir, file), 'utf-8')
+    const fm = /^---\n([\s\S]*?)\n---/.exec(raw)
+    if (!fm) continue
+    const body = fm[1]
+    const slug = /^slug:\s*(.+)$/m.exec(body)?.[1]?.trim()
+    const title = /^title:\s*(.+)$/m.exec(body)?.[1]?.trim()
+    const base = file.replace(/\.md$/, '')
+    const url = `/posts/${slug || base}/`
+    postUrlMap.set(base, url)
+    if (slug) postUrlMap.set(slug, url)
+    if (title) postUrlMap.set(title, url)
+  }
+  return postUrlMap
+}
 
 function setData(node, ctx, patch) {
   ctx.setProperty(node, 'data', { ...(node.data || {}), ...patch })
@@ -158,10 +184,24 @@ function linkPlugin() {
       visit(node, ctx) {
         const href = node.properties?.href
         if (typeof href !== 'string') return
-        if (/\.md(?:#.*)?$/.test(href)) {
+        // 本地 .md 相对链接 → 自动解析为目标文章绝对路径
+        // （源文件在本地写作时用相对路径，如 [标题](另一篇文章.md)，构建时自动转换）
+        // 注意：satteri 处理时中文已被 percent-encode，需先解码
+        const rawHref = decodeURIComponent(href)
+        const mdMatch = /^(?!https?:\/\/)(?!\/)(?!mailto:)([^#]+?)\.md(?:#(.+))?$/.exec(rawHref)
+        if (mdMatch) {
+          const targetName = mdMatch[1].split('/').pop() // 兼容 子目录/文章.md
+          const anchor = mdMatch[2] ? `#${mdMatch[2]}` : ''
+          const url = getPostUrlMap().get(targetName)
+          if (url) {
+            ctx.setProperty(node, 'href', `${url}${anchor}`)
+            return
+          }
+        }
+        if (/\.md(?:#.*)?$/.test(rawHref)) {
           ctx.setProperty(node, 'href', href.replace(/\.md(?=#|$)/, ''))
         }
-        if (!href.startsWith('http')) return
+        if (!rawHref.startsWith('http')) return
         ctx.setProperty(node, 'rel', 'noopener noreferrer')
         ctx.setProperty(node, 'target', '_blank')
         ctx.insertAfter(node, h('iconify-icon', { icon: 'ri:external-link-line' }))
