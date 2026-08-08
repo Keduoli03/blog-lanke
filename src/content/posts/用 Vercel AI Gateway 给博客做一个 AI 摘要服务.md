@@ -43,7 +43,7 @@ Vercel Function
 
 ## 为什么选 AI Gateway
 
-![](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/vercel-ai-gateway.webp)
+![](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/vercel-ai-gateway-v2.webp)
 
 [Vercel AI Gateway](https://vercel.com/docs/ai-gateway) 相当于一个统一的模型入口，用 AI SDK 的话，只要写一个 `provider/model` 格式的模型名就能切换供应商。项目默认用的是：
 
@@ -69,7 +69,7 @@ const result = await generateText({
 
 ## 用 Neon 做缓存
 
-![](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/vercel-neon-cache.webp)
+![](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/vercel-neon-cache-v2.webp)
 
 每次打开文章都重新调模型的话，又慢又费额度。所以服务端会对这三样东西算一个 SHA-256：
 
@@ -150,7 +150,7 @@ outputEl.textContent = result.data
 
 ## 费用保护
 
-![](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/vercel-budget-guard.webp)
+![](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/vercel-budget-guard-v2.webp)
 
 Vercel AI Gateway 免费层给每个团队每月 `$5` 额度，不过得先绑一张有效银行卡才能解锁——**绑卡不等于购买额度**，记得把 Auto top-up 关掉。
 
