@@ -96,6 +96,14 @@ export const friends = [
     tags: ['友链'],
   },
   {
+    title: 'Evilrabbit Blog',
+    avatar: 'https://blog.yujiay.wang/images/site/BlogHsvg.png',
+    description: '爱 Coding 爱生活',
+    link: 'https://blog.yujiay.wang/',
+    rss: 'https://blog.yujiay.wang/atom.xml',
+    tags: ['友链'],
+  },
+  {
     title: '两个笨笨',
     avatar: 'https://pan.mkirin.top/f/9Bt9/icon.png',
     description: '两个笨笨的blog',
@@ -117,14 +125,6 @@ export const lostFriends = [
     avatar: 'https://cravatar.com/avatar/e067b11317af75ad0eff9db62d927096?s=80&d=blank',
     description: '小声记录小事',
     link: 'https://mmxza.com/',
-    tags: ['已失联'],
-  },
-  {
-    title: 'Evilrabbit Blog',
-    avatar: 'https://blog.yujiay.wang/images/site/BlogHsvg.png',
-    description: '爱 Coding 爱生活',
-    link: 'https://blog.yujiay.wang/',
-    rss: 'https://blog.yujiay.wang/atom.xml',
     tags: ['已失联'],
   },
 ]
