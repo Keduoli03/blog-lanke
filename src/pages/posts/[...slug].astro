@@ -18,6 +18,7 @@ import { ActionAside } from '@/components/post/ActionAside'
 import { PostCopyright } from '@/components/post/PostCopyright'
 import AiSummary from '@/components/post/AiSummary.astro'
 import { getDiffInDays } from '@/utils/date'
+import { getPostStats } from '@/utils/post-stats'
 import { render } from 'astro:content'
 
 export const getStaticPaths = (async () => {
@@ -62,6 +63,9 @@ const rendered = current ? await render(current) : undefined
 const headings = rendered?.headings ?? []
 const Content = rendered?.Content
 const remarkPluginFrontmatter = rendered?.remarkPluginFrontmatter
+const { words, readingMinutes } = current
+  ? getPostStats(current.body)
+  : { words: 0, readingMinutes: 1 }
 
 const currentSlug = current ? getEntrySlug(current) : ''
 const mdSlug = current ? getPostUrl(current) : ''
@@ -102,7 +106,7 @@ const shouldShowAiSummary = current?.data.aiSummary
         </p>
       </body>
     </html>
-  ) : current && Content && remarkPluginFrontmatter ? (
+  ) : current && Content ? (
     <MarkdownLayout
       title={current.data.title}
       description={current.data.summary}
@@ -134,8 +138,8 @@ const shouldShowAiSummary = current?.data.aiSummary
               class="justify-center"
               date={current.data.date as Date}
               lastMod={current.data.lastMod}
-              words={remarkPluginFrontmatter.words}
-              readingMinutes={remarkPluginFrontmatter.readingMinutes}
+              words={words}
+              readingMinutes={readingMinutes}
             />
             <PostArchiveInfo
               class="justify-center"

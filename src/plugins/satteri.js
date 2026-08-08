@@ -42,19 +42,22 @@ function imageSizePlugin() {
 }
 
 function readingTimePlugin() {
-  let text = ''
-  return {
-    name: 'reading-time',
-    text(node, ctx) {
-      text += node.value
-      const result = getReadingTime(text)
-      const astro = ctx.data.astro || (ctx.data.astro = {})
-      astro.frontmatter = {
-        ...(astro.frontmatter || {}),
-        readingMinutes: result.minutes,
-        words: result.words,
-      }
-    },
+  // 工厂模式：satteri 每个文档编译时调用一次，闭包在文档间自动重置
+  return () => {
+    let text = ''
+    return {
+      name: 'reading-time',
+      text(node, ctx) {
+        text += node.value
+        const result = getReadingTime(text)
+        const astro = ctx.data.astro || (ctx.data.astro = {})
+        astro.frontmatter = {
+          ...(astro.frontmatter || {}),
+          readingMinutes: result.minutes,
+          words: result.words,
+        }
+      },
+    }
   }
 }
 
@@ -331,7 +334,7 @@ export function satteriMdastPlugins() {
   return [
     codeLanguageTitlePlugin(),
     imageSizePlugin(),
-    readingTimePlugin(),
+    readingTimePlugin,
     embedPlugin(),
     spoilerPlugin(),
   ]

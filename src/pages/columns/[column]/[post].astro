@@ -12,6 +12,7 @@ import { ReadingProgress } from '@/components/post/ReadingProgress'
 import { Comments } from '@/components/comment'
 import { PostCopyright } from '@/components/post/PostCopyright'
 import PostNav from '@/components/post/PostNav.astro'
+import { getPostStats } from '@/utils/post-stats'
 
 export const getStaticPaths = (async () => {
   const columns = await getColumnsFromFolder()
@@ -46,6 +47,7 @@ const itemsTyped = (
   level: it.level ?? 1,
 }))
 const { Content, remarkPluginFrontmatter, headings } = await render(post)
+const { words, readingMinutes } = getPostStats(post.body)
 const postPath = getEntryPath(post)
 const mdSlug = getPostUrl(post)
 const currentIndex = (column.items as any[]).find((i) => i.slug === postPath)?.index as
@@ -228,8 +230,8 @@ const nextUrl = nextItem ? `/columns/${column.slug}/${nextItem.slug.split('/').p
         <PostMetaInfo
           date={post.data.date as Date}
           lastMod={post.data.lastMod}
-          words={remarkPluginFrontmatter.words}
-          readingMinutes={remarkPluginFrontmatter.readingMinutes}
+          words={words}
+          readingMinutes={readingMinutes}
         />
       </header>
       <MarkdownWrapper>
