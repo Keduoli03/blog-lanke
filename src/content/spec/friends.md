@@ -14,7 +14,7 @@ comments: true
 title: Ditto
 description: 请为一切不真实之物骄傲，因为我们高于这个世界！
 link: https://blog.blueke.top/
-avatar: https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/img/头像.jpg
+avatar: https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/avatar.jpg
 rss: https://blog.blueke.top/rss.xml
 ```
 
