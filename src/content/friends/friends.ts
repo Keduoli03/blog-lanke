@@ -122,6 +122,7 @@ export const friends = [
     avatar: 'https://img.xiaoxi.ac.cn/logo.png',
     description: '打理好自己的小园子',
     link: 'https://xiaoxi.ac.cn',
+    rss: 'https://xiaoxi.ac.cn/rss.xml',
     tags: ['友链'],
   },
   {
