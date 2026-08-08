@@ -7,7 +7,7 @@ tags:
   - AI
   - Astro
 date: 2026-08-08 22:57
-updated: 2026-08-08 22:59
+updated: 2026-08-08 23:10
 slug: vercel-ai-blog-summary
 aiSummary: true
 draft: false
@@ -43,6 +43,8 @@ Vercel Function
 
 ## 为什么选 AI Gateway
 
+![](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/vercel-ai-gateway.webp)
+
 [Vercel AI Gateway](https://vercel.com/docs/ai-gateway) 相当于一个统一的模型入口，用 AI SDK 的话，只要写一个 `provider/model` 格式的模型名就能切换供应商。项目默认用的是：
 
 ```text
@@ -66,6 +68,8 @@ const result = await generateText({
 ```
 
 ## 用 Neon 做缓存
+
+![](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/vercel-neon-cache.webp)
 
 每次打开文章都重新调模型的话，又慢又费额度。所以服务端会对这三样东西算一个 SHA-256：
 
@@ -145,6 +149,8 @@ outputEl.textContent = result.data
 文章要不要显示 AI 摘要，由 frontmatter 里的 `aiSummary: true` 控制，没开的文章根本不会发请求。
 
 ## 费用保护
+
+![](https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/vercel-budget-guard.webp)
 
 Vercel AI Gateway 免费层给每个团队每月 `$5` 额度，不过得先绑一张有效银行卡才能解锁——**绑卡不等于购买额度**，记得把 Auto top-up 关掉。
 
