@@ -1,0 +1,4 @@
+title: Vercel AI Blog Summary
+description: 基于 Vercel AI Gateway 和 Neon 的博客 AI 摘要服务，带缓存、OIDC 鉴权和费用保护。
+image: https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/proj-ai-summary-cover.webp
+link: https://github.com/Keduoli03/vercel-ai-summary
