@@ -43,7 +43,7 @@ const isMdContentEmpty = typeof md.body === 'string' ? md.body.trim().length ===
   isPageLayout ? (
     <PageLayout title={md.data.title} description={md.data.description}>
       <div class="max-w-[800px] mx-auto px-4 py-16 space-y-8" data-pagefind-body>
-        <header class="space-y-4">
+        <header class={specSlug === 'friends' ? 'space-y-4 text-center' : 'space-y-4'}>
           <h1 class="text-4xl font-bold">
             <Highlight>{md.data.title}</Highlight>
           </h1>
@@ -58,7 +58,7 @@ const isMdContentEmpty = typeof md.body === 'string' ? md.body.trim().length ===
         {specSlug === 'projects' && <ProjectList />}
         {specSlug === 'services' && <ServiceList />}
         {!isMdContentEmpty && (
-          <MarkdownWrapper>
+          <MarkdownWrapper class={specSlug === 'friends' ? 'text-center' : undefined}>
             <Content />
           </MarkdownWrapper>
         )}

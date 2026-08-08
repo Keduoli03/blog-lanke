@@ -62,6 +62,12 @@
   @apply px-4 md:px-6 py-4 max-h-[450px] text-sm leading-relaxed overflow-x-auto max-w-full;
 }
 
+/* 居中页面（如友链页）：正文居中，代码块保持左对齐 */
+.markdown.text-center pre,
+.markdown.text-center .expressive-code {
+  text-align: left;
+}
+
 .markdown .table-wrapper {
   @apply overflow-x-auto my-5;
 }
