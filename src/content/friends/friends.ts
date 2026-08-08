@@ -141,6 +141,14 @@ export const friends = [
     rss: 'https://wowtang.top/feed.xml',
     tags: ['友链'],
   },
+  {
+    title: '茗辰原',
+    avatar: 'https://mingcy.cn/image/mcy.png',
+    description: '茶香四溢,编程世界',
+    link: 'https://mingcy.cn',
+    rss: 'https://mingcy.cn/rss.xml',
+    tags: ['友链'],
+  },
 ]
 
 export const lostFriends = [
