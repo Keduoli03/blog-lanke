@@ -124,6 +124,14 @@ export const friends = [
     link: 'https://xiaoxi.ac.cn',
     tags: ['友链'],
   },
+  {
+    title: '拾柒',
+    avatar: 'https://www.s17.cn/logo.png',
+    description: '奇奇怪怪。',
+    link: 'https://www.s17.cn',
+    rss: 'https://www.s17.cn/rss.xml',
+    tags: ['友链'],
+  },
 ]
 
 export const lostFriends = [
