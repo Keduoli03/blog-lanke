@@ -13,6 +13,16 @@ import { color as themeColor } from '@/config.json'
 >
   ;(() => {
     const STYLE_ID = 'accent-color-vars'
+    const STORAGE_KEY = 'accent-color-shuffle-bag'
+
+    // Treat identical light/dark pairs as one color so duplicate configuration
+    // entries cannot make two different indexes look like the same draw.
+    const uniqueAccentPalette = accentPalette.filter(
+      (color, index, palette) =>
+        palette.findIndex(
+          (candidate) => candidate.light === color.light && candidate.dark === color.dark,
+        ) === index,
+    )
 
     function hexToRgb(hex) {
       const normalized = hex.replace('#', '').trim()
@@ -35,24 +45,69 @@ import { color as themeColor } from '@/config.json'
       return base.map((n, i) => n + (accent[i] - n) * weight)
     }
 
+    function shuffle(values) {
+      const shuffled = [...values]
+      for (let index = shuffled.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1))
+        ;[shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]]
+      }
+      return shuffled
+    }
+
+    function readShuffleState(signature) {
+      try {
+        const state = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || 'null')
+        if (state?.signature !== signature || !Array.isArray(state.remaining)) return null
+
+        const remaining = state.remaining.filter(
+          (value, index, values) =>
+            Number.isInteger(value) &&
+            value >= 0 &&
+            value < uniqueAccentPalette.length &&
+            values.indexOf(value) === index,
+        )
+        const last = Number.isInteger(state.last) ? state.last : null
+        return { remaining, last }
+      } catch {
+        return null
+      }
+    }
+
+    function writeShuffleState(state) {
+      try {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+      } catch {
+        // Color selection still works when storage is unavailable.
+      }
+    }
+
     function getAccentIndex() {
-      if (accentPalette.length <= 1) return 0
+      if (uniqueAccentPalette.length <= 1) return 0
 
-      const previous = Number.parseInt(document.documentElement.dataset.accentIndex || '', 10)
-      let next = Math.floor(Math.random() * accentPalette.length)
+      const signature = uniqueAccentPalette.map((color) => `${color.light}/${color.dark}`).join('|')
+      const state = readShuffleState(signature) || { remaining: [], last: null }
 
-      if (Number.isInteger(previous) && previous >= 0 && previous < accentPalette.length) {
-        while (next === previous) {
-          next = Math.floor(Math.random() * accentPalette.length)
+      if (state.remaining.length === 0) {
+        state.remaining = shuffle(uniqueAccentPalette.map((_, index) => index))
+
+        // pop() is the next draw; prevent the boundary between two rounds from repeating.
+        const nextIndex = state.remaining.length - 1
+        if (state.remaining[nextIndex] === state.last) {
+          ;[state.remaining[nextIndex], state.remaining[0]] = [
+            state.remaining[0],
+            state.remaining[nextIndex],
+          ]
         }
       }
 
-      document.documentElement.dataset.accentIndex = String(next)
+      const next = state.remaining.pop()
+      state.last = next
+      writeShuffleState({ signature, remaining: state.remaining, last: state.last })
       return next
     }
 
     function buildCssText() {
-      const accentColor = accentPalette[getAccentIndex()]
+      const accentColor = uniqueAccentPalette[getAccentIndex()]
       const lightAccent = hexToRgb(accentColor.light)
       const darkAccent = hexToRgb(accentColor.dark)
       const lightRootBg = mixRgb([250, 250, 250], lightAccent, 0.05)
