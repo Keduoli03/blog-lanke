@@ -8,20 +8,8 @@ import {
 } from '@/store/metaInfo'
 import { pageScrollLocationAtom, pageScrollDirectionAtom } from '@/store/scrollInfo'
 import { isMobileAtom } from '@/store/viewport'
-import { floor } from 'lodash-es'
 
 const threshold = 60
-
-export function useHeaderBgOpacity() {
-  const scrollY = useAtomValue(pageScrollLocationAtom)
-  if (scrollY >= threshold * 2) {
-    return 1
-  } else if (scrollY <= threshold) {
-    return 0
-  } else {
-    return floor((scrollY - threshold) / threshold, 2)
-  }
-}
 
 export function useHasMetaInfo() {
   return useAtomValue(hasMetaInfoAtom)

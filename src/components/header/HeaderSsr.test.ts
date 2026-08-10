@@ -7,10 +7,13 @@ import { HeaderShell } from './HeaderShell'
 describe('Header SSR', () => {
   it('renders navigation HTML without browser globals', () => {
     const html = renderToStaticMarkup(createElement(Header))
+    const background = html.match(/<div data-header-background[^>]*>/)?.[0] ?? ''
 
     expect(html).toContain('<header')
     expect(html).toContain('<nav')
     expect(html).toContain('Site owner avatar')
+    expect(background).toContain('bg-primary')
+    expect(background).not.toContain('opacity')
   })
 
   it('isolates active navigation state between server renders', () => {

@@ -35,15 +35,12 @@ const { title, description, image } = Astro.props
         const threshold = 60
         const root = document.documentElement
 
-        // The server always renders the header as if scrollY === 0: transparent
-        // background plus the menu capsule. When the browser restores a scrolled
-        // position, that markup paints over already-scrolled content until React
-        // hydrates. Apply the scrolled appearance before first paint instead.
+        // Server-rendered menu and article metadata assume scrollY === 0. When the
+        // browser restores a scrolled position, switch those controls before React
+        // hydrates so they do not flash in their top-of-page state.
         const apply = (scrollY) => {
           if (!Number.isFinite(scrollY) || scrollY < threshold) return false
-          const opacity = Math.max(0, Math.min(1, (scrollY - threshold) / threshold))
           root.dataset.restoredScroll = 'scrolled'
-          root.style.setProperty('--restored-header-opacity', String(opacity))
           return true
         }
 
@@ -63,7 +60,6 @@ const { title, description, image } = Astro.props
           if (actual === 0) return
           if (!apply(actual)) {
             root.removeAttribute('data-restored-scroll')
-            root.style.removeProperty('--restored-header-opacity')
           }
         }
 
@@ -85,10 +81,6 @@ const { title, description, image } = Astro.props
       html:not([data-header-ready]) [data-header-logo] {
         transition: none !important;
         animation: none !important;
-      }
-
-      html[data-restored-scroll='scrolled'] [data-header-background] {
-        opacity: var(--restored-header-opacity, 1) !important;
       }
 
       /* Server-rendered markup always assumes scrollY === 0, so the menu ships with
