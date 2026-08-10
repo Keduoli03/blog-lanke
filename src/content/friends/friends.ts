@@ -149,6 +149,14 @@ export const friends = [
     rss: 'https://mingcy.cn/rss.xml',
     tags: ['友链'],
   },
+  {
+    title: 'Rain',
+    avatar: 'https://rainzt.cn/zzty.png',
+    description: '物物而不物于物，念念而不念于念',
+    link: 'http://rainzt.cn',
+    rss: 'https://rainzt.cn/rss.xml',
+    tags: ['友链'],
+  },
 ]
 
 export const lostFriends = [
