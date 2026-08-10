@@ -1,5 +1,5 @@
 import { useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { pathNameAtom, metaTitleAtom, metaDescriptionAtom, metaSlugAtom } from '@/store/metaInfo'
 
 const DEV = import.meta.env.DEV
@@ -26,7 +26,8 @@ export function HeaderMetaInfoProvider({
   const setDescription = useSetAtom(metaDescriptionAtom)
   const setSlug = useSetAtom(metaSlugAtom)
 
-  useEffect(() => {
+  // Seed route metadata in the layout phase so header visibility is correct before first paint.
+  useLayoutEffect(() => {
     const normalized = normalizePath(pathName)
     if (DEV) console.log('[header:path:init-prop]', { pathName, normalized })
     setPathName(normalized)

@@ -1,4 +1,4 @@
-﻿---
+---
 import {
   CommonHead,
   WebAnalytics,
@@ -81,6 +81,16 @@ const { title, description, image } = Astro.props
       html:not([data-header-ready]) [data-header-logo] {
         transition: none !important;
         animation: none !important;
+      }
+
+      /* Article headers render metadata on the server, but the restored scroll
+         position is only known once the client starts. Keep the capsule out of
+         the pre-hydration frame until the header state is released atomically. */
+      html:not([data-header-ready])
+        [data-site-header][data-header-has-meta='true']
+        [data-header-menu] {
+        opacity: 0 !important;
+        pointer-events: none !important;
       }
 
       /* Server-rendered markup always assumes scrollY === 0, so the menu ships with

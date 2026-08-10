@@ -1,4 +1,4 @@
-﻿import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { useSetAtom } from 'jotai'
 import {
   pageScrollLocationAtom,
@@ -50,14 +50,14 @@ export function PageScrollInfoProvider() {
     const syncNavigationScroll = () => updateScrollInfo()
     document.addEventListener('astro:page-load', syncNavigationScroll)
     document.addEventListener('swup:contentReplaced', syncNavigationScroll)
-    let releaseFrame: number | null = null
-    // Drop the pre-paint overrides first, then re-enable transitions a frame later.
-    // The reverse order lets the hand-off animate for one frame, which is the flash.
+    // Both providers initialize their atoms in layout effects. Release the
+    // pre-paint guard atomically after that work has committed; removing the
+    // scroll override one frame before marking the header ready exposes the
+    // server-rendered capsule for a frame.
     const readyFrame = window.requestAnimationFrame(() => {
-      document.documentElement.removeAttribute('data-restored-scroll')
-      releaseFrame = window.requestAnimationFrame(() => {
-        document.documentElement.setAttribute('data-header-ready', '')
-      })
+      const root = document.documentElement
+      root.removeAttribute('data-restored-scroll')
+      root.setAttribute('data-header-ready', '')
     })
     const persistScroll = () => storePageScroll(document.documentElement.scrollTop)
     window.addEventListener('scroll', scrollHandler, { passive: true })
@@ -68,7 +68,6 @@ export function PageScrollInfoProvider() {
       document.removeEventListener('astro:page-load', syncNavigationScroll)
       document.removeEventListener('swup:contentReplaced', syncNavigationScroll)
       window.cancelAnimationFrame(readyFrame)
-      if (releaseFrame !== null) window.cancelAnimationFrame(releaseFrame)
       if (frameRef.current !== null) {
         window.cancelAnimationFrame(frameRef.current)
         frameRef.current = null
