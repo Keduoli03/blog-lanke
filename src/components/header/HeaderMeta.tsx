@@ -38,11 +38,11 @@ export function HeaderMeta({
       aria-hidden={!shouldShow}
       inert={!shouldShow}
     >
-      <div className="grow min-w-0 pl-0 pr-24 md:pl-20 md:pr-0 pointer-events-auto">
+      <div className="grow min-w-0 pl-0 pr-24 md:pl-20 md:pr-0 pointer-events-none">
         <div className="text-secondary text-xs truncate">{description}</div>
         <h2 className="truncate text-sm md:text-lg">{title}</h2>
       </div>
-      <div className="hidden md:block min-w-0 text-right pr-20 md:pr-28 pointer-events-auto max-w-[50%]">
+      <div className="hidden md:block min-w-0 text-right pr-20 md:pr-28 pointer-events-none max-w-[50%]">
         <div className="text-secondary text-xs truncate">{slug}</div>
         <div>{site.title}</div>
       </div>

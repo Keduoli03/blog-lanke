@@ -11,7 +11,7 @@ export function AnimatedLogo() {
     <div
       data-header-logo
       className={clsx(
-        '',
+        'relative z-30',
         shouldHeaderMetaShow ? 'max-md:opacity-0 max-md:pointer-events-none' : 'opacity-100',
       )}
       aria-hidden={hidden}
