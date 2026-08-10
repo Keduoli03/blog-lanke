@@ -119,6 +119,21 @@ function embedPlugin() {
   }
 }
 
+function legacyLivecodesFallbackPlugin() {
+  return {
+    name: 'legacy-livecodes-fallback',
+    containerDirective(node, ctx) {
+      if (node.name !== 'livecodes') return
+
+      // LiveCodes has been retired, but older posts may still wrap a fenced
+      // code block in :::livecodes. Remove only the obsolete wrapper so the
+      // nested Markdown continues through the normal rendering pipeline.
+      ctx.insertBefore(node, node.children)
+      ctx.removeNode(node)
+    },
+  }
+}
+
 function spoilerPlugin() {
   function escape(value) {
     return value.replace(
@@ -372,6 +387,7 @@ function calloutPlugin() {
 
 export function satteriMdastPlugins() {
   return [
+    legacyLivecodesFallbackPlugin(),
     codeLanguageTitlePlugin(),
     imageSizePlugin(),
     readingTimePlugin,

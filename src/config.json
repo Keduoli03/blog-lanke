@@ -49,7 +49,14 @@
       { "light": "#F6416C", "dark": "#838BC6" },
       { "light": "#32CCBC", "dark": "#90F7EC" },
       { "light": "#33A6B8", "dark": "#79F1A4" },
-      { "light": "#F55555", "dark": "#FCCF31" }
+      { "light": "#4F46E5", "dark": "#A5B4FC" },
+      { "light": "#2563EB", "dark": "#93C5FD" },
+      { "light": "#0E7490", "dark": "#67E8F9" },
+      { "light": "#047857", "dark": "#6EE7B7" },
+      { "light": "#4D7C0F", "dark": "#BEF264" },
+      { "light": "#B45309", "dark": "#FCD34D" },
+      { "light": "#C2410C", "dark": "#FDBA74" },
+      { "light": "#6D5D4D", "dark": "#D6C6B8" }
     ],
     "bg": {
       "primary": { "light": "#ffffff", "dark": "#1c1c1e" },
