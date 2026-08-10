@@ -118,6 +118,14 @@ const { title, description, image } = Astro.props
         translate: 0 0 !important;
         transform: translateY(0) !important;
       }
+
+      /* Article metadata is visual-only. Keep the entire title layer transparent
+         to pointer input so it can never cover the desktop avatar link after a
+         scroll restore or a client-side route transition. */
+      [data-site-header][data-header-has-meta='true'] [data-header-meta],
+      [data-site-header][data-header-has-meta='true'] [data-header-meta] * {
+        pointer-events: none !important;
+      }
       /* Before hydration, use metadata rendered directly on the header. The header
          is parsed before <main>, so relying on body:has(main) here briefly treats
          article pages as regular routes and flashes the navigation menu. */
