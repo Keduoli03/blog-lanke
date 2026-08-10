@@ -54,9 +54,10 @@ function AccessibleMenu({ initialPathName }: { initialPathName: string }) {
 
   return (
     <RootPortal>
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {shouldShow && (
           <motion.div
+            data-header-accessible-menu
             className="fixed z-[100] top-[64px] inset-x-0 hidden md:flex justify-center pointer-events-none"
             initial={{ y: '-50%', opacity: 0 }}
             animate={{ y: '-50%', opacity: 1 }}

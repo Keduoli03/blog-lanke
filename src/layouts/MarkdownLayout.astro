@@ -117,6 +117,50 @@ const { title, description, image, mdTitle, mdDescription, mdSlug } = Astro.prop
           image.insertAdjacentElement('afterend', caption)
         })
     }
+
+    const imageSizeStoragePrefix = 'gyoza-image-size:'
+
+    function applyCachedImageSize(image: HTMLImageElement) {
+      const source = image.dataset.originalSrc || image.currentSrc || image.src
+      if (!source || image.dataset.scrollSizeBound === 'true') return
+
+      image.dataset.scrollSizeBound = 'true'
+
+      const apply = (width: number, height: number) => {
+        if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) return
+        // HTML dimensions reserve the exact box before the image request finishes.
+        // CSS width/max-width rules still control the rendered size.
+        if (!image.hasAttribute('width')) image.setAttribute('width', String(width))
+        if (!image.hasAttribute('height')) image.setAttribute('height', String(height))
+      }
+
+      try {
+        const cached = JSON.parse(localStorage.getItem(`${imageSizeStoragePrefix}${source}`) || '')
+        apply(Number(cached?.width), Number(cached?.height))
+      } catch {
+        // Ignore unavailable or malformed image-size cache entries.
+      }
+
+      const remember = () => {
+        if (!image.naturalWidth || !image.naturalHeight) return
+        apply(image.naturalWidth, image.naturalHeight)
+        try {
+          localStorage.setItem(
+            `${imageSizeStoragePrefix}${source}`,
+            JSON.stringify({ width: image.naturalWidth, height: image.naturalHeight }),
+          )
+        } catch {
+          // Storage can be unavailable in privacy modes; the image still renders normally.
+        }
+      }
+
+      image.addEventListener('load', remember, { passive: true })
+      if (image.complete) remember()
+    }
+
+    function stabilizeMarkdownImages() {
+      document.querySelectorAll<HTMLImageElement>('.markdown img').forEach(applyCachedImageSize)
+    }
     function scrollToHeading(hash: string, behavior: ScrollBehavior = 'smooth') {
       if (!hash) return
 
@@ -166,12 +210,15 @@ const { title, description, image, mdTitle, mdDescription, mdSlug } = Astro.prop
 
     syncHeadingAnchors()
     ensureImageCaptions()
+    stabilizeMarkdownImages()
     restoreHashPosition()
     document.addEventListener('astro:page-load', syncHeadingAnchors)
     document.addEventListener('astro:page-load', ensureImageCaptions)
+    document.addEventListener('astro:page-load', stabilizeMarkdownImages)
     document.addEventListener('astro:page-load', restoreHashPosition)
     document.addEventListener('swup:contentReplaced', syncHeadingAnchors)
     document.addEventListener('swup:contentReplaced', ensureImageCaptions)
+    document.addEventListener('swup:contentReplaced', stabilizeMarkdownImages)
     document.addEventListener('swup:contentReplaced', restoreHashPosition)
   </script>
 </Layout>

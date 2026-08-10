@@ -83,6 +83,11 @@ const { title, description, image } = Astro.props
         animation: none !important;
       }
 
+      html:not([data-header-ready]) [data-header-accessible-menu] {
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+
       /* Article headers render metadata on the server, but the restored scroll
          position is only known once the client starts. Keep the capsule out of
          the pre-hydration frame until the header state is released atomically. */
