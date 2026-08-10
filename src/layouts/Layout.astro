@@ -33,17 +33,46 @@ const { title, description, image } = Astro.props
     <script is:inline>
       ;(() => {
         const threshold = 60
-        let scrollY = 0
+        const root = document.documentElement
+
+        // The server always renders the header as if scrollY === 0: transparent
+        // background plus the menu capsule. When the browser restores a scrolled
+        // position, that markup paints over already-scrolled content until React
+        // hydrates. Apply the scrolled appearance before first paint instead.
+        const apply = (scrollY) => {
+          if (!Number.isFinite(scrollY) || scrollY < threshold) return false
+          const opacity = Math.max(0, Math.min(1, (scrollY - threshold) / threshold))
+          root.dataset.restoredScroll = 'scrolled'
+          root.style.setProperty('--restored-header-opacity', String(opacity))
+          return true
+        }
+
+        let stored = 0
         try {
-          scrollY = Number(sessionStorage.getItem(`gyoza-scroll:${window.location.pathname}`))
+          stored = Number(sessionStorage.getItem(`gyoza-scroll:${window.location.pathname}`))
         } catch {
           // Ignore unavailable session storage.
         }
-        if (!Number.isFinite(scrollY)) scrollY = 0
-        if (scrollY < threshold) return
-        const opacity = Math.max(0, Math.min(1, (scrollY - threshold) / threshold))
-        document.documentElement.dataset.restoredScroll = 'scrolled'
-        document.documentElement.style.setProperty('--restored-header-opacity', String(opacity))
+        apply(stored)
+
+        // Session storage only covers same-tab refreshes of the same path. Correct
+        // from the real scroll offset once the document exists, which also catches
+        // restores from a new tab, a hash target, or an unwritable storage.
+        window.__syncRestoredHeader = () => {
+          const actual = root.scrollTop || window.scrollY || 0
+          if (actual === 0) return
+          if (!apply(actual)) {
+            root.removeAttribute('data-restored-scroll')
+            root.style.removeProperty('--restored-header-opacity')
+          }
+        }
+
+        // Browsers apply scroll restoration once layout is known, which can land
+        // after the body starts parsing. Re-check at each point it may have moved.
+        const sync = () => window.__syncRestoredHeader()
+        document.addEventListener('DOMContentLoaded', sync)
+        window.addEventListener('load', sync)
+        window.addEventListener('scroll', sync, { passive: true, once: true })
       })()
     </script>
     <style is:inline>
@@ -133,6 +162,11 @@ const { title, description, image } = Astro.props
       data-website-id="381b2283-cb7d-4fb6-bf43-f818198d9eb4"></script>
   </head>
   <body>
+    <script is:inline>
+      // Scroll restoration has happened by the time the body starts parsing, so
+      // this reads the real offset before the header can paint its unscrolled state.
+      window.__syncRestoredHeader?.()
+    </script>
     <slot />
 
     <script is:inline>
