@@ -39,6 +39,10 @@ export default defineConfig({
       theme: false,
       animationClass: 'swup-transition-',
       containers: ['main'],
+      // Let the page-transition animation handle the visual change. Swup's
+      // default smooth-scroll would visibly carry the previous page's scroll
+      // position toward the top before the new article is shown.
+      smoothScrolling: false,
     }),
     icon(),
   ],

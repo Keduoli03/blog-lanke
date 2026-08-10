@@ -113,12 +113,6 @@ const { title, description, image } = Astro.props
         pointer-events: none !important;
       }
 
-      html[data-restored-scroll='scrolled'] [data-back-to-top-rocket] {
-        opacity: 1 !important;
-        transform: scale(1) !important;
-        pointer-events: auto !important;
-      }
-
       html[data-restored-scroll='scrolled'] [data-header-meta] {
         opacity: 1 !important;
         translate: 0 0 !important;
@@ -187,6 +181,24 @@ const { title, description, image } = Astro.props
       window.__syncRestoredHeader?.()
     </script>
     <slot />
+
+    <script is:inline>
+      ;(() => {
+        if (window.__resetScrollBeforeSwup) return
+        window.__resetScrollBeforeSwup = true
+
+        // Swup's smooth-scroll plugin is disabled so navigation cannot visibly
+        // animate the previous page toward the top. Reset the viewport before
+        // replacing the main container, then let the fade transition reveal the
+        // next page already positioned at its top.
+        const resetScrollBeforeSwap = () => {
+          if (window.scrollY === 0 && document.documentElement.scrollTop === 0) return
+          window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+        }
+
+        document.addEventListener('astro:before-swap', resetScrollBeforeSwap)
+      })()
+    </script>
 
     <script is:inline>
       ;(() => {

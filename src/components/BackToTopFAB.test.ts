@@ -6,13 +6,13 @@ const source = readFileSync(resolve(process.cwd(), 'src/components/BackToTopFAB.
 
 describe('BackToTopFAB', () => {
   it('centers the icons in both circular action buttons', () => {
-    const buttonClasses = [...source.matchAll(/<motion\.button[\s\S]*?className="([^"]+)"/g)].map(
+    const buttonClasses = [...source.matchAll(/<button[\s\S]*?className="([^"]+)"/g)].map(
       ([, className]) => className.split(/\s+/),
     )
 
-    expect(buttonClasses).toHaveLength(2)
-    for (const classNames of buttonClasses) {
-      expect(classNames).toEqual(expect.arrayContaining(['flex', 'items-center', 'justify-center']))
-    }
+    expect(buttonClasses).toHaveLength(1)
+    expect(buttonClasses[0]).toEqual(
+      expect.arrayContaining(['flex', 'items-center', 'justify-center']),
+    )
   })
 })

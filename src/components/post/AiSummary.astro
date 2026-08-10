@@ -1,4 +1,4 @@
-﻿---
+---
 interface Props {
   slug: string
   title: string
@@ -14,7 +14,7 @@ const containerClass = embedded
   : 'mb-6 p-4 rounded-lg bg-amber-300/10 border border-amber-300 transition ai-summary-card data-pagefind-ignore'
 ---
 
-<div id={`ai-summary-${slug}`} class={containerClass}>
+<div id={`ai-summary-${slug}`} class={containerClass} data-ai-summary-state="loading">
   <div class="flex items-center gap-2 mb-2 font-bold">
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -33,55 +33,112 @@ const containerClass = embedded
     >
     <span>AI 摘要</span>
   </div>
-  <p id={`ai-summary-text-${slug}`} class="text-sm leading-relaxed opacity-80 break-words">
+  <p id={`ai-summary-text-${slug}`} class="text-sm leading-relaxed opacity-80 break-words min-h-16">
     正在生成中...
   </p>
 </div>
 
 <script is:inline define:vars={{ slug, title, body, apiBaseUrl }}>
-  // 添加延迟，确保 DOM 完全加载
-  setTimeout(async () => {
+  ;(() => {
     const container = document.getElementById(`ai-summary-${slug}`)
     const outputEl = document.getElementById(`ai-summary-text-${slug}`)
+    if (!container || !outputEl) return
 
-    if (!container || !outputEl) {
-      console.error('容器元素未找到')
+    const storageKey = `gyoza-ai-summary:${slug}`
+    const version = hash(`${title}\n${body}`)
+    const requestKey = `${storageKey}:${version}`
+
+    const setSummary = (text, failed = false) => {
+      const currentOutput = document.getElementById(`ai-summary-text-${slug}`)
+      const currentContainer = document.getElementById(`ai-summary-${slug}`)
+      if (!currentOutput || !currentContainer) return
+
+      currentOutput.textContent = text
+      currentOutput.style.color = failed ? 'red' : ''
+      currentContainer.dataset.aiSummaryState = failed ? 'error' : 'ready'
+    }
+
+    const readCache = () => {
+      try {
+        const cached = localStorage.getItem(storageKey)
+        if (!cached) return null
+        const parsed = JSON.parse(cached)
+        if (parsed?.version !== version || typeof parsed.data !== 'string') return null
+        return parsed.data.trim() || null
+      } catch {
+        return null
+      }
+    }
+
+    const cached = readCache()
+    if (cached) {
+      setSummary(cached)
       return
     }
 
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 65_000)
-
-    try {
-      const articleText = `标题: ${title}\n\n${body}`
-
-      const response = await fetch(`${apiBaseUrl}/api/summary`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: slug, content: articleText }),
-        signal: controller.signal,
-      })
-      const result = await response.json().catch(() => null)
-
-      if (!response.ok) {
-        throw new Error(result?.message || `请求失败（HTTP ${response.status}）`)
-      }
-      if (typeof result?.data !== 'string' || !result.data.trim()) {
-        throw new Error('摘要服务返回了无效数据')
-      }
-
-      outputEl.textContent = result.data
-    } catch (err) {
-      const message =
-        err instanceof DOMException && err.name === 'AbortError'
-          ? '请求超时，请稍后再试'
-          : err instanceof Error
-            ? err.message
-            : '未知错误'
-      outputEl.textContent = `摘要生成失败: ${message}`
-      outputEl.style.color = 'red'
-    } finally {
-      clearTimeout(timeoutId)
+    const requests =
+      window.__gyozaAiSummaryRequests || (window.__gyozaAiSummaryRequests = Object.create(null))
+    const existingRequest = requests[requestKey]
+    if (existingRequest) {
+      existingRequest.then((text) => setSummary(text)).catch(() => {})
+      return
     }
-  }, 500)
+
+    const request = (async () => {
+      const controller = new AbortController()
+      const timeoutId = window.setTimeout(() => controller.abort(), 65_000)
+
+      try {
+        const articleText = `标题: ${title}\n\n${body}`
+        const response = await fetch(`${apiBaseUrl}/api/summary`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: slug, content: articleText }),
+          signal: controller.signal,
+        })
+        const result = await response.json().catch(() => null)
+
+        if (!response.ok) {
+          throw new Error(result?.message || `请求失败（HTTP ${response.status}）`)
+        }
+        if (typeof result?.data !== 'string' || !result.data.trim()) {
+          throw new Error('摘要服务返回了无效数据')
+        }
+
+        const text = result.data.trim()
+        try {
+          localStorage.setItem(storageKey, JSON.stringify({ version, data: text }))
+        } catch {
+          // Ignore unavailable or full local storage; the in-flight result still applies.
+        }
+        return text
+      } finally {
+        window.clearTimeout(timeoutId)
+      }
+    })()
+
+    requests[requestKey] = request
+    request
+      .then((text) => setSummary(text))
+      .catch((err) => {
+        const message =
+          err instanceof DOMException && err.name === 'AbortError'
+            ? '请求超时，请稍后再试'
+            : err instanceof Error
+              ? err.message
+              : '未知错误'
+        setSummary(`摘要生成失败: ${message}`, true)
+      })
+      .finally(() => {
+        if (requests[requestKey] === request) delete requests[requestKey]
+      })
+  })()
+
+  function hash(value) {
+    let result = 5381
+    for (let index = 0; index < value.length; index += 1) {
+      result = (result * 33) ^ value.charCodeAt(index)
+    }
+    return (result >>> 0).toString(36)
+  }
 </script>

@@ -1,25 +1,11 @@
-import { useAtomValue } from 'jotai'
-import { useEffect, useState, type ReactNode } from 'react'
-import { pageScrollLocationAtom } from '@/store/scrollInfo'
+import { type ReactNode } from 'react'
 import { riChat1Line, riRocket2Line } from '@/icons/ri'
 import { StaticIcon } from '@/components/header/StaticIcon'
 
 export function BackToTopFAB() {
-  const scrollY = useAtomValue(pageScrollLocationAtom)
-  const isShow = scrollY > 100
-  const [hasComments, setHasComments] = useState(false)
-
-  useEffect(() => {
-    const check = () => setHasComments(!!document.getElementById('comments'))
-    check()
-    const handler = () => setTimeout(check, 0)
-    document.addEventListener('swup:content:replace', handler)
-    return () => document.removeEventListener('swup:content:replace', handler)
-  }, [])
-
   return (
     <div className="fixed right-4 bottom-6 z-10">
-      <Buttons hasComments={hasComments} isVisible={isShow} />
+      <Buttons />
     </div>
   )
 }
@@ -28,27 +14,26 @@ function FabButton({
   children,
   label,
   onClick,
-  isVisible,
-  dataAttribute,
+  dataAction,
 }: {
   children: ReactNode
   label: string
   onClick: () => void
-  isVisible: boolean
-  dataAttribute?: string
+  dataAction: 'comments' | 'rocket'
 }) {
   return (
     <button
-      data-back-to-top-rocket={dataAttribute}
+      data-back-to-top-action={dataAction}
+      data-back-to-top-rocket={dataAction === 'rocket' ? '' : undefined}
       className="size-10 flex items-center justify-center rounded-full shadow-lg shadow-zinc-800/5 border border-primary bg-white/50 dark:bg-zinc-800/50 backdrop-blur cursor-pointer transition-[opacity,transform] duration-200 ease-out"
       style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'scale(1)' : 'scale(0.8)',
-        pointerEvents: isVisible ? 'auto' : 'none',
+        opacity: 1,
+        transform: 'scale(1)',
+        pointerEvents: 'auto',
       }}
       type="button"
       aria-label={label}
-      tabIndex={isVisible ? 0 : -1}
+      tabIndex={0}
       onClick={onClick}
     >
       {children}
@@ -56,7 +41,7 @@ function FabButton({
   )
 }
 
-function Buttons({ hasComments, isVisible }: { hasComments: boolean; isVisible: boolean }) {
+function Buttons() {
   const handleBackToTop = () => {
     window.scrollTo({
       top: 0,
@@ -72,17 +57,10 @@ function Buttons({ hasComments, isVisible }: { hasComments: boolean; isVisible: 
 
   return (
     <div className="flex flex-col gap-3 items-end">
-      {hasComments && (
-        <FabButton label="Go to comments" onClick={handleScrollToComments} isVisible={isVisible}>
-          <StaticIcon icon={riChat1Line} className="size-5" />
-        </FabButton>
-      )}
-      <FabButton
-        label="Back to top"
-        onClick={handleBackToTop}
-        isVisible={isVisible}
-        dataAttribute=""
-      >
+      <FabButton label="Go to comments" onClick={handleScrollToComments} dataAction="comments">
+        <StaticIcon icon={riChat1Line} className="size-5" />
+      </FabButton>
+      <FabButton label="Back to top" onClick={handleBackToTop} dataAction="rocket">
         <StaticIcon icon={riRocket2Line} className="size-5" />
       </FabButton>
     </div>
