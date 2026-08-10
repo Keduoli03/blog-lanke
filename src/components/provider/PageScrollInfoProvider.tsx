@@ -51,10 +51,12 @@ export function PageScrollInfoProvider() {
     document.addEventListener('astro:page-load', syncNavigationScroll)
     document.addEventListener('swup:contentReplaced', syncNavigationScroll)
     let releaseFrame: number | null = null
+    // Drop the pre-paint overrides first, then re-enable transitions a frame later.
+    // The reverse order lets the hand-off animate for one frame, which is the flash.
     const readyFrame = window.requestAnimationFrame(() => {
-      document.documentElement.setAttribute('data-header-ready', '')
+      document.documentElement.removeAttribute('data-restored-scroll')
       releaseFrame = window.requestAnimationFrame(() => {
-        document.documentElement.removeAttribute('data-restored-scroll')
+        document.documentElement.setAttribute('data-header-ready', '')
       })
     })
     const persistScroll = () => storePageScroll(document.documentElement.scrollTop)

@@ -32,46 +32,61 @@ const { title, description, image } = Astro.props
     <PrintVersion />
     <script is:inline>
       ;(() => {
+        const threshold = 60
+        let scrollY = 0
         try {
-          const key = `gyoza-scroll:${window.location.pathname}`
-          const scrollY = Number(sessionStorage.getItem(key))
-          if (!Number.isFinite(scrollY) || scrollY < 60) return
-          const opacity = Math.max(0, Math.min(1, (scrollY - 60) / 60))
-          document.documentElement.dataset.restoredScroll = 'scrolled'
-          document.documentElement.style.setProperty('--restored-header-opacity', String(opacity))
+          scrollY = Number(sessionStorage.getItem(`gyoza-scroll:${window.location.pathname}`))
         } catch {
           // Ignore unavailable session storage.
         }
+        if (!Number.isFinite(scrollY)) scrollY = 0
+        if (scrollY < threshold) return
+        const opacity = Math.max(0, Math.min(1, (scrollY - threshold) / threshold))
+        document.documentElement.dataset.restoredScroll = 'scrolled'
+        document.documentElement.style.setProperty('--restored-header-opacity', String(opacity))
       })()
     </script>
     <style is:inline>
       html:not([data-header-ready]) [data-header-menu],
+      html:not([data-header-ready]) [data-header-pill],
+      html:not([data-header-ready]) [data-header-pill] *,
+      html:not([data-header-ready]) [data-header-background],
       html:not([data-header-ready]) [data-header-meta],
+      html:not([data-header-ready]) [data-back-to-top-rocket],
       html:not([data-header-ready]) [data-header-logo] {
         transition: none !important;
+        animation: none !important;
       }
 
       html[data-restored-scroll='scrolled'] [data-header-background] {
         opacity: var(--restored-header-opacity, 1) !important;
       }
 
+      /* Server-rendered markup always assumes scrollY === 0, so the menu ships with
+         its capsule chrome. Strip it before first paint when the page is restoring
+         to a scrolled position, otherwise the capsule flashes and fades out. */
+      html[data-restored-scroll='scrolled'] [data-header-pill] {
+        background-image: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+
       html[data-restored-scroll='scrolled'] [data-header-menu] {
         opacity: 0 !important;
         pointer-events: none !important;
-        transition: none !important;
-        html[data-restored-scroll='scrolled'] [data-back-to-top-rocket] {
-          opacity: 1 !important;
-          transform: scale(1) !important;
-          pointer-events: auto !important;
-          transition: none !important;
-        }
+      }
+
+      html[data-restored-scroll='scrolled'] [data-back-to-top-rocket] {
+        opacity: 1 !important;
+        transform: scale(1) !important;
+        pointer-events: auto !important;
       }
 
       html[data-restored-scroll='scrolled'] [data-header-meta] {
         opacity: 1 !important;
         translate: 0 0 !important;
         transform: translateY(0) !important;
-        transition: none !important;
       }
       /* Routes without actual article metadata must not inherit the compact article header. */
       body:not(:has(main[data-header-title]:not([data-header-title='']))) [data-header-menu] {
