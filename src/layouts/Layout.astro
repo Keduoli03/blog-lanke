@@ -109,13 +109,25 @@ const { title, description, image } = Astro.props
         translate: 0 0 !important;
         transform: translateY(0) !important;
       }
-      /* Routes without actual article metadata must not inherit the compact article header. */
-      body:not(:has(main[data-header-title]:not([data-header-title='']))) [data-header-menu] {
+      /* Before hydration, use metadata rendered directly on the header. The header
+         is parsed before <main>, so relying on body:has(main) here briefly treats
+         article pages as regular routes and flashes the navigation menu. */
+      html:not([data-header-ready])
+        [data-site-header][data-header-has-meta='false']
+        [data-header-menu],
+      html[data-header-ready]
+        body:not(:has(main[data-header-title]:not([data-header-title=''])))
+        [data-header-menu] {
         opacity: 1 !important;
         pointer-events: auto !important;
       }
 
-      body:not(:has(main[data-header-title]:not([data-header-title='']))) [data-header-meta] {
+      html:not([data-header-ready])
+        [data-site-header][data-header-has-meta='false']
+        [data-header-meta],
+      html[data-header-ready]
+        body:not(:has(main[data-header-title]:not([data-header-title=''])))
+        [data-header-meta] {
         opacity: 0 !important;
         pointer-events: none !important;
         translate: 0 1.25rem !important;

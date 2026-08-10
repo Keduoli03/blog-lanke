@@ -10,6 +10,7 @@ describe('Header SSR', () => {
     const background = html.match(/<div data-header-background[^>]*>/)?.[0] ?? ''
 
     expect(html).toContain('<header')
+    expect(html).toContain('data-header-has-meta="false"')
     expect(html).toContain('<nav')
     expect(html).toContain('Site owner avatar')
     expect(background).toContain('bg-primary')
@@ -44,6 +45,7 @@ describe('Header SSR', () => {
     )
 
     expect(first).toContain('First article')
+    expect(first).toContain('data-header-has-meta="true"')
     expect(second).toContain('Second article')
     expect(second).not.toContain('First article')
     expect(second).toContain('/posts/second')

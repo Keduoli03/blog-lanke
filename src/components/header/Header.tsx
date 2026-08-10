@@ -18,8 +18,14 @@ export function Header({
   description?: string
   slug?: string
 }) {
+  const hasInitialMeta = Boolean(title && description && slug)
+
   return (
-    <header data-site-header className="fixed top-0 inset-x-0 h-[64px] z-10 overflow-visible">
+    <header
+      data-site-header
+      data-header-has-meta={hasInitialMeta ? 'true' : 'false'}
+      className="fixed top-0 inset-x-0 h-[64px] z-10 overflow-visible"
+    >
       <BluredBackground />
       <HeadGradient />
       <div className="max-w-[1100px] h-full px-4 mx-auto flex items-center justify-between relative">

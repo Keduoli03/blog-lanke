@@ -36,6 +36,15 @@ describe('phase 3 runtime boundaries', () => {
     }
   })
 
+  it('uses server-rendered header metadata before the article main element is parsed', () => {
+    const header = read('components/header/Header.tsx')
+    const layout = read('layouts/Layout.astro')
+
+    expect(header).toContain("data-header-has-meta={hasInitialMeta ? 'true' : 'false'}")
+    expect(layout).toContain("[data-site-header][data-header-has-meta='false']")
+    expect(layout).toContain('html[data-header-ready]')
+  })
+
   it('does not register the complete Remix Icon collection at runtime', () => {
     const componentSources = sourceFiles(resolve(root, 'components')).map((path) =>
       readFileSync(path, 'utf8'),
