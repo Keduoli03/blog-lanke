@@ -29,7 +29,7 @@ export function Header({
       <BluredBackground />
       <HeadGradient />
       <div className="max-w-[1100px] h-full px-4 mx-auto flex items-center justify-between relative">
-        <div className="relative z-[300] flex items-center justify-start flex-1 min-w-0 pointer-events-auto">
+        <div className="relative z-[300] flex items-center justify-start flex-1 min-w-0 pointer-events-none">
           <AnimatedLogo />
         </div>
         <div className="hidden md:flex items-center justify-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
