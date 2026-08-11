@@ -44,7 +44,14 @@ function AnimatedMenu({ initialPathName }: { initialPathName: string }) {
       aria-hidden={shouldHeaderMetaShow}
       inert={shouldHeaderMetaShow}
     >
-      <HeaderMenu isBgShow={shouldBgShow} initialPathName={initialPathName} />
+      {/* Keep the capsule chrome while the menu is still visible. During a
+          refresh/scroll restore the scroll atom and metadata atom can settle on
+          different frames; without this fallback the links briefly render as
+          transparent text before the article metadata takes over. */}
+      <HeaderMenu
+        isBgShow={shouldBgShow || !shouldHeaderMetaShow}
+        initialPathName={initialPathName}
+      />
     </div>
   )
 }
