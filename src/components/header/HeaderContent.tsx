@@ -44,14 +44,7 @@ function AnimatedMenu({ initialPathName }: { initialPathName: string }) {
       aria-hidden={shouldHeaderMetaShow}
       inert={shouldHeaderMetaShow}
     >
-      {/* Keep the capsule chrome while the menu is still visible. During a
-          refresh/scroll restore the scroll atom and metadata atom can settle on
-          different frames; without this fallback the links briefly render as
-          transparent text before the article metadata takes over. */}
-      <HeaderMenu
-        isBgShow={shouldBgShow || !shouldHeaderMetaShow}
-        initialPathName={initialPathName}
-      />
+      <HeaderMenu isBgShow={shouldBgShow} initialPathName={initialPathName} />
     </div>
   )
 }
@@ -182,7 +175,10 @@ function HeaderMenuItem({
 
   const Link = (
     <a
-      className={clsx('relative block px-4 py-1.5', isActive ? 'text-accent' : 'hover:text-accent')}
+      className={clsx(
+        'relative block cursor-pointer px-4 py-1.5',
+        isActive ? 'text-accent' : 'hover:text-accent',
+      )}
       href={href}
       onClick={handleMemosClick}
     >
