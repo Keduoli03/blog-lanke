@@ -3,12 +3,7 @@ import { menus } from '@/config.json'
 import { useEffect, useRef } from 'react'
 import { clsx } from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
-import {
-  usePathName,
-  useShouldAccessibleMenuShow,
-  useShouldHeaderMenuBgShow,
-  useShouldHeaderMetaShow,
-} from './hooks'
+import { usePathName, useShouldAccessibleMenuShow, useShouldHeaderMetaShow } from './hooks'
 import { RootPortal } from '@/components/RootPortal'
 import { StaticIcon } from './StaticIcon'
 import {
@@ -34,7 +29,6 @@ export function HeaderContent({ initialPathName = '/' }: { initialPathName?: str
 }
 
 function AnimatedMenu({ initialPathName }: { initialPathName: string }) {
-  const shouldBgShow = useShouldHeaderMenuBgShow()
   const shouldHeaderMetaShow = useShouldHeaderMetaShow()
 
   return (
@@ -44,7 +38,7 @@ function AnimatedMenu({ initialPathName }: { initialPathName: string }) {
       aria-hidden={shouldHeaderMetaShow}
       inert={shouldHeaderMetaShow}
     >
-      <HeaderMenu isBgShow={shouldBgShow} initialPathName={initialPathName} />
+      <HeaderMenu isBgShow={false} initialPathName={initialPathName} />
     </div>
   )
 }
