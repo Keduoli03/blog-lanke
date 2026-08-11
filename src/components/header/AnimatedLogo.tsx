@@ -11,11 +11,11 @@ export function AnimatedLogo() {
     <div
       data-header-logo
       className={clsx(
-        'relative z-[200] pointer-events-auto',
+        'relative z-[200] pointer-events-auto cursor-pointer',
         shouldHeaderMetaShow ? 'max-md:opacity-0 max-md:pointer-events-none' : 'opacity-100',
       )}
       aria-hidden={hidden}
-      inert={hidden}
+      inert={hidden || undefined}
     >
       <Logo />
     </div>
@@ -24,7 +24,11 @@ export function AnimatedLogo() {
 
 function Logo() {
   return (
-    <a className="relative z-[201] block pointer-events-auto" href="/" title="Nav to home">
+    <a
+      className="relative z-[201] block cursor-pointer pointer-events-auto"
+      href="/"
+      title="Nav to home"
+    >
       <img
         className="size-[40px] select-none object-cover rounded-2xl"
         src={author.avatar}
