@@ -111,7 +111,7 @@ function HeaderMenu({ isBgShow, initialPathName }: { isBgShow: boolean; initialP
       onMouseMove={handleMouseMove}
     >
       <div
-        className="absolute -z-1 -inset-px rounded-full opacity-0 group-hover:opacity-100 duration-500"
+        className="pointer-events-none absolute -z-[1] -inset-px rounded-full opacity-0 duration-500 group-hover:opacity-100"
         style={{ background }}
         aria-hidden
       ></div>
