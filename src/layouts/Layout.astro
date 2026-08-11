@@ -56,6 +56,15 @@ const { title, description, image } = Astro.props
         // from the real scroll offset once the document exists, which also catches
         // restores from a new tab, a hash target, or an unwritable storage.
         window.__syncRestoredHeader = () => {
+          // After the header has committed, all later scroll events are normal
+          // user scrolling. Do not re-add the one-shot restoration marker, or its
+          // pre-paint capsule reset styles would make the navigation transparent
+          // for the rest of the visit.
+          if (root.hasAttribute('data-header-ready')) {
+            root.removeAttribute('data-restored-scroll')
+            return
+          }
+
           const actual = root.scrollTop || window.scrollY || 0
           if (actual === 0) return
           if (!apply(actual)) {
