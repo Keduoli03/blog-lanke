@@ -157,6 +157,13 @@ export const friends = [
     rss: 'https://rainzt.cn/rss.xml',
     tags: ['友链'],
   },
+  {
+    title: 'xiaomo的小破站',
+    avatar: 'https://xiaomoo.top/images/dog.jpg',
+    description: '愛をもって長き年月に立ち向かい、継続をもって心の遠き彼方へ赴く。',
+    link: 'https://xiaomoo.top/',
+    tags: ['友链'],
+  },
 ]
 
 export const lostFriends = [
