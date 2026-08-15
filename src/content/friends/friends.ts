@@ -164,6 +164,13 @@ export const friends = [
     link: 'https://xiaomoo.top/',
     tags: ['友链'],
   },
+  {
+    title: '时光潜流',
+    avatar: 'https://www.dreamcenter.top/imgs/avatar.jpg',
+    description: '妹控的中二君',
+    link: 'https://www.dreamcenter.top',
+    tags: ['友链'],
+  },
 ]
 
 export const lostFriends = [
