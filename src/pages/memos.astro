@@ -194,15 +194,17 @@ const title = '说说'
 
           async function ensureArtalk() {
             if (
-              !document.querySelector('link[href="https://unpkg.com/artalk@2.9.1/dist/Artalk.css"]')
+              !document.querySelector(
+                'link[href="https://unpkg.com/artalk@2.10.0/dist/Artalk.css"]',
+              )
             ) {
               const link = document.createElement('link')
               link.rel = 'stylesheet'
-              link.href = 'https://unpkg.com/artalk@2.9.1/dist/Artalk.css'
+              link.href = 'https://unpkg.com/artalk@2.10.0/dist/Artalk.css'
               document.head.appendChild(link)
             }
             if (window.__Artalk) return window.__Artalk
-            const mod = await import('https://esm.sh/artalk@2.9.1')
+            const mod = await import('https://esm.sh/artalk@2.10.0')
             const Artalk = mod.default || mod
             window.__Artalk = Artalk
             return Artalk

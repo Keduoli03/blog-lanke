@@ -10,10 +10,10 @@ export function Artalk({ server, site }: { server: string; site: string }) {
     const pageKey = normalizePageKey(window.location.pathname)
 
     const ensureCss = () => {
-      if (!document.querySelector('link[href="https://unpkg.com/artalk@2.9.1/dist/Artalk.css"]')) {
+      if (!document.querySelector('link[href="https://unpkg.com/artalk@2.10.0/dist/Artalk.css"]')) {
         const link = document.createElement('link')
         link.rel = 'stylesheet'
-        link.href = 'https://unpkg.com/artalk@2.9.1/dist/Artalk.css'
+        link.href = 'https://unpkg.com/artalk@2.10.0/dist/Artalk.css'
         document.head.appendChild(link)
       }
     }
@@ -31,7 +31,7 @@ export function Artalk({ server, site }: { server: string; site: string }) {
         }
         const s = document.createElement('script')
         s.id = 'artalk-js'
-        s.src = 'https://unpkg.com/artalk@2.9.1/dist/Artalk.js'
+        s.src = 'https://unpkg.com/artalk@2.10.0/dist/Artalk.js'
         s.async = true
         s.onload = () => resolve()
         document.head.appendChild(s)

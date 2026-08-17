@@ -146,10 +146,10 @@ export default function runMemos() {
   }
 
   async function ensureArtalk(): Promise<any> {
-    if (!document.querySelector('link[href="https://unpkg.com/artalk@2.9.1/dist/Artalk.css"]')) {
+    if (!document.querySelector('link[href="https://unpkg.com/artalk@2.10.0/dist/Artalk.css"]')) {
       const link = document.createElement('link')
       link.rel = 'stylesheet'
-      link.href = 'https://unpkg.com/artalk@2.9.1/dist/Artalk.css'
+      link.href = 'https://unpkg.com/artalk@2.10.0/dist/Artalk.css'
       document.head.appendChild(link)
     }
     if ((window as any).__Artalk) return (window as any).__Artalk
@@ -167,7 +167,7 @@ export default function runMemos() {
       } else {
         const s = document.createElement('script')
         s.id = 'artalk-js'
-        s.src = 'https://unpkg.com/artalk@2.9.1/dist/Artalk.js'
+        s.src = 'https://unpkg.com/artalk@2.10.0/dist/Artalk.js'
         s.async = true
         s.onload = () => resolve()
         document.head.appendChild(s)
