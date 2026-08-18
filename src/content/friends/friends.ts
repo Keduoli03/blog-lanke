@@ -134,7 +134,7 @@ export const friends = [
     tags: ['友链'],
   },
   {
-    title: "Sunrise.博客 | Sunrise's blog",
+    title: 'Sunrise.博客',
     avatar: 'https://wowtang.top/images/avatar.png',
     description: '心境自成天地，地狱可化作桃源，天堂也能沦为苦海。',
     link: 'https://wowtang.top',
