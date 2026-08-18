@@ -2,8 +2,6 @@
 title: Redis
 summary: 摘要
 category: 大杂烩
-tags:
-  - 大杂烩
 date: '2026-02-26 11:52'
 updated: '2026-03-06 13:51'
 slug: redis

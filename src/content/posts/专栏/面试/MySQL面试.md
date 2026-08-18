@@ -2,8 +2,6 @@
 title: MySQL面试
 summary: 摘要
 category: 大杂烩
-tags:
-  - 大杂烩
 date: '2026-02-26 11:36'
 updated: '2026-02-26 12:01'
 slug: 956525

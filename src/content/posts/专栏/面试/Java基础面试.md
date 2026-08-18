@@ -2,8 +2,6 @@
 title: Java基础面试
 summary: 摘要
 category: 大杂烩
-tags:
-  - 大杂烩
 date: '2026-02-19 10:12'
 updated: '2026-03-21 00:57'
 slug: java-ji-chu-mian-shi

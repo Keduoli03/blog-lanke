@@ -4,7 +4,6 @@ summary: 记录一次 Flutter 评论输入框的布局优化：解决键盘与�
 cover: https://gcore.jsdelivr.net/gh/Keduoli03/My_img@main/image/flutter-cover.png
 category: Flutter
 tags:
-  - Flutter
   - 移动端交互
   - 键盘
   - 布局优化

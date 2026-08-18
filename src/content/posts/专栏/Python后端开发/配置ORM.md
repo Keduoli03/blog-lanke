@@ -2,8 +2,6 @@
 title: 配置ORM
 summary: 摘要
 category: 大杂烩
-tags:
-  - 大杂烩
 date: '2026-03-09 15:16'
 updated: '2026-03-27 13:54'
 slug: pei-zhi-orm

@@ -2,8 +2,6 @@
 title: 使用Astro搭建博客
 summary: 简单记录Astro的部署以及主题自定义配置
 category: 博客
-tags:
-  - 博客
 date: '2025-04-03 11:40'
 updated: '2026-03-21 02:25'
 slug: 107368

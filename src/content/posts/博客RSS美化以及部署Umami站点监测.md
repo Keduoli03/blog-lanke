@@ -2,8 +2,6 @@
 title: 博客RSS美化以及部署Umami站点监测
 summary: 跟群友聊了聊，折腾了一些新东西
 category: 博客
-tags:
-  - 博客
 date: '2025-05-17 19:22'
 updated: '2026-03-21 02:37'
 slug: 658143

@@ -3,7 +3,6 @@ title: hexo博客进行谷歌、bing收录
 summary: 折腾一下搜索引擎收录，顺便优化一下文章链接
 category: 博客
 tags:
-  - 博客
   - Hexo
 date: '2025-03-17 13:55'
 updated: '2026-03-21 02:24'

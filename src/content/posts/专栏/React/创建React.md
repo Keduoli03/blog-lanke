@@ -2,8 +2,6 @@
 title: 创建React
 summary: 摘要
 category: 大杂烩
-tags:
-  - 大杂烩
 date: '2026-03-09 13:39'
 updated: '2026-03-09 19:24'
 slug: chuang-jian-react-2
