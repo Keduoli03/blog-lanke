@@ -9,7 +9,8 @@ interface Props {
 
 const { title = site.title, description = site.description, image } = Astro.props
 
-const titleWithSiteSuffix = title === site.title ? title : `${title} - ${site.title}`
+const titleWithSiteSuffix =
+  title === site.title ? `${title} - 记录技术与生活` : `${title} - ${site.title}`
 ---
 
 <meta charset="utf-8" />
