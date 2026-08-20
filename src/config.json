@@ -1,8 +1,8 @@
 {
   "site": {
     "url": "https://blog.blueke.top",
-    "title": "Ditto",
-    "description": "Ditto的博客。",
+    "title": "Ditto的博客｜记录技术与生活",
+    "description": "Ditto的个人博客，记录软件开发、技术实践、动漫阅读与日常生活，分享折腾项目时遇到的问题和思考。",
     "keywords": "Ditto,blog,Astro,theme",
     "lang": "zh-CN",
     "favicon": "/favicon.ico",
