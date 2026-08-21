@@ -78,12 +78,6 @@ const { title, description, image, mdTitle, mdDescription, mdSlug } = Astro.prop
     data-header-description={mdDescription}
     data-header-slug={mdSlug}
   >
-    <div
-      class="pointer-events-none absolute -z-1 top-0 inset-x-0 h-[350px] bg-gradient-to-r from-accent/5 to-accent/15"
-      style="mask-image: linear-gradient(black, transparent);"
-      aria-hidden="true"
-    >
-    </div>
     <div class="swup-transition-fade">
       <slot />
     </div>

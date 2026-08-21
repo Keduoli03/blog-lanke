@@ -45,6 +45,14 @@ describe('phase 3 runtime boundaries', () => {
     expect(layout).toContain('html[data-header-ready]')
   })
 
+  it('keeps the top-of-page accent wash in the shared header only', () => {
+    const header = read('components/header/Header.tsx')
+    const markdownLayout = read('layouts/MarkdownLayout.astro')
+
+    expect(header).toContain('<HeadGradient />')
+    expect(markdownLayout).not.toContain('h-[350px] bg-gradient-to-r')
+  })
+
   it('does not register the complete Remix Icon collection at runtime', () => {
     const componentSources = sourceFiles(resolve(root, 'components')).map((path) =>
       readFileSync(path, 'utf8'),
