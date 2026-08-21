@@ -204,6 +204,7 @@ export default function runMemos() {
       pageTitle: '',
       site: CONFIG.artalk.site,
       server: CONFIG.artalk.server,
+      sendBtn: '发送',
       emoticons: false,
     })
     // @ts-ignore

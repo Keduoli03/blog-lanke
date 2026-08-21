@@ -1,0 +1,27 @@
+/* Artalk loads its stylesheet after the site CSS at runtime. The html selector
+   keeps these theme tokens authoritative for both the comment UI and portaled
+   layers, including Artalk's higher-specificity dark-mode defaults. */
+html[data-theme] .artalk,
+html[data-theme] .atk-layer-wrap {
+  --at-color-font: rgb(var(--color-text-primary));
+  --at-color-deep: rgb(var(--color-text-primary));
+  --at-color-sub: rgb(var(--color-text-secondary));
+  --at-color-grey: rgb(var(--color-text-secondary));
+  --at-color-meta: rgb(var(--color-text-secondary));
+  --at-color-border: rgb(var(--color-border-primary));
+  --at-color-main: rgb(var(--color-accent));
+  --at-color-light: rgb(var(--color-accent));
+  --at-color-bg: rgb(var(--color-bg-primary));
+  --at-color-bg-transl: rgb(var(--color-bg-primary) / 0.94);
+  --at-color-bg-grey: rgb(var(--color-bg-secondary));
+  --at-color-bg-grey-transl: rgb(var(--color-bg-secondary) / 0.85);
+  --at-color-bg-light: rgb(var(--color-accent) / 0.1);
+  --at-color-gradient: linear-gradient(180deg, transparent, rgb(var(--color-bg-primary)));
+}
+
+/* Artalk leaves the label node empty when its remote configuration request
+   fails. Keep the disabled/error-state editor understandable without
+   duplicating the real label once Artalk finishes loading normally. */
+html[data-theme] .artalk .atk-main-editor > .atk-bottom .atk-send-btn:empty::before {
+  content: '发送';
+}

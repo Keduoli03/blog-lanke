@@ -6,6 +6,7 @@
 @import './swup.css';
 @import './callouts.css';
 @import './memos.css';
+@import './components/artalk.css';
 
 @font-face {
   font-family: 'Atkinson';

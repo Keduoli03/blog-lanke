@@ -50,6 +50,7 @@ export function Artalk({ server, site }: { server: string; site: string }) {
         pageKey,
         server,
         site,
+        sendBtn: '发送',
         darkMode: document.documentElement.getAttribute('data-theme') === 'dark',
       })
     })()
