@@ -1,6 +1,6 @@
 # 1Panel / OpenResty 部署说明
 
-`agentic.conf` 与 `vercel.json` 由同一个脚本生成，包含以下能力：
+`agentic.conf` 与 Vercel 中间件使用的旧链接映射由同一个脚本生成，包含以下能力：
 
 - 旧文章标题路径返回 HTTP 308；
 - 首页在 `Accept: text/markdown` 时内部重写到 `/llms.txt`；

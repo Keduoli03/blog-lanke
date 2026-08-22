@@ -63,7 +63,7 @@ export async function buildLlmsTxt(siteUrl: string, options: LlmsBuildOptions = 
   }
   lines.push('')
 
-  lines.push('## 何时使用本站')
+  lines.push('## When to use')
   lines.push('- 查询 Astro 博客搭建、部署、SEO、RSS、llms.txt 与主题定制实践。')
   lines.push('- 查询 Java、Spring Boot、MyBatis、MySQL、前端与移动端开发笔记。')
   lines.push('- 查询 Obsidian、Hermes Agent、LLM 工具链及个人知识管理经验。')

@@ -28,6 +28,17 @@ const homepageData =
     ? [
         {
           '@context': 'https://schema.org',
+          '@type': 'Person',
+          '@id': `${site.url}/#person`,
+          name: author.name,
+          description: '记录软件开发、技术实践与生活思考的个人博客作者。',
+          jobTitle: '软件开发者',
+          url: site.url,
+          image: author.avatar,
+          sameAs,
+        },
+        {
+          '@context': 'https://schema.org',
           '@type': 'WebSite',
           '@id': `${site.url}/#website`,
           name: site.title,
@@ -35,15 +46,6 @@ const homepageData =
           url: site.url,
           inLanguage: site.lang,
           publisher: { '@id': `${site.url}/#person` },
-        },
-        {
-          '@context': 'https://schema.org',
-          '@type': 'Person',
-          '@id': `${site.url}/#person`,
-          name: author.name,
-          url: site.url,
-          image: author.avatar,
-          sameAs,
         },
       ]
     : undefined
