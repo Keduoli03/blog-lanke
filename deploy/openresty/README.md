@@ -7,12 +7,13 @@
 - 文章与专栏在 `Accept: text/markdown` 时内部重写到对应 `.md`；
 - Markdown 使用 `text/markdown; charset=utf-8`；
 - HTML 与 Markdown 响应携带 `Vary: Accept, Accept-Encoding`。
+- 不存在的路径返回真实 HTTP 404，同时展示 Astro 的自定义 404 页面。
 
 ## 接入 1Panel
 
 1. 在 1Panel 中打开“网站 → blog.blueke.top → 配置”。
 2. 找到该站点的 `server { ... }`，把 `agentic.conf` 的内容粘贴到 `server` 内部。不要替换原有的域名、证书、日志或 `root` 配置。
-3. 删除或合并原来与 `/`、`/posts/`、`/columns/` 冲突的 `location`。生成配置中的三个 location 应放在通用 `location /` 之前。
+3. 删除或合并原来与 `/`、`/posts/`、`/columns/` 冲突的 `location`。生成配置已包含通用 `location /`，不要在同一个 `server` 中保留第二份。
 4. 确认国内服务器同步了完整 `dist`，尤其是 `.md`、`llms.txt` 和 `og-default.png` 文件。
 5. 在 1Panel 保存配置；保存前后使用界面的配置检查功能确认 OpenResty 语法通过，然后重载网站。
 
@@ -28,9 +29,10 @@ include /你的绝对路径/agentic.conf;
 curl -I -H 'Accept: text/markdown' https://blog.blueke.top/
 curl -I -H 'Accept: text/markdown' https://blog.blueke.top/posts/astro-llms-txt
 curl -I 'https://blog.blueke.top/posts/%E4%B8%BA%20Astro%20%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%20llms.txt/'
+curl -I https://blog.blueke.top/__missing-page__
 ```
 
-前两条应包含 `Content-Type: text/markdown` 和 `Vary: Accept, Accept-Encoding`；最后一条应返回 `308` 和正式文章地址。
+前两条应包含 `Content-Type: text/markdown` 和 `Vary: Accept, Accept-Encoding`；第三条应返回 `308` 和正式文章地址；最后一条必须返回 `404`。
 
 每次文章标题、slug 或专栏路径变化后，运行：
 

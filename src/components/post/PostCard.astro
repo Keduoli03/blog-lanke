@@ -18,7 +18,7 @@ const postUrl = getPostUrl(entry)
 
 <a class="group block relative py-8 focus-visible:outline-0" href={postUrl}>
   <PostCardHoverOverlay />
-  <h2 class="relative text-2xl font-bold">
+  <h3 class="relative text-2xl font-bold">
     {entry.data.title}
     {
       entry.data.sticky > 0 && (
@@ -28,7 +28,7 @@ const postUrl = getPostUrl(entry)
         />
       )
     }
-  </h2>
+  </h3>
   <div class="mt-4">
     {entry.data.summary && <p class="break-words">{entry.data.summary}</p>}
   </div>

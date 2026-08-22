@@ -9,4 +9,9 @@ describe('PostCard source', () => {
     expect(source).not.toContain('render(entry)')
     expect(source).toContain('getPostStatsForEntry(entry)')
   })
+
+  it('uses h3 titles beneath the post-list section heading', () => {
+    expect(source).toContain('<h3 class="relative text-2xl font-bold">')
+    expect(source).not.toContain('<h2 class="relative text-2xl font-bold">')
+  })
 })

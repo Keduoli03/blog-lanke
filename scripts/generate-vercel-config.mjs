@@ -139,6 +139,18 @@ function buildOpenRestyConfig(redirects) {
     '  }',
     '  try_files $uri $uri/ $uri/index.html =404;',
     '}',
+    '',
+    "# Preserve a real 404 status while serving Astro's custom 404 page.",
+    'error_page 404 /404.html;',
+    'location = /404.html {',
+    '  internal;',
+    '  try_files /404.html =404;',
+    '}',
+    '',
+    '# Static-site fallback. Keep this after the more specific locations above.',
+    'location / {',
+    '  try_files $uri $uri/ $uri/index.html =404;',
+    '}',
   )
 
   return `${lines.join('\n')}\n`

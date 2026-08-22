@@ -2,6 +2,10 @@ import { next, rewrite } from '@vercel/functions'
 import { resolveAgentRoute } from './src/utils/agent-routing'
 
 const varyHeaders = { Vary: 'Accept, Accept-Encoding' }
+const markdownHeaders = {
+  ...varyHeaders,
+  'Content-Type': 'text/markdown; charset=utf-8',
+}
 
 export default function middleware(request: Request) {
   const requestUrl = new URL(request.url)
@@ -19,7 +23,7 @@ export default function middleware(request: Request) {
 
   if (decision.type === 'rewrite') {
     requestUrl.pathname = decision.pathname
-    return rewrite(requestUrl, { headers: varyHeaders })
+    return rewrite(requestUrl, { headers: markdownHeaders })
   }
 
   return next({ headers: varyHeaders })
