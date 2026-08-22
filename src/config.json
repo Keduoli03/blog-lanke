@@ -1,12 +1,13 @@
 {
   "site": {
     "url": "https://blog.blueke.top",
-    "title": "Ditto`s Blog",
-    "description": "Ditto`s Blog 是一个记录软件开发、技术实践、动漫阅读与日常生活的个人博客，分享项目折腾过程、经验总结与个人思考。",
-    "keywords": "Ditto`s Blog,Ditto,软件开发,技术博客,Astro,生活随笔",
+    "title": "Ditto's Blog",
+    "description": "Ditto's Blog 是一个记录软件开发、技术实践、动漫阅读与日常生活的个人博客，分享项目折腾过程、经验总结与个人思考。",
+    "keywords": "Ditto's Blog,Ditto,软件开发,技术博客,Astro,生活随笔",
     "lang": "zh-CN",
     "favicon": "/favicon.ico",
-    "appleTouchIcon": "/apple-touch-icon.png"
+    "appleTouchIcon": "/apple-touch-icon.png",
+    "ogImage": "/og-default.png"
   },
   "author": {
     "name": "Ditto",

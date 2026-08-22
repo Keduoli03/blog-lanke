@@ -15,7 +15,7 @@ describe('browser module sources', () => {
   })
 
   it('loads Livecodes through Vite only after finding a runner', () => {
-    const source = readSource('../layouts/Layout.astro')
+    const source = readSource('../layouts/MarkdownLayout.astro')
     const guardIndex = source.indexOf("document.querySelector('.livecodes-runner')")
     const importIndex = source.indexOf("import('@/scripts/livecodes')")
 

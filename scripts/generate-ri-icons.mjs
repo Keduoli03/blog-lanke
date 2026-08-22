@@ -2,6 +2,7 @@ import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
+import prettier from 'prettier'
 
 const require = createRequire(import.meta.url)
 const collection = JSON.parse(readFileSync(require.resolve('@iconify-json/ri/icons.json'), 'utf8'))
@@ -75,21 +76,24 @@ if (missingIcons.length || unusedIcons.length) {
   )
 }
 
-const output = [
-  "import type { IconifyIcon } from '@iconify/types'",
-  '',
-  '// Generated from @iconify-json/ri by scripts/generate-ri-icons.mjs.',
-  ...Object.entries(icons).map(([exportName, iconName]) => {
-    const icon = collection.icons[iconName]
-    if (!icon) throw new Error(`Missing Remix Icon: ${iconName}`)
-    return `export const ${exportName}: IconifyIcon = ${JSON.stringify({
-      ...icon,
-      width: collection.width,
-      height: collection.height,
-    })}`
-  }),
-  '',
-].join('\n')
+const output = await prettier.format(
+  [
+    "import type { IconifyIcon } from '@iconify/types'",
+    '',
+    '// Generated from @iconify-json/ri by scripts/generate-ri-icons.mjs.',
+    ...Object.entries(icons).map(([exportName, iconName]) => {
+      const icon = collection.icons[iconName]
+      if (!icon) throw new Error(`Missing Remix Icon: ${iconName}`)
+      return `export const ${exportName}: IconifyIcon = ${JSON.stringify({
+        ...icon,
+        width: collection.width,
+        height: collection.height,
+      })}`
+    }),
+    '',
+  ].join('\n'),
+  { parser: 'typescript', singleQuote: true, semi: false, printWidth: 100 },
+)
 
 if (process.argv.includes('--check')) {
   const current = readFileSync(outputPath, 'utf8')

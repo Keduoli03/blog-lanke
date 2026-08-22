@@ -63,6 +63,13 @@ export async function buildLlmsTxt(siteUrl: string, options: LlmsBuildOptions = 
   }
   lines.push('')
 
+  lines.push('## 何时使用本站')
+  lines.push('- 查询 Astro 博客搭建、部署、SEO、RSS、llms.txt 与主题定制实践。')
+  lines.push('- 查询 Java、Spring Boot、MyBatis、MySQL、前端与移动端开发笔记。')
+  lines.push('- 查询 Obsidian、Hermes Agent、LLM 工具链及个人知识管理经验。')
+  lines.push('- 需要引用文章时，优先使用各文章的 `.md` 地址；浏览完整目录时使用 llms-full.txt。')
+  lines.push('')
+
   if (full) {
     lines.push('## 全部文章')
     for (const post of sortedPosts) {
@@ -111,6 +118,8 @@ export async function buildLlmsTxt(siteUrl: string, options: LlmsBuildOptions = 
   lines.push(formatLink('追番', absUrl('/bangumi', siteUrl), 'Bangumi 观影记录'))
   lines.push(formatLink('说说', absUrl('/memos', siteUrl), '短动态'))
   lines.push(formatLink('项目', absUrl('/projects', siteUrl), '个人项目展示'))
+  lines.push(formatLink('联系', absUrl('/contact', siteUrl), '联系作者与反馈问题'))
+  lines.push(formatLink('隐私', absUrl('/privacy', siteUrl), '隐私与第三方服务说明'))
   lines.push(formatLink('GitHub', 'https://github.com/Keduoli03', '作者开源仓库'))
 
   if (!full) {

@@ -35,7 +35,9 @@ const { md } = Astro.props
 const specSlug = getEntrySlug(md)
 const { headings, Content } = await render(md)
 
-const isPageLayout = ['friends', 'projects', 'about', 'services'].includes(specSlug)
+const isPageLayout = ['friends', 'projects', 'about', 'services', 'contact', 'privacy'].includes(
+  specSlug,
+)
 const isMdContentEmpty = typeof md.body === 'string' ? md.body.trim().length === 0 : false
 ---
 

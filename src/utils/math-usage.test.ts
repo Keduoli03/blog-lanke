@@ -45,8 +45,9 @@ describe('math syntax usage', () => {
 
     const config = readFileSync(join(process.cwd(), 'astro.config.js'), 'utf8')
     const layout = readFileSync(join(process.cwd(), 'src/layouts/MarkdownLayout.astro'), 'utf8')
-    expect(config).toContain('remarkMath')
-    expect(config).toContain('rehypeKatex')
+    expect(config).toContain('math: true')
+    expect(config).toContain('satteriMdastPlugins')
+    expect(config).toContain('satteriHastPlugins')
     expect(layout).toContain("import 'katex/dist/katex.min.css'")
   })
 })

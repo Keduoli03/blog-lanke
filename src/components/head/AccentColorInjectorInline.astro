@@ -1,149 +1,53 @@
 ---
-import { color as themeColor } from '@/config.json'
+import { color } from '@/config.json'
+
+const accentCount = new Set(color.accent.map((accent) => `${accent.light}/${accent.dark}`)).size
 ---
 
-<script
-  is:inline
-  define:vars={{
-    accentPalette: themeColor.accent,
-    bgColors: themeColor.bg,
-    textColors: themeColor.text,
-    borderColors: themeColor.border,
-  }}
->
+<script is:inline define:vars={{ accentCount }}>
   ;(() => {
-    const STYLE_ID = 'accent-color-vars'
-    const STORAGE_KEY = 'accent-color-shuffle-bag'
+    const root = document.documentElement
+    const storageKey = 'accent-color-shuffle-bag'
 
-    // Treat identical light/dark pairs as one color so duplicate configuration
-    // entries cannot make two different indexes look like the same draw.
-    const uniqueAccentPalette = accentPalette.filter(
-      (color, index, palette) =>
-        palette.findIndex(
-          (candidate) => candidate.light === color.light && candidate.dark === color.dark,
-        ) === index,
-    )
-
-    function hexToRgb(hex) {
-      const normalized = hex.replace('#', '').trim()
-      const full =
-        normalized.length === 3
-          ? normalized
-              .split('')
-              .map((v) => v + v)
-              .join('')
-          : normalized
-      const value = Number.parseInt(full, 16)
-      return [(value >> 16) & 255, (value >> 8) & 255, value & 255]
-    }
-
-    function rgbToString(rgb) {
-      return rgb.map((n) => Math.round(n)).join(' ')
-    }
-
-    function mixRgb(base, accent, weight) {
-      return base.map((n, i) => n + (accent[i] - n) * weight)
-    }
-
-    function shuffle(values) {
-      const shuffled = [...values]
-      for (let index = shuffled.length - 1; index > 0; index -= 1) {
-        const swapIndex = Math.floor(Math.random() * (index + 1))
-        ;[shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]]
-      }
-      return shuffled
-    }
-
-    function readShuffleState(signature) {
+    function drawAccent() {
+      let state = { remaining: [], last: null }
       try {
-        const state = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || 'null')
-        if (state?.signature !== signature || !Array.isArray(state.remaining)) return null
-
-        const remaining = state.remaining.filter(
-          (value, index, values) =>
-            Number.isInteger(value) &&
-            value >= 0 &&
-            value < uniqueAccentPalette.length &&
-            values.indexOf(value) === index,
-        )
-        const last = Number.isInteger(state.last) ? state.last : null
-        return { remaining, last }
+        const stored = JSON.parse(sessionStorage.getItem(storageKey) || 'null')
+        if (stored?.count === accentCount && Array.isArray(stored.remaining)) state = stored
       } catch {
-        return null
+        // A random accent still works when session storage is unavailable.
       }
-    }
-
-    function writeShuffleState(state) {
-      try {
-        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state))
-      } catch {
-        // Color selection still works when storage is unavailable.
-      }
-    }
-
-    function getAccentIndex() {
-      if (uniqueAccentPalette.length <= 1) return 0
-
-      const signature = uniqueAccentPalette.map((color) => `${color.light}/${color.dark}`).join('|')
-      const state = readShuffleState(signature) || { remaining: [], last: null }
 
       if (state.remaining.length === 0) {
-        state.remaining = shuffle(uniqueAccentPalette.map((_, index) => index))
-
-        // pop() is the next draw; prevent the boundary between two rounds from repeating.
-        const nextIndex = state.remaining.length - 1
-        if (state.remaining[nextIndex] === state.last) {
-          ;[state.remaining[nextIndex], state.remaining[0]] = [
+        state.remaining = Array.from({ length: accentCount }, (_, index) => index)
+        for (let index = state.remaining.length - 1; index > 0; index -= 1) {
+          const swapIndex = Math.floor(Math.random() * (index + 1))
+          ;[state.remaining[index], state.remaining[swapIndex]] = [
+            state.remaining[swapIndex],
+            state.remaining[index],
+          ]
+        }
+        if (state.remaining.at(-1) === state.last) {
+          ;[state.remaining[0], state.remaining[state.remaining.length - 1]] = [
+            state.remaining.at(-1),
             state.remaining[0],
-            state.remaining[nextIndex],
           ]
         }
       }
 
-      const next = state.remaining.pop()
-      state.last = next
-      writeShuffleState({ signature, remaining: state.remaining, last: state.last })
-      return next
-    }
-
-    function buildCssText() {
-      const accentColor = uniqueAccentPalette[getAccentIndex()]
-      const lightAccent = hexToRgb(accentColor.light)
-      const darkAccent = hexToRgb(accentColor.dark)
-      const lightRootBg = mixRgb([250, 250, 250], lightAccent, 0.05)
-      const darkRootBg = mixRgb([0, 2, 18], darkAccent, 0.12)
-
-      return `html {
-  --color-accent: ${rgbToString(lightAccent)};
-  --color-bg-root: ${rgbToString(lightRootBg)};
-  --color-bg-primary: ${rgbToString(hexToRgb(bgColors.primary.light))};
-  --color-bg-secondary: ${rgbToString(hexToRgb(bgColors.secondary.light))};
-  --color-text-primary: ${rgbToString(hexToRgb(textColors.primary.light))};
-  --color-text-secondary: ${rgbToString(hexToRgb(textColors.secondary.light))};
-  --color-border-primary: ${rgbToString(hexToRgb(borderColors.primary.light))};
-}
-[data-theme='dark'] {
-  --color-accent: ${rgbToString(darkAccent)};
-  --color-bg-root: ${rgbToString(darkRootBg)};
-  --color-bg-primary: ${rgbToString(hexToRgb(bgColors.primary.dark))};
-  --color-bg-secondary: ${rgbToString(hexToRgb(bgColors.secondary.dark))};
-  --color-text-primary: ${rgbToString(hexToRgb(textColors.primary.dark))};
-  --color-text-secondary: ${rgbToString(hexToRgb(textColors.secondary.dark))};
-  --color-border-primary: ${rgbToString(hexToRgb(borderColors.primary.dark))};
-}`
-    }
-
-    function applyAccentVars() {
-      let styleEl = document.getElementById(STYLE_ID)
-      if (!styleEl) {
-        styleEl = document.createElement('style')
-        styleEl.id = STYLE_ID
-        document.head.appendChild(styleEl)
+      state.last = state.remaining.pop()
+      root.dataset.accent = String(state.last ?? 0)
+      try {
+        sessionStorage.setItem(
+          storageKey,
+          JSON.stringify({ count: accentCount, remaining: state.remaining, last: state.last }),
+        )
+      } catch {
+        // Keep the selected accent for this page only.
       }
-      styleEl.textContent = buildCssText()
     }
 
-    applyAccentVars()
-    document.addEventListener('swup:content:replace', applyAccentVars)
+    drawAccent()
+    document.addEventListener('swup:content:replace', drawAccent)
   })()
 </script>

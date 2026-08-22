@@ -1,0 +1,409 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/posts/「随便来点」失语症",
+      "destination": "/posts/sui-bian-lai-dian-shi-yu-zheng",
+      "permanent": true
+    },
+    {
+      "source": "/posts/【失效】在Astro新增一个时间盒子页面",
+      "destination": "/posts/772272",
+      "permanent": true
+    },
+    {
+      "source": "/posts/【书籍】牧神记",
+      "destination": "/posts/876328",
+      "permanent": true
+    },
+    {
+      "source": "/posts/【吐槽】谁终将声震山谷，必将长久深自缄默",
+      "destination": "/posts/474984",
+      "permanent": true
+    },
+    {
+      "source": "/posts/【闲谈】2025年5月16日",
+      "destination": "/posts/342855",
+      "permanent": true
+    },
+    {
+      "source": "/posts/【闲谈】2025年5月9日",
+      "destination": "/posts/761803",
+      "permanent": true
+    },
+    {
+      "source": "/posts/【闲谈】2025年6月19日",
+      "destination": "/posts/864813",
+      "permanent": true
+    },
+    {
+      "source": "/posts/【转载】从哲库到玄戒，从造芯之“死”到造芯之生",
+      "destination": "/posts/919083",
+      "permanent": true
+    },
+    {
+      "source": "/posts/博客美化记录",
+      "destination": "/posts/bo-ke-mei-hua-ji-lu",
+      "permanent": true
+    },
+    {
+      "source": "/posts/博客维护公告",
+      "destination": "/posts/644641",
+      "permanent": true
+    },
+    {
+      "source": "/posts/博客RSS美化以及部署Umami站点监测",
+      "destination": "/posts/658143",
+      "permanent": true
+    },
+    {
+      "source": "/posts/常用日志查询命令",
+      "destination": "/columns/linux/常用日志查询命令",
+      "permanent": true
+    },
+    {
+      "source": "/posts/关于博客主题的自问自答",
+      "destination": "/posts/719",
+      "permanent": true
+    },
+    {
+      "source": "/posts/关于梦",
+      "destination": "/posts/guan-yu-meng",
+      "permanent": true
+    },
+    {
+      "source": "/posts/还有人记得",
+      "destination": "/posts/five-years-later-recovered",
+      "permanent": true
+    },
+    {
+      "source": "/posts/好看的鼠标样式",
+      "destination": "/posts/hao-kan-de-shu-biao-yang-shi",
+      "permanent": true
+    },
+    {
+      "source": "/posts/欢迎来到实力至上主义教室",
+      "destination": "/posts/129915",
+      "permanent": true
+    },
+    {
+      "source": "/posts/基础操作指令",
+      "destination": "/columns/linux/基础操作指令",
+      "permanent": true
+    },
+    {
+      "source": "/posts/简单的增删查改实现",
+      "destination": "/posts/987295",
+      "permanent": true
+    },
+    {
+      "source": "/posts/力扣322 零钱兑换",
+      "destination": "/posts/li-kou-322-ling-qian-dui-huan",
+      "permanent": true
+    },
+    {
+      "source": "/posts/流畅的下滑关闭页面",
+      "destination": "/posts/liu-chang-de-xia-hua-guan-bi-ye-mian",
+      "permanent": true
+    },
+    {
+      "source": "/posts/你好，2025",
+      "destination": "/posts/833366",
+      "permanent": true
+    },
+    {
+      "source": "/posts/前后端跨域问题",
+      "destination": "/posts/792079",
+      "permanent": true
+    },
+    {
+      "source": "/posts/人与AI，爱与理性",
+      "destination": "/posts/178593",
+      "permanent": true
+    },
+    {
+      "source": "/posts/如何畅玩旮旯game之软件篇--串流",
+      "destination": "/posts/717",
+      "permanent": true
+    },
+    {
+      "source": "/posts/如何实现验证码及校验",
+      "destination": "/posts/487186",
+      "permanent": true
+    },
+    {
+      "source": "/posts/三道前端题",
+      "destination": "/posts/722",
+      "permanent": true
+    },
+    {
+      "source": "/posts/使用 LLM Wiki 作为 Hermes Agent 的记忆系统",
+      "destination": "/posts/llm-wiki-hermes-memory",
+      "permanent": true
+    },
+    {
+      "source": "/posts/使用路由器实现校园网多设备防检测",
+      "destination": "/posts/407208",
+      "permanent": true
+    },
+    {
+      "source": "/posts/使用Astro搭建博客",
+      "destination": "/posts/107368",
+      "permanent": true
+    },
+    {
+      "source": "/posts/使用mybatis-plus代码生成器快速构建springboot项目",
+      "destination": "/posts/234253",
+      "permanent": true
+    },
+    {
+      "source": "/posts/使用Obsidian 作为 Hermes Agent 的记忆数据库",
+      "destination": "/posts/obsidian-hermes-memory",
+      "permanent": true
+    },
+    {
+      "source": "/posts/谈“诚哥”之死",
+      "destination": "/posts/373752",
+      "permanent": true
+    },
+    {
+      "source": "/posts/推荐一些免费部署的小玩意",
+      "destination": "/posts/507743",
+      "permanent": true
+    },
+    {
+      "source": "/posts/拖了很久的更新，还是来了",
+      "destination": "/posts/tuo-le-hen-jiu-de-geng-xin-hai-shi-lai-le",
+      "permanent": true
+    },
+    {
+      "source": "/posts/为 Astro 博客添加 llms.txt",
+      "destination": "/posts/astro-llms-txt",
+      "permanent": true
+    },
+    {
+      "source": "/posts/我推的Ob插件",
+      "destination": "/posts/301279",
+      "permanent": true
+    },
+    {
+      "source": "/posts/写了个导航网站",
+      "destination": "/posts/267385",
+      "permanent": true
+    },
+    {
+      "source": "/posts/一期一会",
+      "destination": "/posts/yi-qi-yi-hui",
+      "permanent": true
+    },
+    {
+      "source": "/posts/一些碰到的面试问题",
+      "destination": "/posts/720",
+      "permanent": true
+    },
+    {
+      "source": "/posts/影音视听",
+      "destination": "/posts/383573",
+      "permanent": true
+    },
+    {
+      "source": "/posts/用 Vercel AI Gateway 给博客做一个 AI 摘要服务",
+      "destination": "/posts/vercel-ai-blog-summary",
+      "permanent": true
+    },
+    {
+      "source": "/posts/语言的边界就是思想的边界",
+      "destination": "/posts/yu-yan-de-bian-jie-jiu-shi-si-xiang-de-bian-jie",
+      "permanent": true
+    },
+    {
+      "source": "/posts/遇到的一起生产事故",
+      "destination": "/posts/yu-dao-de-yi-qi-shi-gu",
+      "permanent": true
+    },
+    {
+      "source": "/posts/在2026年拥有自己的博客",
+      "destination": "/posts/2026-have-your-own-blog",
+      "permanent": true
+    },
+    {
+      "source": "/posts/在电脑上共存MySQL",
+      "destination": "/posts/724",
+      "permanent": true
+    },
+    {
+      "source": "/posts/辗转相除法求最大公约数",
+      "destination": "/posts/582995",
+      "permanent": true
+    },
+    {
+      "source": "/posts/重装电脑后恢复MySQL数据",
+      "destination": "/posts/718",
+      "permanent": true
+    },
+    {
+      "source": "/posts/字幕组动漫资源常见科普",
+      "destination": "/posts/477599",
+      "permanent": true
+    },
+    {
+      "source": "/posts/自建图床教程",
+      "destination": "/posts/zi-jian-tu-chuang-jiao-cheng",
+      "permanent": true
+    },
+    {
+      "source": "/posts/Android Studio的部署",
+      "destination": "/posts/946133",
+      "permanent": true
+    },
+    {
+      "source": "/posts/Blog常用书写格式记录",
+      "destination": "/posts/blog-chang-yong-shu-xie-ge-shi-ji-lu",
+      "permanent": true
+    },
+    {
+      "source": "/posts/chang-yong-ri-zhi-cha-xun-ming-ling",
+      "destination": "/columns/linux/常用日志查询命令",
+      "permanent": true
+    },
+    {
+      "source": "/posts/Claude 搜索网页报错：Unable to verify if domain is safe to fetch 的解决方法",
+      "destination": "/posts/claude-skip-web-fetch-preflight",
+      "permanent": true
+    },
+    {
+      "source": "/posts/Entity、DTO和VO",
+      "destination": "/posts/894321",
+      "permanent": true
+    },
+    {
+      "source": "/posts/Flutter输入面板布局优化：键盘、表情面板与@联想的丝滑切换",
+      "destination": "/posts/flutter-input-panel-smooth-switch",
+      "permanent": true
+    },
+    {
+      "source": "/posts/hexo博客进行谷歌、bing收录",
+      "destination": "/posts/965179",
+      "permanent": true
+    },
+    {
+      "source": "/posts/java-mian-shi-er-2",
+      "destination": "/columns/面试/Java面试二",
+      "permanent": true
+    },
+    {
+      "source": "/posts/java-mian-shi-yi",
+      "destination": "/columns/面试/Java面试一",
+      "permanent": true
+    },
+    {
+      "source": "/posts/Java面试二",
+      "destination": "/columns/面试/Java面试二",
+      "permanent": true
+    },
+    {
+      "source": "/posts/Java面试一",
+      "destination": "/columns/面试/Java面试一",
+      "permanent": true
+    },
+    {
+      "source": "/posts/ji-chu-cao-zuo-zhi-ling",
+      "destination": "/columns/linux/基础操作指令",
+      "permanent": true
+    },
+    {
+      "source": "/posts/MyBatis",
+      "destination": "/posts/536923",
+      "permanent": true
+    },
+    {
+      "source": "/posts/MySQL9.2版本安装",
+      "destination": "/posts/mysql92-ban-ben-an-zhuang",
+      "permanent": true
+    },
+    {
+      "source": "/posts/Obsidian实现笔记自动迁移并同步推送到Hexo",
+      "destination": "/posts/obsidianshi-xian-bi-ji-zi-dong-qian-yi-bing-tong-bu-tui-song-dao-hexo",
+      "permanent": true
+    },
+    {
+      "source": "/posts/Obsidian拓展",
+      "destination": "/posts/obsidiantuo-zhan",
+      "permanent": true
+    },
+    {
+      "source": "/posts/Pinia的使用",
+      "destination": "/posts/970498",
+      "permanent": true
+    },
+    {
+      "source": "/posts/SpringBoot开启热更新",
+      "destination": "/posts/437763",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": ".*text/markdown.*"
+        }
+      ],
+      "destination": "/llms.txt"
+    },
+    {
+      "source": "/posts/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": ".*text/markdown.*"
+        }
+      ],
+      "destination": "/posts/:slug.md"
+    },
+    {
+      "source": "/columns/:column/:post",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": ".*text/markdown.*"
+        }
+      ],
+      "destination": "/columns/:column/:post.md"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Vary",
+          "value": "Accept, Accept-Encoding"
+        }
+      ]
+    },
+    {
+      "source": "/posts/:path*",
+      "headers": [
+        {
+          "key": "Vary",
+          "value": "Accept, Accept-Encoding"
+        }
+      ]
+    },
+    {
+      "source": "/columns/:path*",
+      "headers": [
+        {
+          "key": "Vary",
+          "value": "Accept, Accept-Encoding"
+        }
+      ]
+    }
+  ]
+}

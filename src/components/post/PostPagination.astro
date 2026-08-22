@@ -37,6 +37,7 @@ const iconMap: Record<string, string> = {
             class="size-8 rounded-lg flex items-center justify-center transition-bg-color duration-200  hover:bg-accent/20 select-none"
             href={getPageUrl(item.page!)}
             aria-label={item.label}
+            rel={item.label === '上一页' ? 'prev' : item.label === '下一页' ? 'next' : undefined}
           >
             {item.icon ? <Icon name={iconMap[item.icon!]} /> : item.page}
           </a>
@@ -46,6 +47,7 @@ const iconMap: Record<string, string> = {
           <span
             class="size-8 rounded-lg flex items-center justify-center cursor-default select-none"
             class:list={[{ 'text-white bg-accent dark:text-black': item.page === current }]}
+            aria-current={item.page === current ? 'page' : undefined}
           >
             {item.icon ? <Icon name={iconMap[item.icon!]} /> : item.page}
           </span>

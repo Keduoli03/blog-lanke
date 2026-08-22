@@ -3,6 +3,9 @@ import Layout from './Layout.astro'
 import Footer from '@/components/footer/Footer.astro'
 import { HeaderShell } from '@/components/header/HeaderShell'
 import { ToastContainer } from '@/components/ToastContainer'
+import { site, author } from '@/config.json'
+import Lightbox from '@/components/Lightbox.astro'
+import FootnoteTooltip from '@/components/FootnoteTooltipInline.astro'
 import 'katex/dist/katex.min.css'
 
 interface Props {
@@ -12,12 +15,40 @@ interface Props {
   mdTitle: string
   mdDescription: string
   mdSlug: string
+  publishedTime?: Date
+  modifiedTime?: Date
 }
 
-const { title, description, image, mdTitle, mdDescription, mdSlug } = Astro.props
+const { title, description, image, mdTitle, mdDescription, mdSlug, publishedTime, modifiedTime } =
+  Astro.props
+const articleUrl = new URL(mdSlug, Astro.site).href
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: mdTitle,
+  description: description || mdDescription,
+  url: articleUrl,
+  mainEntityOfPage: articleUrl,
+  image: new URL(image || site.ogImage, Astro.site).href,
+  inLanguage: site.lang,
+  author: {
+    '@type': 'Person',
+    name: author.name,
+    url: site.url,
+  },
+  publisher: { '@id': `${site.url}/#person` },
+  ...(publishedTime ? { datePublished: publishedTime.toISOString() } : {}),
+  ...(modifiedTime ? { dateModified: modifiedTime.toISOString() } : {}),
+}
 ---
 
-<Layout title={title} description={description} image={image}>
+<Layout
+  title={title}
+  description={description}
+  image={image}
+  ogType="article"
+  structuredData={articleSchema}
+>
   <style slot="head" is:inline>
     .markdown .expressive-code .frame {
       box-shadow: none !important;
@@ -84,6 +115,51 @@ const { title, description, image, mdTitle, mdDescription, mdSlug } = Astro.prop
     <ToastContainer client:idle />
   </main>
   <Footer />
+  <Lightbox />
+  <FootnoteTooltip />
+  <script is:inline>
+    ;(() => {
+      function restoreReadingProgress() {
+        const root = document.documentElement
+        root.removeAttribute('data-restored-reading-progress')
+
+        const article = document.querySelector('#markdown-wrapper')
+        const progress = document.querySelector('[data-reading-progress]')
+        if (!(article instanceof HTMLElement) || !(progress instanceof HTMLElement)) return
+
+        let scrollY = window.scrollY
+        if (scrollY === 0) {
+          try {
+            scrollY =
+              Number(sessionStorage.getItem(`gyoza-scroll:${window.location.pathname}`)) || 0
+          } catch {
+            // Ignore unavailable session storage.
+          }
+        }
+
+        const fullHeight = article.offsetHeight + article.offsetTop - window.innerHeight
+        const percent =
+          fullHeight <= 0
+            ? 100
+            : Math.max(0, Math.min(100, Math.floor((scrollY / fullHeight) * 100)))
+        root.style.setProperty('--restored-reading-progress', `"\u8fdb\u5ea6 ${percent}%"`)
+        root.setAttribute('data-restored-reading-progress', '')
+      }
+
+      restoreReadingProgress()
+      document.addEventListener('swup:contentReplaced', restoreReadingProgress)
+    })()
+  </script>
+  <script>
+    const initLivecodesOnDemand = async () => {
+      if (!document.querySelector('.livecodes-runner')) return
+      const { initLivecodes } = await import('@/scripts/livecodes')
+      initLivecodes()
+    }
+
+    document.addEventListener('astro:page-load', initLivecodesOnDemand)
+    initLivecodesOnDemand()
+  </script>
   <script>
     function syncHeadingAnchors() {
       document.querySelectorAll<HTMLElement>('.markdown .heading[id]').forEach((heading) => {

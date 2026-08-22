@@ -105,6 +105,8 @@ const nextUrl = nextItem ? `/columns/${column.slug}/${nextItem.slug.split('/').p
   mdTitle={post.data.title}
   mdDescription={post.data.summary || ''}
   mdSlug={mdSlug}
+  publishedTime={post.data.date as Date}
+  modifiedTime={(post.data.lastMod || post.data.date) as Date}
 >
   <div
     class="w-full max-w-full box-border px-4 md:px-8 py-16 grid gap-8 lg:grid-cols-[1fr_minmax(0,900px)_1fr]"

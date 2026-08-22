@@ -64,7 +64,7 @@ const headings = rendered?.headings ?? []
 const Content = rendered?.Content
 const remarkPluginFrontmatter = rendered?.remarkPluginFrontmatter
 const { words, readingMinutes } = current
-  ? getPostStats(current.body)
+  ? getPostStats(current.body ?? '')
   : { words: 0, readingMinutes: 1 }
 
 const currentSlug = current ? getEntrySlug(current) : ''
@@ -114,6 +114,8 @@ const shouldShowAiSummary = current?.data.aiSummary
       mdTitle={current.data.title}
       mdDescription={mdDescription}
       mdSlug={mdSlug}
+      publishedTime={current.data.date as Date}
+      modifiedTime={(current.data.lastMod || current.data.date) as Date}
     >
       <div
         class="w-full max-w-full box-border px-4 md:px-8 py-16 grid gap-8 lg:grid-cols-[1fr_minmax(0,900px)_1fr]"

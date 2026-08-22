@@ -40,7 +40,7 @@ export function HeaderMeta({
     >
       <div className="grow min-w-0 pl-0 pr-24 md:pl-20 md:pr-0 pointer-events-none">
         <div className="text-secondary text-xs truncate">{description}</div>
-        <h2 className="truncate text-sm md:text-lg">{title}</h2>
+        <p className="truncate text-sm md:text-lg">{title}</p>
       </div>
       <div className="hidden md:block min-w-0 text-right pr-20 md:pr-28 pointer-events-none max-w-[50%]">
         <div className="text-secondary text-xs truncate">{slug}</div>
