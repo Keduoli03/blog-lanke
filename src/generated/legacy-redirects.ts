@@ -12,6 +12,7 @@ export const legacyRedirects = {
   '/posts/博客维护公告': '/posts/644641',
   '/posts/博客RSS美化以及部署Umami站点监测': '/posts/658143',
   '/posts/常用日志查询命令': '/columns/linux/常用日志查询命令',
+  '/posts/从“宅斗庶女”看极端女权': '/posts/cong-zhai-dou-shu-nv-kan-ji-duan-nv-quan',
   '/posts/关于博客主题的自问自答': '/posts/719',
   '/posts/关于梦': '/posts/guan-yu-meng',
   '/posts/还有人记得': '/posts/five-years-later-recovered',
