@@ -123,7 +123,11 @@
     "wechat": "https://object.lxchapu.com/bed%2F2024%2F0507_6e3e8f73df2d4e6d.webp"
   },
   "analytics": {
-    "enable": false
+    "enable": true,
+    "umami": {
+      "serverUrl": "https://umami.blueke.top",
+      "websiteId": "381b2283-cb7d-4fb6-bf43-f818198d9eb4"
+    }
   },
   "bangumi": {
     "enable": true,
