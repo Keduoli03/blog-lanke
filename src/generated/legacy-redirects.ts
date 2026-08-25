@@ -45,6 +45,7 @@ export const legacyRedirects = {
   '/posts/用 Vercel AI Gateway 给博客做一个 AI 摘要服务': '/posts/vercel-ai-blog-summary',
   '/posts/语言的边界就是思想的边界': '/posts/yu-yan-de-bian-jie-jiu-shi-si-xiang-de-bian-jie',
   '/posts/遇到的一起生产事故': '/posts/yu-dao-de-yi-qi-shi-gu',
+  '/posts/在 Flutter 项目里折腾苹果的液态玻璃效果': '/posts/flutter-shi-xian-ye-tai-bo-li-xiao-guo',
   '/posts/在2026年拥有自己的博客': '/posts/2026-have-your-own-blog',
   '/posts/在电脑上共存MySQL': '/posts/724',
   '/posts/辗转相除法求最大公约数': '/posts/582995',
