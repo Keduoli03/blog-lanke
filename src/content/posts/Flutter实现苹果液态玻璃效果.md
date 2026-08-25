@@ -5,10 +5,11 @@ category: Flutter
 tags:
   - Flutter
   - 随笔
-date: '2026-08-25 19:35'
+date: 2026-08-25 19:35
 slug: flutter-shi-xian-ye-tai-bo-li-xiao-guo
 aiSummary: true
 draft: false
+updated: 2026-08-25 19:40
 ---
 
 唔，今天遇到了一点麻烦事。
@@ -16,6 +17,8 @@ draft: false
 最近想在自己的 Flutter 项目里实现苹果的液态玻璃效果。因为我自己也体验了一段时间，感觉这个样式确实挺不错，所以就打算一边做，一边研究它到底是怎么实现的。
 
 最开始参考的是 [AndroidLiquidGlass](https://github.com/Kyant0/AndroidLiquidGlass/) 这个项目。它的效果做得很漂亮，相关实现也很有参考价值。不过这个项目本身是基于 Android/Compose Multiplatform 的实现，和 Flutter 的渲染体系并不一样，所以没办法直接拿过来使用。
+
+后来我又找到了一个专门面向 Flutter 的实现：[liquid_glass_easy](https://github.com/AhmeedGamil/liquid_glass_easy)。这个项目可以通过实时交互的镜片效果，对背后的内容进行放大、扭曲、模糊、着色和折射，整体上更接近苹果 iOS 26 的 Liquid Glass 效果。
 
 ## 自己实现并没有想象中简单
 
