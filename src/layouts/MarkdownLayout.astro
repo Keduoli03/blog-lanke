@@ -17,10 +17,20 @@ interface Props {
   mdSlug: string
   publishedTime?: Date
   modifiedTime?: Date
+  showBackToTop?: boolean
 }
 
-const { title, description, image, mdTitle, mdDescription, mdSlug, publishedTime, modifiedTime } =
-  Astro.props
+const {
+  title,
+  description,
+  image,
+  mdTitle,
+  mdDescription,
+  mdSlug,
+  publishedTime,
+  modifiedTime,
+  showBackToTop = true,
+} = Astro.props
 const articleUrl = new URL(mdSlug, Astro.site).href
 const articleSchema = {
   '@context': 'https://schema.org',
@@ -48,6 +58,7 @@ const articleSchema = {
   image={image}
   ogType="article"
   structuredData={articleSchema}
+  showBackToTop={showBackToTop}
 >
   <style slot="head" is:inline>
     .markdown .expressive-code .frame {

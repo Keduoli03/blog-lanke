@@ -18,9 +18,10 @@ interface Props {
   image?: string
   ogType?: 'website' | 'article'
   structuredData?: Record<string, unknown> | Record<string, unknown>[]
+  showBackToTop?: boolean
 }
 
-const { title, description, image, ogType, structuredData } = Astro.props
+const { title, description, image, ogType, structuredData, showBackToTop = false } = Astro.props
 ---
 
 <!doctype html>
@@ -220,7 +221,7 @@ const { title, description, image, ogType, structuredData } = Astro.props
       })()
     </script>
 
-    <BackToTopFAB client:load />
+    {showBackToTop && <BackToTopFAB client:load />}
     <ModalStack client:idle />
   </body>
 </html>
