@@ -1,10 +1,32 @@
-import { type ReactNode } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import { riChat1Line, riRocket2Line } from '@/icons/ri'
 import { StaticIcon } from '@/components/header/StaticIcon'
 
+function shouldShowFloatingActions(pathname: string) {
+  const path = pathname.replace(/\/+$/, '') || '/'
+  const segments = path.split('/').filter(Boolean)
+
+  if (path === '/friends') return true
+  if (segments[0] === 'posts') return segments.length >= 2
+  if (segments[0] === 'columns') return segments.length >= 3
+  return false
+}
+
 export function BackToTopFAB() {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const syncVisibility = () => {
+      setVisible(shouldShowFloatingActions(window.location.pathname))
+    }
+
+    syncVisibility()
+    document.addEventListener('astro:page-load', syncVisibility)
+    return () => document.removeEventListener('astro:page-load', syncVisibility)
+  }, [])
+
   return (
-    <div className="fixed right-4 bottom-6 z-10">
+    <div className="fixed right-4 bottom-6 z-10" style={{ display: visible ? 'block' : 'none' }}>
       <Buttons />
     </div>
   )
