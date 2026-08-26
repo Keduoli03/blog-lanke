@@ -23,7 +23,7 @@ const activeFriends = toFriends(friends)
 const lostFriendList = toFriends(lostFriends)
 ---
 
-<ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
+<ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
   {
     activeFriends.map((friend) => (
       <li>
@@ -61,7 +61,7 @@ const lostFriendList = toFriends(lostFriends)
     <section class="mt-12">
       <h2 class="text-2xl font-bold mb-4">已失联的朋友</h2>
       <p class="text-sm text-secondary mb-6">这些站点暂时无法联系，仍然保留在这里。</p>
-      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {lostFriendList.map((friend) => (
           <li>
             <a href={friend.link} target="_blank" rel="noopener noreferrer external">
