@@ -48,7 +48,7 @@ const isMdContentEmpty = typeof md.body === 'string' ? md.body.trim().length ===
       description={md.data.description}
       showBackToTop={specSlug === 'friends'}
     >
-      <div class="max-w-[800px] mx-auto px-4 py-16 space-y-8" data-pagefind-body>
+      <div class="w-full max-w-[964px] mx-auto px-4 md:px-8 py-16 space-y-8" data-pagefind-body>
         <header class={specSlug === 'friends' ? 'space-y-4 text-center' : 'space-y-4'}>
           <h1 class="text-4xl font-bold">
             <Highlight>{md.data.title}</Highlight>
