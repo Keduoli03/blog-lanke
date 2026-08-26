@@ -1,22 +1,5 @@
 export const friends = [
   {
-    title: '科技酱的技术文档',
-    avatar: 'https://docs.asoe.cn/friends/TechSauce-Logo.webp',
-    background: 'https://docs.asoe.cn/friends/TechSauce-Beijing.webp',
-    description: '同一个世界，同一个互联网！',
-    link: 'https://docs.asoe.cn',
-    rss: 'https://docs.asoe.cn/rss.xml',
-    tags: ['友链'],
-  },
-  {
-    title: 'Xe_iu的杂物间',
-    avatar: 'https://blog.xeiu.top/logo-img/logo.jpg',
-    background: 'https://blog.xeiu.top/logo-img/back.jpg',
-    description: 'Since I cannot change the world, let me exist quietly in it.',
-    link: 'https://blog.xeiu.top',
-    tags: ['友链'],
-  },
-  {
     title: '天影大侠的小站',
     avatar: 'https://weavatar.com/avatar/7388ea4765a319d5f83fea61c3236384?s=1000',
     description: 'The Blog of SkyShadowHero!',
@@ -186,6 +169,23 @@ export const friends = [
     avatar: 'https://www.dreamcenter.top/imgs/avatar.jpg',
     description: '妹控的中二君',
     link: 'https://www.dreamcenter.top',
+    tags: ['友链'],
+  },
+  {
+    title: 'Xe_iu的杂物间',
+    avatar: 'https://blog.xeiu.top/logo-img/logo.jpg',
+    background: 'https://blog.xeiu.top/logo-img/back.jpg',
+    description: 'Since I cannot change the world, let me exist quietly in it.',
+    link: 'https://blog.xeiu.top',
+    tags: ['友链'],
+  },
+  {
+    title: '科技酱的技术文档',
+    avatar: 'https://docs.asoe.cn/friends/TechSauce-Logo.webp',
+    background: 'https://docs.asoe.cn/friends/TechSauce-Beijing.webp',
+    description: '同一个世界，同一个互联网！',
+    link: 'https://docs.asoe.cn',
+    rss: 'https://docs.asoe.cn/rss.xml',
     tags: ['友链'],
   },
 ]
