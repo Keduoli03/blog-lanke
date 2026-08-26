@@ -7,6 +7,7 @@ type Friend = {
   description: string
   avatar: string
   link: string
+  background?: string
 }
 
 const toFriends = (list: any[]) =>
@@ -15,6 +16,7 @@ const toFriends = (list: any[]) =>
     description: x.description ?? '',
     avatar: x.avatar ?? '',
     link: x.link ?? '',
+    background: x.background ?? '',
   })) as Friend[]
 
 const activeFriends = toFriends(friends)
@@ -26,7 +28,16 @@ const lostFriendList = toFriends(lostFriends)
     activeFriends.map((friend) => (
       <li>
         <a href={friend.link} target="_blank" rel="noopener noreferrer external">
-          <div class="p-4 flex gap-2 bg-accent/10 rounded-lg group">
+          <div
+            class="p-4 flex gap-2 bg-accent/10 bg-cover bg-center rounded-lg group"
+            style={
+              friend.background
+                ? {
+                    backgroundImage: `linear-gradient(rgb(var(--color-bg-primary) / 0.72), rgb(var(--color-bg-primary) / 0.72)), url("${friend.background}")`,
+                  }
+                : undefined
+            }
+          >
             <img
               class="shrink-0 size-16 object-contain rounded-full"
               src={friend.avatar}
@@ -54,7 +65,16 @@ const lostFriendList = toFriends(lostFriends)
         {lostFriendList.map((friend) => (
           <li>
             <a href={friend.link} target="_blank" rel="noopener noreferrer external">
-              <div class="p-4 flex gap-2 bg-accent/10 rounded-lg group">
+              <div
+                class="p-4 flex gap-2 bg-accent/10 bg-cover bg-center rounded-lg group"
+                style={
+                  friend.background
+                    ? {
+                        backgroundImage: `linear-gradient(rgb(var(--color-bg-primary) / 0.72), rgb(var(--color-bg-primary) / 0.72)), url("${friend.background}")`,
+                      }
+                    : undefined
+                }
+              >
                 <img
                   class="shrink-0 size-16 object-contain rounded-full"
                   src={friend.avatar}
