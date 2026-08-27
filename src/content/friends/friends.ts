@@ -188,6 +188,15 @@ export const friends = [
     rss: 'https://docs.asoe.cn/rss.xml',
     tags: ['友链'],
   },
+  {
+    title: 'Homulilly',
+    avatar: 'https://homulilly.com/images/avatar.jpg',
+    background: 'https://img.nep.me/blog/homulilly-home.webp',
+    description: '圆环之外，仍有未尽之愿。',
+    link: 'https://homulilly.com',
+    rss: 'https://homulilly.com/atom.xml',
+    tags: ['友链'],
+  },
 ]
 
 export const lostFriends = [
