@@ -60,6 +60,8 @@ export const legacyRedirects = {
   '/posts/Entity、DTO和VO': '/posts/894321',
   '/posts/Flutter输入面板布局优化：键盘、表情面板与@联想的丝滑切换':
     '/posts/flutter-input-panel-smooth-switch',
+  '/posts/Google 账号地区是日本，ChatGPT 订阅为什么还是美元？':
+    '/posts/google-payment-profile-country-chatgpt-subscription',
   '/posts/hexo博客进行谷歌、bing收录': '/posts/965179',
   '/posts/java-mian-shi-er-2': '/columns/面试/Java面试二',
   '/posts/java-mian-shi-yi': '/columns/面试/Java面试一',
