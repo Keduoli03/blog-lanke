@@ -1,0 +1,4 @@
+google.com, pub-3321337853619222, DIRECT, f08c47fec0942fa0
+
+// This file is managed in the blog source repository.
+// It is served at https://blog.blueke.top/ads.txt for Google AdSense verification.
