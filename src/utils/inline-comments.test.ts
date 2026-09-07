@@ -4,6 +4,7 @@ import {
   appendInlineCommentLocator,
   buildInlineCommentDraft,
   buildInlineCommentContent,
+  expandInlineCommentRange,
   getInlineCommentBody,
   getInlineCommentSelector,
   groupInlineDiscussions,
@@ -24,6 +25,42 @@ const selector: InlineCommentSelector = {
 }
 
 describe('inline comment metadata', () => {
+  it('expands a short selection to complete sentence boundaries', () => {
+    const text = '第一句话。这里是需要评论的完整一句话！最后一句。'
+    const start = text.indexOf('需要')
+    expect(expandInlineCommentRange(text, start, start + 2)).toEqual({
+      startOffset: text.indexOf('这里'),
+      endOffset: text.indexOf('！') + 1,
+    })
+  })
+
+  it('keeps closing quotation marks and avoids splitting decimal numbers', () => {
+    const quoted = '他说：“版本是 2.5。” 下一句。'
+    const start = quoted.indexOf('版本')
+    const range = expandInlineCommentRange(quoted, start, start + 2)
+    expect(quoted.slice(range.startOffset, range.endOffset)).toBe('他说：“版本是 2.5。”')
+  })
+
+  it('uses the complete block when it has no sentence punctuation', () => {
+    expect(expandInlineCommentRange('没有标点的标题文字', 2, 4)).toEqual({
+      startOffset: 0,
+      endOffset: 9,
+    })
+  })
+
+  it('treats semicolons as part of one sentence and ellipses as sentence endings', () => {
+    const text = '前半句；后半句仍属于同一句。新的想法……再下一句。'
+    const semicolonStart = text.indexOf('后半句')
+    const semicolonRange = expandInlineCommentRange(text, semicolonStart, semicolonStart + 2)
+    expect(text.slice(semicolonRange.startOffset, semicolonRange.endOffset)).toBe(
+      '前半句；后半句仍属于同一句。',
+    )
+
+    const ellipsisStart = text.indexOf('新的')
+    const ellipsisRange = expandInlineCommentRange(text, ellipsisStart, ellipsisStart + 2)
+    expect(text.slice(ellipsisRange.startOffset, ellipsisRange.endOffset)).toBe('新的想法……')
+  })
+
   it('keeps metadata out of the editor draft and injects a compact locator on submit', () => {
     const draft = buildInlineCommentDraft(selector, '我的看法')
     expect(draft).not.toContain(INLINE_COMMENT_HASH_PREFIX)

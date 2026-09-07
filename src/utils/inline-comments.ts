@@ -26,6 +26,56 @@ export interface InlineDiscussion {
   comments: InlineCommentData[]
 }
 
+const SENTENCE_END = /[。！？!?…\n]/
+const SENTENCE_CLOSER = /[”’"'」』）》】）\]}…]/
+
+function isSentenceEnd(value: string, index: number) {
+  const character = value[index]
+  if (SENTENCE_END.test(character)) return true
+  if (character !== '.') return false
+  const previous = value[index - 1] ?? ''
+  const next = value[index + 1] ?? ''
+  if (/\d/.test(previous) && /\d/.test(next)) return false
+  return !next || /\s/.test(next) || SENTENCE_CLOSER.test(next)
+}
+
+export function expandInlineCommentRange(
+  value: string,
+  selectionStart: number,
+  selectionEnd: number,
+) {
+  const lower = Math.max(0, Math.min(selectionStart, selectionEnd, value.length))
+  const upper = Math.max(0, Math.min(Math.max(selectionStart, selectionEnd), value.length))
+  let startOffset = 0
+  let endOffset = value.length
+
+  for (let index = lower - 1; index >= 0; index -= 1) {
+    if (!isSentenceEnd(value, index)) continue
+    startOffset = index + 1
+    while (
+      startOffset < value.length &&
+      (SENTENCE_CLOSER.test(value[startOffset]) || /\s/.test(value[startOffset]))
+    )
+      startOffset += 1
+    break
+  }
+
+  for (let index = Math.max(lower, upper - 1); index < value.length; index += 1) {
+    if (!isSentenceEnd(value, index)) continue
+    endOffset = index + 1
+    while (
+      endOffset < value.length &&
+      (isSentenceEnd(value, endOffset) || SENTENCE_CLOSER.test(value[endOffset]))
+    )
+      endOffset += 1
+    break
+  }
+
+  while (startOffset < endOffset && /\s/.test(value[startOffset])) startOffset += 1
+  while (endOffset > startOffset && /\s/.test(value[endOffset - 1])) endOffset -= 1
+  return { startOffset, endOffset }
+}
+
 export function hashInlineCommentValue(value: string) {
   let hash = 0x811c9dc5
   for (let index = 0; index < value.length; index += 1) {

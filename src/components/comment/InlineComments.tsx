@@ -5,6 +5,7 @@ import {
   INLINE_COMMENT_HASH_PREFIX,
   appendInlineCommentLocator,
   buildInlineCommentDraft,
+  expandInlineCommentRange,
   getInlineCommentBody,
   getInlineCommentLocator,
   groupInlineDiscussions,
@@ -148,6 +149,13 @@ function captureSelector(article: HTMLElement, pageKey: string) {
   let endOffset = Math.max(initialStart, initialEnd)
   while (startOffset < endOffset && /\s/.test(blockText[startOffset])) startOffset += 1
   while (endOffset > startOffset && /\s/.test(blockText[endOffset - 1])) endOffset -= 1
+  const selectedQuote = blockText.slice(startOffset, endOffset)
+  if (!selectedQuote) return null
+  const expanded = expandInlineCommentRange(blockText, startOffset, endOffset)
+  if (expanded.endOffset - expanded.startOffset <= MAX_QUOTE_LENGTH) {
+    startOffset = expanded.startOffset
+    endOffset = expanded.endOffset
+  }
   const quote = blockText.slice(startOffset, endOffset)
   if (!quote || quote.length > MAX_QUOTE_LENGTH) return null
 
