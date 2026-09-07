@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { StaticIcon } from '@/components/header/StaticIcon'
+import { riChat1Line, riFileCopyLine, riLinkM } from '@/icons/ri'
 import {
   INLINE_COMMENT_HASH_PREFIX,
   appendInlineCommentLocator,
@@ -42,9 +44,10 @@ interface ArtalkReadyDetail {
   pageKey: string
 }
 
-interface MenuPosition {
+interface MenuState {
   left: number
   top: number
+  selectionText: string
 }
 
 interface ResolvedAnchor {
@@ -229,7 +232,8 @@ export function InlineComments({
   pathname: string
 }) {
   const pageKey = normalizeInlinePageKey(pathname)
-  const [menu, setMenu] = useState<MenuPosition | null>(null)
+  const [menu, setMenu] = useState<MenuState | null>(null)
+  const [copyComplete, setCopyComplete] = useState(false)
   const [pendingSelector, setPendingSelector] = useState<InlineCommentSelector | null>(null)
   const [activeSelector, setActiveSelector] = useState<InlineCommentSelector | null>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -242,6 +246,7 @@ export function InlineComments({
   const movedEditorRef = useRef<HTMLElement | null>(null)
   const preparedContentRef = useRef('')
   const refreshTimerRef = useRef<number | null>(null)
+  const copyTimerRef = useRef<number | null>(null)
 
   const discussions = useMemo(() => groupInlineDiscussions(comments), [comments])
   const activeDiscussion = activeSelector ? discussions.get(activeSelector.anchorId) : undefined
@@ -302,6 +307,25 @@ export function InlineComments({
     }
   }, [])
 
+  const locateSelector = useCallback((selector: InlineCommentSelector) => {
+    const article = document.getElementById('markdown-wrapper')
+    if (!article) return
+    const resolved = resolveSelector(article, selector)
+    if (!resolved) return
+
+    setMenu(null)
+    setIsOpen(false)
+    const rect = resolved.range.getBoundingClientRect()
+    window.scrollTo({
+      top: Math.max(0, window.scrollY + rect.top - window.innerHeight * 0.38),
+      behavior: 'smooth',
+    })
+    resolved.block.classList.remove('inline-comment-located')
+    void resolved.block.offsetWidth
+    resolved.block.classList.add('inline-comment-located')
+    window.setTimeout(() => resolved.block.classList.remove('inline-comment-located'), 1800)
+  }, [])
+
   useEffect(() => {
     const controller = new AbortController()
     void loadComments(controller.signal)
@@ -349,18 +373,40 @@ export function InlineComments({
     const article = document.getElementById('markdown-wrapper')
     if (!article) return
 
-    const showMenu = (selector: InlineCommentSelector, left: number, top: number) => {
+    const showMenu = (
+      selector: InlineCommentSelector | null,
+      selectionText: string,
+      left: number,
+      top: number,
+    ) => {
       setPendingSelector(selector)
+      setCopyComplete(false)
       setMenu({
-        left: Math.min(Math.max(12, left), window.innerWidth - 156),
-        top: Math.min(Math.max(12, top), window.innerHeight - 56),
+        left: Math.min(Math.max(12, left), window.innerWidth - 224),
+        top: Math.min(Math.max(12, top), window.innerHeight - 116),
+        selectionText,
       })
     }
     const onContextMenu = (event: MouseEvent) => {
+      const target = event.target
+      if (
+        target instanceof Element &&
+        target.closest(
+          'input, textarea, select, [contenteditable]:not([contenteditable="false"]), .artalk, [data-inline-comments-ui]',
+        )
+      )
+        return
+
       const selector = captureSelector(article, pageKey)
-      if (!selector) return
+      const selectionText = window.getSelection()?.toString().trim() ?? ''
       event.preventDefault()
-      showMenu(selector, event.clientX, event.clientY)
+      const targetRect = target instanceof Element ? target.getBoundingClientRect() : null
+      showMenu(
+        selector,
+        selectionText,
+        event.clientX || targetRect?.left || 12,
+        event.clientY || targetRect?.bottom || 12,
+      )
     }
     const onPointerUp = (event: PointerEvent) => {
       if (event.pointerType !== 'touch' && !window.matchMedia('(pointer: coarse)').matches) return
@@ -369,18 +415,18 @@ export function InlineComments({
         const selection = window.getSelection()
         if (!selector || !selection?.rangeCount) return
         const rect = selection.getRangeAt(0).getBoundingClientRect()
-        showMenu(selector, rect.right, rect.bottom + 8)
+        showMenu(selector, selection.toString().trim(), rect.right, rect.bottom + 8)
       })
     }
     const onPointerDown = (event: PointerEvent) => {
       const target = event.target
       if (target instanceof Element && !target.closest('[data-inline-comments-ui]')) setMenu(null)
     }
-    article.addEventListener('contextmenu', onContextMenu)
+    document.addEventListener('contextmenu', onContextMenu)
     article.addEventListener('pointerup', onPointerUp)
     document.addEventListener('pointerdown', onPointerDown)
     return () => {
-      article.removeEventListener('contextmenu', onContextMenu)
+      document.removeEventListener('contextmenu', onContextMenu)
       article.removeEventListener('pointerup', onPointerUp)
       document.removeEventListener('pointerdown', onPointerDown)
     }
@@ -405,7 +451,20 @@ export function InlineComments({
       badge.className = 'inline-comment-badge'
       badge.dataset.inlineCommentBadge = discussion.selector.anchorId
       badge.setAttribute('aria-label', `查看这段文字的 ${discussion.comments.length} 条评论`)
-      badge.textContent = `💬 ${discussion.comments.length}`
+      const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      icon.setAttribute('viewBox', '0 0 24 24')
+      icon.setAttribute('aria-hidden', 'true')
+      icon.classList.add('inline-comment-badge-icon')
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      path.setAttribute('fill', 'currentColor')
+      path.setAttribute(
+        'd',
+        'M10 3h4a8 8 0 1 1 0 16v3.5c-5-2-12-5-12-11.5a8 8 0 0 1 8-8m2 14h2a6 6 0 0 0 0-12h-4a6 6 0 0 0-6 6c0 3.61 2.462 5.966 8 8.48z',
+      )
+      icon.append(path)
+      const count = document.createElement('span')
+      count.textContent = String(discussion.comments.length)
+      badge.append(icon, count)
       badge.addEventListener('click', () => openSelector(discussion.selector))
       const insertion = anchor.range.cloneRange()
       insertion.collapse(false)
@@ -492,39 +551,112 @@ export function InlineComments({
         setIsOpen(false)
       }
     }
-    const openFromHash = () => {
-      const discussion = Array.from(discussions.values()).find(
-        ({ selector }) => getInlineCommentLocator(selector) === location.hash,
-      )
-      if (discussion) openSelector(discussion.selector)
-    }
     document.addEventListener('keydown', closeOnEscape)
-    window.addEventListener('hashchange', openFromHash)
-    openFromHash()
     return () => {
       document.removeEventListener('keydown', closeOnEscape)
-      window.removeEventListener('hashchange', openFromHash)
       if (refreshTimerRef.current !== null) window.clearTimeout(refreshTimerRef.current)
+      if (copyTimerRef.current !== null) window.clearTimeout(copyTimerRef.current)
       const placeholder = editorPlaceholderRef.current
       const editor = movedEditorRef.current
       if (placeholder?.parentNode && editor)
         placeholder.parentNode.insertBefore(editor, placeholder)
       placeholder?.remove()
     }
-  }, [discussions, openSelector])
+  }, [])
+
+  useEffect(() => {
+    const locateFromHash = (hash: string) => {
+      const discussion = Array.from(discussions.values()).find(
+        ({ selector }) => getInlineCommentLocator(selector) === hash,
+      )
+      if (discussion) locateSelector(discussion.selector)
+    }
+    const onLocatorClick = (event: MouseEvent) => {
+      const target = event.target
+      const link = target instanceof Element ? target.closest<HTMLAnchorElement>('a[href]') : null
+      if (!link) return
+      const url = new URL(link.href, window.location.href)
+      if (
+        !url.hash.startsWith(INLINE_COMMENT_HASH_PREFIX) ||
+        url.pathname !== window.location.pathname
+      )
+        return
+      const discussion = Array.from(discussions.values()).find(
+        ({ selector }) => getInlineCommentLocator(selector) === url.hash,
+      )
+      if (!discussion) return
+      event.preventDefault()
+      event.stopPropagation()
+      window.history.replaceState(null, '', url.hash)
+      locateSelector(discussion.selector)
+    }
+    const onHashChange = () => locateFromHash(window.location.hash)
+    document.addEventListener('click', onLocatorClick, true)
+    window.addEventListener('hashchange', onHashChange)
+    const initialTimer = window.setTimeout(onHashChange)
+    return () => {
+      document.removeEventListener('click', onLocatorClick, true)
+      window.removeEventListener('hashchange', onHashChange)
+      window.clearTimeout(initialTimer)
+    }
+  }, [discussions, locateSelector])
+
+  const copyFromMenu = useCallback(async () => {
+    if (!menu) return
+    const value = menu.selectionText || `${window.location.origin}${window.location.pathname}`
+    try {
+      await navigator.clipboard.writeText(value)
+    } catch {
+      const textarea = document.createElement('textarea')
+      textarea.value = value
+      textarea.style.position = 'fixed'
+      textarea.style.opacity = '0'
+      document.body.append(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      textarea.remove()
+    }
+    setCopyComplete(true)
+    if (copyTimerRef.current !== null) window.clearTimeout(copyTimerRef.current)
+    copyTimerRef.current = window.setTimeout(() => setMenu(null), 700)
+  }, [menu])
 
   return (
     <div data-inline-comments-ui>
-      {menu && pendingSelector && (
-        <button
-          type="button"
+      {menu && (
+        <div
           className="inline-comment-menu"
           style={{ left: menu.left, top: menu.top }}
-          onClick={() => openSelector(pendingSelector)}
+          role="menu"
+          aria-label="文章操作"
+          onContextMenu={(event) => event.preventDefault()}
         >
-          <span aria-hidden="true">💬</span>
-          评论这段文字
-        </button>
+          <button
+            type="button"
+            className="inline-comment-menu-item"
+            role="menuitem"
+            disabled={!pendingSelector}
+            onClick={() => pendingSelector && openSelector(pendingSelector)}
+          >
+            <span className="inline-comment-menu-icon">
+              <StaticIcon icon={riChat1Line} />
+            </span>
+            <span>{pendingSelector ? '评论这段文字' : '选中文字后评论'}</span>
+          </button>
+          <button
+            type="button"
+            className="inline-comment-menu-item"
+            role="menuitem"
+            onClick={() => void copyFromMenu()}
+          >
+            <span className="inline-comment-menu-icon">
+              <StaticIcon icon={menu.selectionText ? riFileCopyLine : riLinkM} />
+            </span>
+            <span>
+              {copyComplete ? '已复制' : menu.selectionText ? '复制选中文字' : '复制页面链接'}
+            </span>
+          </button>
+        </div>
       )}
 
       {isOpen && activeSelector && (

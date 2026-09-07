@@ -16,6 +16,7 @@ const icons = {
   riChat1Line: 'chat-1-line',
   riCloseLine: 'close-line',
   riComputerLine: 'computer-line',
+  riFileCopyLine: 'file-copy-line',
   riFilmLine: 'film-line',
   riFlaskLine: 'flask-line',
   riFolder2Line: 'folder-2-line',

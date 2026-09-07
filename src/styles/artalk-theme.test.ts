@@ -35,4 +35,17 @@ describe('Artalk theme bridge', () => {
       'className="artalk inline-comment-artalk-host"',
     )
   })
+
+  it('provides a global article menu and keeps locator links in the current page', () => {
+    const source = read('components/comment/InlineComments.tsx')
+    const css = read('styles/components/inline-comments.css')
+
+    expect(source).toContain("document.addEventListener('contextmenu'")
+    expect(source).toContain('navigator.clipboard.writeText')
+    expect(source).toContain("document.addEventListener('click', onLocatorClick, true)")
+    expect(source).toContain('locateSelector(discussion.selector)')
+    expect(source).not.toContain('💬')
+    expect(css).toContain('.inline-comment-menu-item')
+    expect(css).toContain('.inline-comment-located')
+  })
 })
