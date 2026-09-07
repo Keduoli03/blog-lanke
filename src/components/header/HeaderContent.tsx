@@ -71,6 +71,31 @@ function normalizePath(value: string) {
   return cleaned === '' ? '/' : cleaned
 }
 
+function markHeaderNavigation(event: React.MouseEvent<HTMLAnchorElement>) {
+  if (
+    event.defaultPrevented ||
+    event.button !== 0 ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey
+  )
+    return
+
+  const root = document.documentElement
+  root.setAttribute('data-header-navigating', '')
+  let fallbackTimer = 0
+  const clear = () => {
+    root.removeAttribute('data-header-navigating')
+    document.removeEventListener('swup:contentReplaced', clear)
+    document.removeEventListener('astro:page-load', clear)
+    window.clearTimeout(fallbackTimer)
+  }
+  document.addEventListener('swup:contentReplaced', clear, { once: true })
+  document.addEventListener('astro:page-load', clear, { once: true })
+  fallbackTimer = window.setTimeout(clear, 2000)
+}
+
 function HeaderMenu({ isBgShow, initialPathName }: { isBgShow: boolean; initialPathName: string }) {
   const pathName = usePathName()
   const [mouseX, setMouseX] = useState(0)
@@ -167,6 +192,11 @@ function HeaderMenuItem({
         }
       : undefined
 
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    markHeaderNavigation(event)
+    handleMemosClick?.()
+  }
+
   const Link = (
     <a
       className={clsx(
@@ -174,7 +204,7 @@ function HeaderMenuItem({
         isActive ? 'text-accent' : 'hover:text-accent',
       )}
       href={href}
-      onClick={handleMemosClick}
+      onClick={handleClick}
     >
       <div className="flex items-center space-x-2">
         {isActive && (

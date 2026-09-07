@@ -105,6 +105,13 @@ const { title, description, image, ogType, structuredData, showBackToTop = false
         pointer-events: none !important;
       }
 
+      /* Hide the scrolled article capsule synchronously when its link starts a
+         route change. The scroll reset can reveal the regular menu before React
+         finishes the capsule's exit animation, otherwise both briefly paint. */
+      html[data-header-navigating] [data-header-accessible-menu] {
+        display: none !important;
+      }
+
       /* Article headers render metadata on the server, but the restored scroll
          position is only known once the client starts. Keep the capsule out of
          the pre-hydration frame until the header state is released atomically. */

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { useReducedMotion } from 'framer-motion'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Header } from './Header'
@@ -31,6 +31,7 @@ describe('Header reduced motion', () => {
 
   afterEach(() => {
     vi.unstubAllGlobals()
+    document.documentElement.removeAttribute('data-header-navigating')
   })
 
   it('renders the logo and primary navigation without animation callbacks', () => {
@@ -62,5 +63,14 @@ describe('Header reduced motion', () => {
     expect(headerContentSource).toMatch(
       /initial=\{hasMounted\.current \? \{ y: 8, opacity: 0, scale: 0\.92 \} : false\}/,
     )
+  })
+
+  it('hides the floating capsule synchronously when navigation starts', () => {
+    render(<Header pathName="/posts/example" title="文章" description="摘要" slug="example" />)
+
+    fireEvent.click(screen.getAllByRole('link', { name: /首页/ })[0])
+
+    expect(document.documentElement.hasAttribute('data-header-navigating')).toBe(true)
+    expect(headerContentSource).toContain("root.setAttribute('data-header-navigating', '')")
   })
 })
