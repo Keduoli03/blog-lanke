@@ -19,6 +19,16 @@ import {
 import ColumnHover from './ColumnHover'
 import AboutHover from './AboutHover'
 
+let headerNavigationFallbackTimer: number | null = null
+
+function clearHeaderNavigationGuard() {
+  document.documentElement.removeAttribute('data-header-navigating')
+  if (headerNavigationFallbackTimer !== null) {
+    window.clearTimeout(headerNavigationFallbackTimer)
+    headerNavigationFallbackTimer = null
+  }
+}
+
 export function HeaderContent({ initialPathName = '/' }: { initialPathName?: string }) {
   return (
     <>
@@ -48,7 +58,7 @@ function AccessibleMenu({ initialPathName }: { initialPathName: string }) {
 
   return (
     <RootPortal>
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} onExitComplete={clearHeaderNavigationGuard}>
         {shouldShow && (
           <motion.div
             data-header-accessible-menu
@@ -83,17 +93,12 @@ function markHeaderNavigation(event: React.MouseEvent<HTMLAnchorElement>) {
     return
 
   const root = document.documentElement
+  if (headerNavigationFallbackTimer !== null) window.clearTimeout(headerNavigationFallbackTimer)
   root.setAttribute('data-header-navigating', '')
-  let fallbackTimer = 0
-  const clear = () => {
+  headerNavigationFallbackTimer = window.setTimeout(() => {
     root.removeAttribute('data-header-navigating')
-    document.removeEventListener('swup:contentReplaced', clear)
-    document.removeEventListener('astro:page-load', clear)
-    window.clearTimeout(fallbackTimer)
-  }
-  document.addEventListener('swup:contentReplaced', clear, { once: true })
-  document.addEventListener('astro:page-load', clear, { once: true })
-  fallbackTimer = window.setTimeout(clear, 2000)
+    headerNavigationFallbackTimer = null
+  }, 2000)
 }
 
 function HeaderMenu({ isBgShow, initialPathName }: { isBgShow: boolean; initialPathName: string }) {

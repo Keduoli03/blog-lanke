@@ -72,5 +72,9 @@ describe('Header reduced motion', () => {
 
     expect(document.documentElement.hasAttribute('data-header-navigating')).toBe(true)
     expect(headerContentSource).toContain("root.setAttribute('data-header-navigating', '')")
+    expect(headerContentSource).toContain('onExitComplete={clearHeaderNavigationGuard}')
+    expect(headerContentSource).not.toContain(
+      "document.addEventListener('swup:contentReplaced', clear",
+    )
   })
 })
