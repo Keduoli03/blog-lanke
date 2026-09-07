@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   INLINE_COMMENT_HASH_PREFIX,
-  buildInlineCommentContent,
-  decodeInlineCommentSelector,
+  appendInlineCommentLocator,
+  buildInlineCommentDraft,
   getInlineCommentBody,
+  getInlineCommentLocator,
   groupInlineDiscussions,
   hashInlineCommentValue,
   normalizeInlinePageKey,
@@ -21,6 +22,11 @@ interface ArtalkEditor {
   getUI(): { $textarea: HTMLTextAreaElement }
   setContent(value: string): void
   focus(): void
+  getPlugins():
+    | {
+        getTransformedContent(rawContent: string): string
+      }
+    | undefined
 }
 
 interface ArtalkInstance {
@@ -149,7 +155,7 @@ function captureSelector(article: HTMLElement, pageKey: string) {
     `${pageKey}\n${blockHash}\n${startOffset}\n${quote}\n${prefix}\n${suffix}`,
   )
   return {
-    version: 1,
+    version: 2,
     pageKey,
     anchorId,
     quote,
@@ -198,11 +204,6 @@ function resolveSelector(
   const found = best as { block: HTMLElement; start: number; score: number }
   const range = createRangeForOffsets(found.block, found.start, found.start + selector.quote.length)
   return range ? { block: found.block, range } : null
-}
-
-function decodeSelectorFromHash() {
-  if (!location.hash.startsWith(INLINE_COMMENT_HASH_PREFIX)) return null
-  return decodeInlineCommentSelector(location.hash.slice(INLINE_COMMENT_HASH_PREFIX.length))
 }
 
 function formatCommentDate(value: string) {
@@ -392,7 +393,6 @@ export function InlineComments({
     article.normalize()
 
     const resolved = Array.from(discussions.values())
-      .filter((discussion) => discussion.selector.pageKey === pageKey)
       .map((discussion) => ({ discussion, anchor: resolveSelector(article, discussion.selector) }))
       .filter(
         (item): item is { discussion: InlineDiscussion; anchor: ResolvedAnchor } => !!item.anchor,
@@ -440,9 +440,15 @@ export function InlineComments({
       composerHostRef.current.appendChild(editorEl)
     }
 
-    const content = buildInlineCommentContent(activeSelector, window.location.href)
+    const content = buildInlineCommentDraft(activeSelector)
     preparedContentRef.current = content.trim()
     editor.setContent(content)
+    const plugins = editor.getPlugins()
+    const originalTransformer = plugins?.getTransformedContent
+    if (plugins && originalTransformer) {
+      plugins.getTransformedContent = (rawContent: string) =>
+        appendInlineCommentLocator(originalTransformer.call(plugins, rawContent), activeSelector)
+    }
     const cursor =
       activeSelector.quote
         .split(/\r?\n/)
@@ -453,6 +459,10 @@ export function InlineComments({
       textarea.setSelectionRange(cursor, cursor)
       editor.focus()
     })
+
+    return () => {
+      if (plugins && originalTransformer) plugins.getTransformedContent = originalTransformer
+    }
   }, [activeSelector, instance, isOpen])
 
   useEffect(() => {
@@ -466,6 +476,16 @@ export function InlineComments({
   }, [isOpen])
 
   useEffect(() => {
+    if (!isOpen) return
+    document.documentElement.classList.add('inline-comments-open')
+    document.body.classList.add('inline-comments-open')
+    return () => {
+      document.documentElement.classList.remove('inline-comments-open')
+      document.body.classList.remove('inline-comments-open')
+    }
+  }, [isOpen])
+
+  useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setMenu(null)
@@ -473,8 +493,10 @@ export function InlineComments({
       }
     }
     const openFromHash = () => {
-      const selector = decodeSelectorFromHash()
-      if (selector?.pageKey === pageKey) openSelector(selector)
+      const discussion = Array.from(discussions.values()).find(
+        ({ selector }) => getInlineCommentLocator(selector) === location.hash,
+      )
+      if (discussion) openSelector(discussion.selector)
     }
     document.addEventListener('keydown', closeOnEscape)
     window.addEventListener('hashchange', openFromHash)
@@ -489,7 +511,7 @@ export function InlineComments({
         placeholder.parentNode.insertBefore(editor, placeholder)
       placeholder?.remove()
     }
-  }, [openSelector, pageKey])
+  }, [discussions, openSelector])
 
   return (
     <div data-inline-comments-ui>

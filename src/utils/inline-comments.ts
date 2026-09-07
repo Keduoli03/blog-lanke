@@ -1,7 +1,7 @@
-export const INLINE_COMMENT_HASH_PREFIX = '#artalk-inline-v1.'
+export const INLINE_COMMENT_HASH_PREFIX = '#artalk-inline-v2.'
 
 export interface InlineCommentSelector {
-  version: 1
+  version: 2
   pageKey: string
   anchorId: string
   quote: string
@@ -26,23 +26,6 @@ export interface InlineDiscussion {
   comments: InlineCommentData[]
 }
 
-function encodeBase64Url(value: string) {
-  const bytes = new TextEncoder().encode(value)
-  let binary = ''
-  bytes.forEach((byte) => {
-    binary += String.fromCharCode(byte)
-  })
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')
-}
-
-function decodeBase64Url(value: string) {
-  const normalized = value.replace(/-/g, '+').replace(/_/g, '/')
-  const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, '=')
-  const binary = atob(padded)
-  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
-  return new TextDecoder().decode(bytes)
-}
-
 export function hashInlineCommentValue(value: string) {
   let hash = 0x811c9dc5
   for (let index = 0; index < value.length; index += 1) {
@@ -56,50 +39,60 @@ export function normalizeInlinePageKey(pathname: string) {
   return pathname.replace(/\/+$/, '') || '/'
 }
 
-export function encodeInlineCommentSelector(selector: InlineCommentSelector) {
-  return encodeBase64Url(JSON.stringify(selector))
-}
-
-export function decodeInlineCommentSelector(encoded: string): InlineCommentSelector | null {
-  try {
-    const value = JSON.parse(decodeBase64Url(encoded)) as Partial<InlineCommentSelector>
-    if (
-      value.version !== 1 ||
-      typeof value.pageKey !== 'string' ||
-      typeof value.anchorId !== 'string' ||
-      typeof value.quote !== 'string' ||
-      typeof value.prefix !== 'string' ||
-      typeof value.suffix !== 'string' ||
-      typeof value.blockHash !== 'string' ||
-      typeof value.startOffset !== 'number' ||
-      typeof value.endOffset !== 'number'
-    ) {
-      return null
-    }
-    return value as InlineCommentSelector
-  } catch {
-    return null
-  }
-}
-
 export function getInlineCommentSelector(content: string) {
-  const prefix = INLINE_COMMENT_HASH_PREFIX.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  const match = content.match(new RegExp(`${prefix}([A-Za-z0-9_-]+)`))
-  return match ? decodeInlineCommentSelector(match[1]) : null
+  const compactPrefix = INLINE_COMMENT_HASH_PREFIX.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const compactMatch = content.match(
+    new RegExp(`${compactPrefix}([a-z0-9]+)\\.([a-z0-9]+)\\.([a-z0-9]+)\\.([a-z0-9]+)`, 'i'),
+  )
+  if (compactMatch) {
+    const quote = getInlineCommentQuote(content)
+    const startOffset = Number.parseInt(compactMatch[3], 36)
+    const endOffset = Number.parseInt(compactMatch[4], 36)
+    if (quote && Number.isFinite(startOffset) && Number.isFinite(endOffset)) {
+      return {
+        version: 2,
+        pageKey: '',
+        anchorId: compactMatch[1],
+        quote,
+        prefix: '',
+        suffix: '',
+        blockHash: compactMatch[2],
+        startOffset,
+        endOffset,
+      } satisfies InlineCommentSelector
+    }
+  }
+  return null
 }
 
-export function buildInlineCommentContent(
-  selector: InlineCommentSelector,
-  pageUrl: string,
-  body = '',
-) {
+export function getInlineCommentQuote(content: string) {
+  const quoteLines: string[] = []
+  for (const line of content.split(/\r?\n/)) {
+    if (!line.startsWith('>')) break
+    quoteLines.push(line.replace(/^> ?/, ''))
+  }
+  return quoteLines.join('\n').trim()
+}
+
+export function getInlineCommentLocator(selector: InlineCommentSelector) {
+  return `${INLINE_COMMENT_HASH_PREFIX}${selector.anchorId}.${selector.blockHash}.${selector.startOffset.toString(36)}.${selector.endOffset.toString(36)}`
+}
+
+export function appendInlineCommentLocator(content: string, selector: InlineCommentSelector) {
+  if (getInlineCommentSelector(content)) return content
+  return `${content.trimEnd()}\n\n[定位到原文](${getInlineCommentLocator(selector)})`
+}
+
+export function buildInlineCommentDraft(selector: InlineCommentSelector, body = '') {
   const quote = selector.quote
     .split(/\r?\n/)
     .map((line) => `> ${line}`)
     .join('\n')
-  const baseUrl = pageUrl.split('#')[0]
-  const locator = `${baseUrl}${INLINE_COMMENT_HASH_PREFIX}${encodeInlineCommentSelector(selector)}`
-  return `${quote}\n\n${body}\n\n[定位到原文](${locator})`
+  return `${quote}\n\n${body}`
+}
+
+export function buildInlineCommentContent(selector: InlineCommentSelector, body = '') {
+  return appendInlineCommentLocator(buildInlineCommentDraft(selector, body), selector)
 }
 
 export function getInlineCommentBody(content: string) {

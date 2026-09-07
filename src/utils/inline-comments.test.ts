@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import {
+  INLINE_COMMENT_HASH_PREFIX,
+  appendInlineCommentLocator,
+  buildInlineCommentDraft,
   buildInlineCommentContent,
-  decodeInlineCommentSelector,
-  encodeInlineCommentSelector,
   getInlineCommentBody,
   getInlineCommentSelector,
   groupInlineDiscussions,
@@ -11,29 +12,34 @@ import {
 } from './inline-comments'
 
 const selector: InlineCommentSelector = {
-  version: 1,
+  version: 2,
   pageKey: '/posts/test',
-  anchorId: 'anchor-1',
+  anchorId: 'anchor1',
   quote: '这是一段测试文字',
   prefix: '前文',
   suffix: '后文',
-  blockHash: 'block-1',
+  blockHash: 'block1',
   startOffset: 2,
   endOffset: 10,
 }
 
 describe('inline comment metadata', () => {
-  it('round trips unicode selectors through a URL-safe payload', () => {
-    const encoded = encodeInlineCommentSelector(selector)
-    expect(encoded).toMatch(/^[A-Za-z0-9_-]+$/)
-    expect(decodeInlineCommentSelector(encoded)).toEqual(selector)
-  })
+  it('keeps metadata out of the editor draft and injects a compact locator on submit', () => {
+    const draft = buildInlineCommentDraft(selector, '我的看法')
+    expect(draft).not.toContain(INLINE_COMMENT_HASH_PREFIX)
 
-  it('builds readable Artalk content and extracts its metadata and body', () => {
-    const content = buildInlineCommentContent(selector, 'https://blog.test/posts/test', '我的看法')
+    const content = appendInlineCommentLocator(draft, selector)
     expect(content).toContain('> 这是一段测试文字')
     expect(content).toContain('[定位到原文]')
-    expect(getInlineCommentSelector(content)).toEqual(selector)
+    expect(content.split('\n').at(-1)?.length).toBeLessThan(80)
+    expect(getInlineCommentSelector(content)).toMatchObject({
+      version: 2,
+      anchorId: selector.anchorId,
+      quote: selector.quote,
+      blockHash: selector.blockHash,
+      startOffset: selector.startOffset,
+      endOffset: selector.endOffset,
+    })
     expect(getInlineCommentBody(content)).toBe('我的看法')
   })
 
@@ -43,7 +49,7 @@ describe('inline comment metadata', () => {
       rid: 0,
       nick: 'A',
       date: '2026-09-08',
-      content: buildInlineCommentContent(selector, 'https://blog.test/posts/test', '第一条'),
+      content: buildInlineCommentContent(selector, '第一条'),
     }
     const comments: InlineCommentData[] = [
       root,

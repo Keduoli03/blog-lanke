@@ -54,6 +54,15 @@
   inset: 0;
 }
 
+html.inline-comments-open,
+body.inline-comments-open {
+  overflow: hidden !important;
+}
+
+html.inline-comments-open [data-back-to-top-action] {
+  display: none !important;
+}
+
 .inline-comment-backdrop {
   position: absolute;
   inset: 0;
@@ -71,6 +80,7 @@
   width: min(31rem, 92vw);
   flex-direction: column;
   overflow-y: auto;
+  overscroll-behavior: contain;
   border-left: 1px solid rgb(var(--color-border-primary));
   background: rgb(var(--color-bg-primary));
   color: rgb(var(--color-text-primary));
