@@ -596,7 +596,7 @@ export function InlineComments({
 
             <section className="inline-comment-composer" aria-label="发表评论">
               {!instance && <p className="inline-comment-status">正在加载 Artalk 编辑器…</p>}
-              <div ref={composerHostRef} />
+              <div ref={composerHostRef} className="artalk inline-comment-artalk-host" />
             </section>
           </aside>
         </div>

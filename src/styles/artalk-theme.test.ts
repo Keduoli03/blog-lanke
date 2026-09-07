@@ -29,4 +29,10 @@ describe('Artalk theme bridge', () => {
 
     expect(read('styles/components/artalk.css')).toContain("content: '发送';")
   })
+
+  it('keeps the moved inline editor inside an Artalk style scope', () => {
+    expect(read('components/comment/InlineComments.tsx')).toContain(
+      'className="artalk inline-comment-artalk-host"',
+    )
+  })
 })
