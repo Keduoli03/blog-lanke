@@ -240,6 +240,7 @@ export function InlineComments({
   const [copyComplete, setCopyComplete] = useState(false)
   const [pendingSelector, setPendingSelector] = useState<InlineCommentSelector | null>(null)
   const [activeSelector, setActiveSelector] = useState<InlineCommentSelector | null>(null)
+  const [shouldPrepareComposer, setShouldPrepareComposer] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [instance, setInstance] = useState<ArtalkInstance | null>(null)
   const [comments, setComments] = useState<InlineCommentData[]>([])
@@ -302,11 +303,12 @@ export function InlineComments({
     }, 250)
   }, [loadComments])
 
-  const openSelector = useCallback((selector: InlineCommentSelector) => {
+  const openSelector = useCallback((selector: InlineCommentSelector, prepareComposer = false) => {
     setMenu(null)
     setPendingSelector(null)
     setRenderedThreadCount(0)
     setActiveSelector(selector)
+    setShouldPrepareComposer(prepareComposer)
     setIsOpen(true)
     const article = document.getElementById('markdown-wrapper')
     if (article) {
@@ -492,15 +494,6 @@ export function InlineComments({
     if (!isOpen || !activeSelector || !instance || !composerHostRef.current) return
     const editor = instance.ctx.editor
     const editorEl = editor.getEl()
-    const raw = editor.getContentRaw().trim()
-    if (raw && raw !== preparedContentRef.current) {
-      const replace = window.confirm('评论框中已有未发送的内容，是否替换为当前划词评论？')
-      if (!replace) {
-        setIsOpen(false)
-        instance.getEl().scrollIntoView({ behavior: 'smooth', block: 'start' })
-        return
-      }
-    }
 
     if (!editorPlaceholderRef.current && editorEl.parentNode) {
       const placeholder = document.createComment('inline-comment-editor-placeholder')
@@ -510,30 +503,52 @@ export function InlineComments({
       composerHostRef.current.appendChild(editorEl)
     }
 
-    const content = buildInlineCommentDraft(activeSelector)
-    preparedContentRef.current = content.trim()
-    editor.setContent(content)
+    const raw = editor.getContentRaw().trim()
+    if (shouldPrepareComposer && raw && raw !== preparedContentRef.current) {
+      const replace = window.confirm('评论框中已有未发送的内容，是否替换为当前划词评论？')
+      if (!replace) {
+        setIsOpen(false)
+        instance.getEl().scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return
+      }
+    }
+
+    if (shouldPrepareComposer) {
+      const content = buildInlineCommentDraft(activeSelector)
+      preparedContentRef.current = content.trim()
+      editor.setContent(content)
+    } else {
+      preparedContentRef.current = ''
+    }
+
     const plugins = editor.getPlugins()
     const originalTransformer = plugins?.getTransformedContent
     if (plugins && originalTransformer) {
-      plugins.getTransformedContent = (rawContent: string) =>
-        appendInlineCommentLocator(originalTransformer.call(plugins, rawContent), activeSelector)
+      plugins.getTransformedContent = (rawContent: string) => {
+        const transformed = originalTransformer.call(plugins, rawContent)
+        const content = shouldPrepareComposer
+          ? transformed
+          : buildInlineCommentDraft(activeSelector, transformed)
+        return appendInlineCommentLocator(content, activeSelector)
+      }
     }
-    const cursor =
-      activeSelector.quote
-        .split(/\r?\n/)
-        .map((line) => `> ${line}`)
-        .join('\n').length + 2
-    window.requestAnimationFrame(() => {
-      const textarea = editor.getUI().$textarea
-      textarea.setSelectionRange(cursor, cursor)
-      editor.focus()
-    })
+    if (shouldPrepareComposer) {
+      const cursor =
+        activeSelector.quote
+          .split(/\r?\n/)
+          .map((line) => `> ${line}`)
+          .join('\n').length + 2
+      window.requestAnimationFrame(() => {
+        const textarea = editor.getUI().$textarea
+        textarea.setSelectionRange(cursor, cursor)
+        editor.focus()
+      })
+    }
 
     return () => {
       if (plugins && originalTransformer) plugins.getTransformedContent = originalTransformer
     }
-  }, [activeSelector, instance, isOpen])
+  }, [activeSelector, instance, isOpen, shouldPrepareComposer])
 
   useEffect(() => {
     if (!isOpen || !activeDiscussion || !instance?.ctx.list || !threadHostRef.current) return
@@ -565,13 +580,23 @@ export function InlineComments({
 
   useEffect(() => {
     if (isOpen) return
+    const artalkEditor = instance?.ctx.editor
+    const preparedContent = preparedContentRef.current
+    if (
+      artalkEditor &&
+      preparedContent &&
+      artalkEditor.getContentRaw().trim() === preparedContent
+    ) {
+      artalkEditor.setContent('')
+    }
+    preparedContentRef.current = ''
     const placeholder = editorPlaceholderRef.current
     const editor = movedEditorRef.current
     if (placeholder?.parentNode && editor) placeholder.parentNode.insertBefore(editor, placeholder)
     placeholder?.remove()
     editorPlaceholderRef.current = null
     movedEditorRef.current = null
-  }, [isOpen])
+  }, [instance, isOpen])
 
   useEffect(() => {
     if (!isOpen) return
@@ -675,7 +700,7 @@ export function InlineComments({
             className="inline-comment-menu-item"
             role="menuitem"
             disabled={!pendingSelector}
-            onClick={() => pendingSelector && openSelector(pendingSelector)}
+            onClick={() => pendingSelector && openSelector(pendingSelector, true)}
           >
             <span className="inline-comment-menu-icon">
               <StaticIcon icon={riChat1Line} />

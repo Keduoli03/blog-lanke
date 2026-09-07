@@ -64,4 +64,14 @@ describe('Artalk theme bridge', () => {
     )
     expect(css).not.toContain('.inline-comment-thread-item')
   })
+
+  it('keeps viewing comments blank while attaching the sentence only when a comment is sent', () => {
+    const source = read('components/comment/InlineComments.tsx')
+    const css = read('styles/components/inline-comments.css')
+
+    expect(source).toContain('openSelector(pendingSelector, true)')
+    expect(source).toContain('buildInlineCommentDraft(activeSelector, transformed)')
+    expect(source).toContain("artalkEditor.setContent('')")
+    expect(css).toContain('margin: 0.75rem 1.25rem 1.25rem;')
+  })
 })

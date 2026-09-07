@@ -188,7 +188,7 @@ html.inline-comments-open [data-header-accessible-menu] {
 
 .inline-comment-quote {
   position: relative;
-  margin: 1.25rem;
+  margin: 0.75rem 1.25rem 1.25rem;
   padding: 0.9rem 1rem 0.9rem 1.15rem;
   border: 0;
   border-radius: 0.75rem;
