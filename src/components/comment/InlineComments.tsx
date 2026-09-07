@@ -6,7 +6,6 @@ import {
   appendInlineCommentLocator,
   buildInlineCommentDraft,
   expandInlineCommentRange,
-  getInlineCommentBody,
   getInlineCommentLocator,
   groupInlineDiscussions,
   hashInlineCommentValue,
@@ -32,8 +31,18 @@ interface ArtalkEditor {
     | undefined
 }
 
+interface ArtalkCommentNode {
+  getEl(): HTMLElement
+  getID(): number
+  getParent(): ArtalkCommentNode | null
+}
+
+interface ArtalkList {
+  getCommentNodes(): ArtalkCommentNode[]
+}
+
 interface ArtalkInstance {
-  ctx: { editor: ArtalkEditor }
+  ctx: { editor: ArtalkEditor; list?: ArtalkList }
   getEl(): HTMLElement
   reload(): void
   on(name: string, handler: (comment?: InlineCommentData) => void): void
@@ -217,19 +226,6 @@ function resolveSelector(
   return range ? { block: found.block, range } : null
 }
 
-function formatCommentDate(value: string) {
-  const parsed = new Date(value.replace(' ', 'T'))
-  return Number.isNaN(parsed.getTime())
-    ? value
-    : new Intl.DateTimeFormat('zh-CN', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      }).format(parsed)
-}
-
 export function InlineComments({
   server,
   site,
@@ -249,7 +245,10 @@ export function InlineComments({
   const [comments, setComments] = useState<InlineCommentData[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState(false)
+  const [artalkListVersion, setArtalkListVersion] = useState(0)
+  const [renderedThreadCount, setRenderedThreadCount] = useState(0)
   const composerHostRef = useRef<HTMLDivElement>(null)
+  const threadHostRef = useRef<HTMLDivElement>(null)
   const editorPlaceholderRef = useRef<Comment | null>(null)
   const movedEditorRef = useRef<HTMLElement | null>(null)
   const preparedContentRef = useRef('')
@@ -306,6 +305,7 @@ export function InlineComments({
   const openSelector = useCallback((selector: InlineCommentSelector) => {
     setMenu(null)
     setPendingSelector(null)
+    setRenderedThreadCount(0)
     setActiveSelector(selector)
     setIsOpen(true)
     const article = document.getElementById('markdown-wrapper')
@@ -367,13 +367,16 @@ export function InlineComments({
         setIsOpen(false)
       }
     }
+    const onListLoaded = () => setArtalkListVersion((version) => version + 1)
     instance.on('comment-inserted', onChange)
     instance.on('comment-updated', onChange)
     instance.on('comment-deleted', onChange)
+    instance.on('list-loaded', onListLoaded)
     return () => {
       instance.off('comment-inserted', onChange)
       instance.off('comment-updated', onChange)
       instance.off('comment-deleted', onChange)
+      instance.off('list-loaded', onListLoaded)
     }
   }, [activeSelector, instance, scheduleRefresh])
 
@@ -531,6 +534,34 @@ export function InlineComments({
       if (plugins && originalTransformer) plugins.getTransformedContent = originalTransformer
     }
   }, [activeSelector, instance, isOpen])
+
+  useEffect(() => {
+    if (!isOpen || !activeDiscussion || !instance?.ctx.list || !threadHostRef.current) return
+    const commentIds = new Set(activeDiscussion.comments.map(({ id }) => id))
+    const nodes = instance.ctx.list.getCommentNodes()
+    const roots = nodes.filter((node) => {
+      if (!commentIds.has(node.getID())) return false
+      const parent = node.getParent()
+      return !parent || !commentIds.has(parent.getID())
+    })
+    if (!roots.length) return
+
+    const placements = roots.map((node) => {
+      const element = node.getEl()
+      const placeholder = document.createComment(`inline-comment-${node.getID()}`)
+      element.parentNode?.insertBefore(placeholder, element)
+      threadHostRef.current?.append(element)
+      return { node, placeholder }
+    })
+    setRenderedThreadCount(activeDiscussion.comments.length)
+
+    return () => {
+      placements.forEach(({ node, placeholder }) => {
+        if (placeholder.parentNode) placeholder.parentNode.insertBefore(node.getEl(), placeholder)
+        placeholder.remove()
+      })
+    }
+  }, [activeDiscussion, artalkListVersion, instance, isOpen])
 
   useEffect(() => {
     if (isOpen) return
@@ -714,20 +745,15 @@ export function InlineComments({
                   加载失败，点击重试
                 </button>
               ) : activeDiscussion?.comments.length ? (
-                <div className="inline-comment-thread-list">
-                  {activeDiscussion.comments.map((comment) => (
-                    <article
-                      className="inline-comment-thread-item"
-                      data-reply={comment.rid ? 'true' : 'false'}
-                      key={comment.id}
-                    >
-                      <div className="inline-comment-thread-meta">
-                        <strong>{comment.nick}</strong>
-                        <time>{formatCommentDate(comment.date)}</time>
-                      </div>
-                      <p>{getInlineCommentBody(comment.content) || '回复了这条讨论'}</p>
-                    </article>
-                  ))}
+                <div className="artalk inline-comment-thread-artalk">
+                  <div className="atk-list">
+                    <div className="atk-list-body">
+                      <div ref={threadHostRef} className="atk-list-comments-wrap" />
+                    </div>
+                  </div>
+                  {renderedThreadCount === 0 && (
+                    <p className="inline-comment-status">正在准备评论内容…</p>
+                  )}
                 </div>
               ) : (
                 <p className="inline-comment-status">还没有讨论，来说说你的看法吧。</p>

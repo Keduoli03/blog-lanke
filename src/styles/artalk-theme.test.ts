@@ -48,4 +48,15 @@ describe('Artalk theme bridge', () => {
     expect(css).toContain('.inline-comment-menu-item')
     expect(css).toContain('.inline-comment-located')
   })
+
+  it('reuses Artalk comment nodes in a wider panel without showing the floating header menu', () => {
+    const source = read('components/comment/InlineComments.tsx')
+    const css = read('styles/components/inline-comments.css')
+
+    expect(source).toContain('instance.ctx.list.getCommentNodes()')
+    expect(source).toContain('className="artalk inline-comment-thread-artalk"')
+    expect(css).toContain('width: min(38rem, 94vw);')
+    expect(css).toContain('html.inline-comments-open [data-header-accessible-menu]')
+    expect(css).not.toContain('.inline-comment-thread-item')
+  })
 })
