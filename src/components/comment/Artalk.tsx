@@ -48,11 +48,19 @@ export function Artalk({ server, site }: { server: string; site: string }) {
       instance = Artalk.init({
         el: ref.current!,
         pageKey,
+        pageTitle: document.title,
         server,
         site,
         sendBtn: '发送',
         darkMode: document.documentElement.getAttribute('data-theme') === 'dark',
       })
+      const detail = { instance, pageKey }
+      ;(
+        window as typeof window & {
+          __articleArtalk?: typeof detail
+        }
+      ).__articleArtalk = detail
+      window.dispatchEvent(new CustomEvent('artalk:ready', { detail }))
     })()
 
     const onTheme = () => {
@@ -66,6 +74,14 @@ export function Artalk({ server, site }: { server: string; site: string }) {
 
     return () => {
       destroyed = true
+      const articleWindow = window as typeof window & {
+        __articleArtalk?: { instance: unknown; pageKey: string }
+      }
+      if (articleWindow.__articleArtalk?.instance === instance) {
+        const detail = articleWindow.__articleArtalk
+        delete articleWindow.__articleArtalk
+        window.dispatchEvent(new CustomEvent('artalk:destroyed', { detail }))
+      }
       try {
         instance?.destroy?.()
       } catch {}

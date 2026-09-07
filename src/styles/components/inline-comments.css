@@ -1,0 +1,283 @@
+.inline-comment-menu {
+  position: fixed;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgb(var(--color-border-primary));
+  border-radius: 0.75rem;
+  background: rgb(var(--color-bg-primary) / 0.96);
+  color: rgb(var(--color-text-primary));
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.16);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(16px);
+}
+
+.inline-comment-menu:hover,
+.inline-comment-menu:focus-visible {
+  border-color: rgb(var(--color-accent) / 0.55);
+  color: rgb(var(--color-accent));
+  outline: none;
+}
+
+.inline-comment-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: 0.35rem;
+  padding: 0.1rem 0.42rem;
+  border: 1px solid rgb(var(--color-accent) / 0.22);
+  border-radius: 999px;
+  background: rgb(var(--color-accent) / 0.08);
+  color: rgb(var(--color-accent));
+  font:
+    600 0.72rem/1.35 system-ui,
+    sans-serif;
+  vertical-align: 0.08em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.inline-comment-badge:hover,
+.inline-comment-badge:focus-visible {
+  background: rgb(var(--color-accent) / 0.16);
+  outline: 2px solid rgb(var(--color-accent) / 0.22);
+  outline-offset: 2px;
+}
+
+.inline-comment-overlay {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+}
+
+.inline-comment-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: 0;
+  background: rgb(0 0 0 / 0.38);
+  cursor: default;
+  backdrop-filter: blur(2px);
+}
+
+.inline-comment-panel {
+  position: absolute;
+  inset: 0 0 0 auto;
+  display: flex;
+  width: min(31rem, 92vw);
+  flex-direction: column;
+  overflow-y: auto;
+  border-left: 1px solid rgb(var(--color-border-primary));
+  background: rgb(var(--color-bg-primary));
+  color: rgb(var(--color-text-primary));
+  box-shadow: -18px 0 48px rgb(0 0 0 / 0.18);
+}
+
+.inline-comment-panel-header {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem 1.25rem 0.9rem;
+  border-bottom: 1px solid rgb(var(--color-border-primary));
+  background: rgb(var(--color-bg-primary) / 0.92);
+  backdrop-filter: blur(18px);
+}
+
+.inline-comment-eyebrow {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: rgb(var(--color-accent));
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.inline-comment-panel-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.inline-comment-close {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(var(--color-bg-secondary));
+  color: rgb(var(--color-text-secondary));
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.inline-comment-close:hover,
+.inline-comment-close:focus-visible {
+  color: rgb(var(--color-accent));
+  outline: none;
+}
+
+.inline-comment-quote {
+  position: relative;
+  margin: 1.25rem;
+  padding: 0.9rem 1rem 0.9rem 1.15rem;
+  border: 0;
+  border-radius: 0.75rem;
+  background: rgb(var(--color-accent) / 0.08);
+  color: rgb(var(--color-text-primary));
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.inline-comment-quote::before {
+  position: absolute;
+  inset: 0.75rem auto 0.75rem 0;
+  width: 3px;
+  border-radius: 999px;
+  background: rgb(var(--color-accent));
+  content: '';
+}
+
+.inline-comment-thread,
+.inline-comment-composer {
+  padding: 0 1.25rem 1.25rem;
+}
+
+.inline-comment-thread-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.inline-comment-thread-heading h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.inline-comment-thread-heading span,
+.inline-comment-status {
+  color: rgb(var(--color-text-secondary));
+  font-size: 0.82rem;
+}
+
+.inline-comment-thread-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.inline-comment-thread-item {
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgb(var(--color-border-primary));
+  border-radius: 0.7rem;
+  background: rgb(var(--color-bg-secondary) / 0.45);
+}
+
+.inline-comment-thread-item[data-reply='true'] {
+  margin-left: 1.25rem;
+}
+
+.inline-comment-thread-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.8rem;
+}
+
+.inline-comment-thread-meta time {
+  color: rgb(var(--color-text-secondary));
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.inline-comment-thread-item p {
+  margin: 0;
+  color: rgb(var(--color-text-primary));
+  font-size: 0.86rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.inline-comment-retry {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgb(var(--color-accent));
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.inline-comment-composer {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgb(var(--color-border-primary));
+}
+
+.inline-comment-composer .atk-list,
+.inline-comment-composer .atk-list-header,
+.inline-comment-composer .atk-list-footer {
+  display: none !important;
+}
+
+.inline-comment-composer .artalk,
+.inline-comment-composer .atk-main-editor {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .inline-comment-panel {
+    inset: auto 0 0;
+    width: 100%;
+    max-height: min(86vh, 46rem);
+    border-top: 1px solid rgb(var(--color-border-primary));
+    border-left: 0;
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .inline-comment-thread-item[data-reply='true'] {
+    margin-left: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .inline-comment-menu {
+    animation: inline-comment-pop 140ms ease-out;
+  }
+
+  .inline-comment-panel {
+    animation: inline-comment-slide 180ms ease-out;
+  }
+}
+
+@keyframes inline-comment-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-3px) scale(0.98);
+  }
+}
+
+@keyframes inline-comment-slide {
+  from {
+    opacity: 0;
+    transform: translateX(1.25rem);
+  }
+}
+
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
+  @keyframes inline-comment-slide {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+  }
+}

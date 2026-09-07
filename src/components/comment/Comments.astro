@@ -1,12 +1,33 @@
 ---
 import { Artalk } from './Artalk'
+import { InlineComments } from './InlineComments'
 import { artalk } from '@/config.json'
+
+interface Props {
+  inline?: boolean
+}
+
+const { inline = false } = Astro.props
 ---
 
 <div id="comments" class="min-h-40">
   {
     artalk?.server && artalk?.site && (
-      <Artalk server={artalk.server} site={artalk.site} client:visible />
+      <>
+        {inline && (
+          <InlineComments
+            server={artalk.server}
+            site={artalk.site}
+            pathname={Astro.url.pathname}
+            client:load
+          />
+        )}
+        {inline ? (
+          <Artalk server={artalk.server} site={artalk.site} client:load />
+        ) : (
+          <Artalk server={artalk.server} site={artalk.site} client:visible />
+        )}
+      </>
     )
   }
 </div>

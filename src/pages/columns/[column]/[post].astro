@@ -253,7 +253,7 @@ const nextUrl = nextItem ? `/columns/${column.slug}/${nextItem.slug.split('/').p
           prevUrl={prevUrl}
           nextUrl={nextUrl}
         />
-        {post.data.comments && <Comments />}
+        {post.data.comments && <Comments inline />}
       </div>
     </div>
     <div class="hidden xl:block lg:col-start-3 justify-self-start w-65" data-pagefind-ignore>
