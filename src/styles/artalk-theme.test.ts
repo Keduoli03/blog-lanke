@@ -57,6 +57,11 @@ describe('Artalk theme bridge', () => {
     expect(source).toContain('className="artalk inline-comment-thread-artalk"')
     expect(css).toContain('width: min(38rem, 94vw);')
     expect(css).toContain('html.inline-comments-open [data-header-accessible-menu]')
+    expect(css).toContain('html[data-theme] .inline-comment-thread-artalk .atk-content')
+    expect(css).toContain('font-size: 0.875rem;')
+    expect(css.match(/\.inline-comment-panel-header \{[\s\S]*?\}/)?.[0]).not.toContain(
+      'border-bottom',
+    )
     expect(css).not.toContain('.inline-comment-thread-item')
   })
 })

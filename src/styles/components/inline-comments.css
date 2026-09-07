@@ -148,7 +148,6 @@ html.inline-comments-open [data-header-accessible-menu] {
   justify-content: space-between;
   gap: 1rem;
   padding: 1.15rem 1.25rem 0.9rem;
-  border-bottom: 1px solid rgb(var(--color-border-primary));
   background: rgb(var(--color-bg-primary) / 0.92);
   backdrop-filter: blur(18px);
 }
@@ -241,6 +240,17 @@ html.inline-comments-open [data-header-accessible-menu] {
 
 .inline-comment-thread-artalk .atk-list-comments-wrap {
   min-height: 0;
+}
+
+html[data-theme] .inline-comment-thread-artalk .atk-content,
+html[data-theme] .inline-comment-thread-artalk .atk-content p,
+html[data-theme] .inline-comment-thread-artalk .atk-content blockquote {
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+html[data-theme] .inline-comment-thread-artalk .atk-actions {
+  font-size: 0.78rem;
 }
 
 .inline-comment-retry {
