@@ -197,6 +197,13 @@ export const friends = [
     rss: 'https://homulilly.com/atom.xml',
     tags: ['友链'],
   },
+  {
+    title: '格雷万事屋',
+    avatar: 'https://blog.grayzhao.com/website.png',
+    description: '格雷的万事屋包罗万象',
+    link: 'https://blog.grayzhao.com/',
+    tags: ['友链'],
+  },
 ]
 
 export const lostFriends = [
