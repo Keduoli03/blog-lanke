@@ -72,6 +72,8 @@ describe('Artalk theme bridge', () => {
     expect(source).toContain('openSelector(pendingSelector, true)')
     expect(source).toContain('buildInlineCommentDraft(activeSelector, transformed)')
     expect(source).toContain("artalkEditor.setContent('')")
+    expect(source).toContain("const ARTALK_CONTENT_STORAGE_KEY = 'ArtalkContent'")
+    expect(source.match(/clearArtalkContentStorage\(\)/g)).toHaveLength(4)
     expect(css).toContain('margin: 0.75rem 1.25rem 1.25rem;')
   })
 })

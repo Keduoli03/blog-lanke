@@ -17,6 +17,13 @@ import {
 
 const COMMENTABLE_SELECTOR = 'p, li, blockquote, h2, h3, h4, h5, h6, td, th'
 const MAX_QUOTE_LENGTH = 500
+const ARTALK_CONTENT_STORAGE_KEY = 'ArtalkContent'
+
+function clearArtalkContentStorage() {
+  try {
+    window.localStorage.removeItem(ARTALK_CONTENT_STORAGE_KEY)
+  } catch {}
+}
 
 interface ArtalkEditor {
   getEl(): HTMLElement
@@ -252,6 +259,7 @@ export function InlineComments({
   const threadHostRef = useRef<HTMLDivElement>(null)
   const editorPlaceholderRef = useRef<Comment | null>(null)
   const movedEditorRef = useRef<HTMLElement | null>(null)
+  const movedArtalkEditorRef = useRef<ArtalkEditor | null>(null)
   const preparedContentRef = useRef('')
   const refreshTimerRef = useRef<number | null>(null)
   const copyTimerRef = useRef<number | null>(null)
@@ -500,6 +508,7 @@ export function InlineComments({
       editorEl.parentNode.insertBefore(placeholder, editorEl)
       editorPlaceholderRef.current = placeholder
       movedEditorRef.current = editorEl
+      movedArtalkEditorRef.current = editor
       composerHostRef.current.appendChild(editorEl)
     }
 
@@ -517,6 +526,9 @@ export function InlineComments({
       const content = buildInlineCommentDraft(activeSelector)
       preparedContentRef.current = content.trim()
       editor.setContent(content)
+      // Artalk persists every programmatic setContent call. The generated quote is UI state,
+      // not a user-authored draft, so do not restore it after refresh or on another article.
+      clearArtalkContentStorage()
     } else {
       preparedContentRef.current = ''
     }
@@ -588,6 +600,7 @@ export function InlineComments({
       artalkEditor.getContentRaw().trim() === preparedContent
     ) {
       artalkEditor.setContent('')
+      clearArtalkContentStorage()
     }
     preparedContentRef.current = ''
     const placeholder = editorPlaceholderRef.current
@@ -596,6 +609,7 @@ export function InlineComments({
     placeholder?.remove()
     editorPlaceholderRef.current = null
     movedEditorRef.current = null
+    movedArtalkEditorRef.current = null
   }, [instance, isOpen])
 
   useEffect(() => {
@@ -622,6 +636,16 @@ export function InlineComments({
       if (copyTimerRef.current !== null) window.clearTimeout(copyTimerRef.current)
       const placeholder = editorPlaceholderRef.current
       const editor = movedEditorRef.current
+      const artalkEditor = movedArtalkEditorRef.current
+      const preparedContent = preparedContentRef.current
+      if (
+        artalkEditor &&
+        preparedContent &&
+        artalkEditor.getContentRaw().trim() === preparedContent
+      ) {
+        artalkEditor.setContent('')
+        clearArtalkContentStorage()
+      }
       if (placeholder?.parentNode && editor)
         placeholder.parentNode.insertBefore(editor, placeholder)
       placeholder?.remove()
