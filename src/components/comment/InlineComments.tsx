@@ -1,6 +1,16 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import type { IconifyIcon } from '@iconify/types'
 import { StaticIcon } from '@/components/header/StaticIcon'
-import { riChat1Line, riFileCopyLine, riLinkM } from '@/icons/ri'
+import {
+  riArrowUpLine,
+  riChat3Line,
+  riChatQuoteLine,
+  riFileCopyLine,
+  riLinkM,
+  riLinksLine,
+  riSearchLine,
+} from '@/icons/ri'
 import {
   INLINE_COMMENT_HASH_PREFIX,
   appendInlineCommentLocator,
@@ -18,6 +28,68 @@ import {
 const COMMENTABLE_SELECTOR = 'p, li, blockquote, h2, h3, h4, h5, h6, td, th'
 const MAX_QUOTE_LENGTH = 500
 const ARTALK_CONTENT_STORAGE_KEY = 'ArtalkContent'
+const HIGHLIGHT_NAME = 'inline-comment'
+const ACTIVE_HIGHLIGHT_NAME = 'inline-comment-active'
+const MENU_VIEWPORT_GAP = 8
+
+interface HighlightRegistryLike {
+  set(name: string, highlight: unknown): void
+  delete(name: string): void
+}
+
+function getHighlightRegistry() {
+  if (typeof CSS === 'undefined' || typeof window === 'undefined') return null
+  const registry = (CSS as unknown as { highlights?: HighlightRegistryLike }).highlights
+  const HighlightCtor = (window as unknown as { Highlight?: new (...ranges: Range[]) => unknown })
+    .Highlight
+  if (!registry || !HighlightCtor) return null
+  return { registry, create: (ranges: Range[]) => new HighlightCtor(...ranges) }
+}
+
+function setActiveHighlight(range: Range | null) {
+  const highlights = getHighlightRegistry()
+  if (!highlights) return
+  if (range) highlights.registry.set(ACTIVE_HIGHLIGHT_NAME, highlights.create([range]))
+  else highlights.registry.delete(ACTIVE_HIGHLIGHT_NAME)
+}
+
+function encodeTextFragmentPart(value: string) {
+  return encodeURIComponent(value).replace(/-/g, '%2D').replace(/,/g, '%2C')
+}
+
+function buildTextFragmentUrl(text: string) {
+  const base = `${window.location.origin}${window.location.pathname}`
+  const normalized = text.replace(/\s+/g, ' ').trim()
+  if (!normalized) return base
+  const chars = Array.from(normalized)
+  const directive =
+    chars.length <= 48
+      ? encodeTextFragmentPart(normalized)
+      : `${encodeTextFragmentPart(chars.slice(0, 16).join('').trim())},${encodeTextFragmentPart(
+          chars.slice(-16).join('').trim(),
+        )}`
+  return `${base}#:~:text=${directive}`
+}
+
+function truncateLabel(value: string, max = 10) {
+  const chars = Array.from(value.replace(/\s+/g, ' ').trim())
+  return chars.length > max ? `${chars.slice(0, max).join('')}…` : chars.join('')
+}
+
+async function writeClipboard(value: string) {
+  try {
+    await navigator.clipboard.writeText(value)
+  } catch {
+    const textarea = document.createElement('textarea')
+    textarea.value = value
+    textarea.style.position = 'fixed'
+    textarea.style.opacity = '0'
+    document.body.append(textarea)
+    textarea.select()
+    document.execCommand('copy')
+    textarea.remove()
+  }
+}
 
 function clearArtalkContentStorage() {
   try {
@@ -65,6 +137,13 @@ interface MenuState {
   left: number
   top: number
   selectionText: string
+}
+
+interface MenuAction {
+  key: string
+  label: string
+  icon: IconifyIcon
+  run: () => void | Promise<void>
 }
 
 interface ResolvedAnchor {
@@ -244,7 +323,7 @@ export function InlineComments({
 }) {
   const pageKey = normalizeInlinePageKey(pathname)
   const [menu, setMenu] = useState<MenuState | null>(null)
-  const [copyComplete, setCopyComplete] = useState(false)
+  const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const [pendingSelector, setPendingSelector] = useState<InlineCommentSelector | null>(null)
   const [activeSelector, setActiveSelector] = useState<InlineCommentSelector | null>(null)
   const [shouldPrepareComposer, setShouldPrepareComposer] = useState(false)
@@ -263,6 +342,8 @@ export function InlineComments({
   const preparedContentRef = useRef('')
   const refreshTimerRef = useRef<number | null>(null)
   const copyTimerRef = useRef<number | null>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const anchorRangesRef = useRef(new Map<string, Range>())
 
   const discussions = useMemo(() => groupInlineDiscussions(comments), [comments])
   const activeDiscussion = activeSelector ? discussions.get(activeSelector.anchorId) : undefined
@@ -401,12 +482,8 @@ export function InlineComments({
       top: number,
     ) => {
       setPendingSelector(selector)
-      setCopyComplete(false)
-      setMenu({
-        left: Math.min(Math.max(12, left), window.innerWidth - 224),
-        top: Math.min(Math.max(12, top), window.innerHeight - 116),
-        selectionText,
-      })
+      setCopiedKey(null)
+      setMenu({ left, top, selectionText })
     }
     const onContextMenu = (event: MouseEvent) => {
       const target = event.target
@@ -443,15 +520,34 @@ export function InlineComments({
       const target = event.target
       if (target instanceof Element && !target.closest('[data-inline-comments-ui]')) setMenu(null)
     }
+    const closeMenu = () => setMenu(null)
     document.addEventListener('contextmenu', onContextMenu)
     article.addEventListener('pointerup', onPointerUp)
     document.addEventListener('pointerdown', onPointerDown)
+    window.addEventListener('scroll', closeMenu, { passive: true })
+    window.addEventListener('resize', closeMenu)
     return () => {
       document.removeEventListener('contextmenu', onContextMenu)
       article.removeEventListener('pointerup', onPointerUp)
       document.removeEventListener('pointerdown', onPointerDown)
+      window.removeEventListener('scroll', closeMenu)
+      window.removeEventListener('resize', closeMenu)
     }
   }, [pageKey])
+
+  useLayoutEffect(() => {
+    const element = menuRef.current
+    if (!menu || !element) return
+    const { width, height } = element.getBoundingClientRect()
+    const maxLeft = window.innerWidth - width - MENU_VIEWPORT_GAP
+    const left = Math.max(MENU_VIEWPORT_GAP, Math.min(menu.left, maxLeft))
+    const top =
+      menu.top + height > window.innerHeight - MENU_VIEWPORT_GAP
+        ? Math.max(MENU_VIEWPORT_GAP, menu.top - height)
+        : menu.top
+    element.style.left = `${left}px`
+    element.style.top = `${top}px`
+  }, [menu])
 
   useEffect(() => {
     const article = document.getElementById('markdown-wrapper')
@@ -487,16 +583,40 @@ export function InlineComments({
       count.textContent = String(discussion.comments.length)
       badge.append(icon, count)
       badge.addEventListener('click', () => openSelector(discussion.selector))
+      badge.addEventListener('pointerenter', () => setActiveHighlight(anchor.range))
+      badge.addEventListener('pointerleave', () => setActiveHighlight(null))
+      badge.addEventListener('focus', () => setActiveHighlight(anchor.range))
+      badge.addEventListener('blur', () => setActiveHighlight(null))
       const insertion = anchor.range.cloneRange()
       insertion.collapse(false)
       insertion.insertNode(badge)
     })
 
+    const anchorRanges = anchorRangesRef.current
+    anchorRanges.clear()
+    resolved.forEach(({ discussion, anchor }) =>
+      anchorRanges.set(discussion.selector.anchorId, anchor.range),
+    )
+    const highlights = getHighlightRegistry()
+    highlights?.registry.set(
+      HIGHLIGHT_NAME,
+      highlights.create(resolved.map(({ anchor }) => anchor.range)),
+    )
+
     return () => {
+      highlights?.registry.delete(HIGHLIGHT_NAME)
+      highlights?.registry.delete(ACTIVE_HIGHLIGHT_NAME)
+      anchorRanges.clear()
       article.querySelectorAll('[data-inline-comment-badge]').forEach((badge) => badge.remove())
       article.normalize()
     }
   }, [discussions, openSelector, pageKey])
+
+  useEffect(() => {
+    if (!isOpen || !activeSelector) return
+    setActiveHighlight(anchorRangesRef.current.get(activeSelector.anchorId) ?? null)
+    return () => setActiveHighlight(null)
+  }, [activeSelector, discussions, isOpen])
 
   useEffect(() => {
     if (!isOpen || !activeSelector || !instance || !composerHostRef.current) return
@@ -689,63 +809,126 @@ export function InlineComments({
     }
   }, [discussions, locateSelector])
 
-  const copyFromMenu = useCallback(async () => {
-    if (!menu) return
-    const value = menu.selectionText || `${window.location.origin}${window.location.pathname}`
-    try {
-      await navigator.clipboard.writeText(value)
-    } catch {
-      const textarea = document.createElement('textarea')
-      textarea.value = value
-      textarea.style.position = 'fixed'
-      textarea.style.opacity = '0'
-      document.body.append(textarea)
-      textarea.select()
-      document.execCommand('copy')
-      textarea.remove()
-    }
-    setCopyComplete(true)
+  const copyFromMenu = useCallback(async (key: string, value: string) => {
+    await writeClipboard(value)
+    setCopiedKey(key)
     if (copyTimerRef.current !== null) window.clearTimeout(copyTimerRef.current)
     copyTimerRef.current = window.setTimeout(() => setMenu(null), 700)
-  }, [menu])
+  }, [])
+
+  const menuGroups = useMemo(() => {
+    if (!menu) return []
+    const pageUrl = `${window.location.origin}${window.location.pathname}`
+    const selectionActions: MenuAction[] = []
+    if (menu.selectionText) {
+      if (pendingSelector) {
+        selectionActions.push({
+          key: 'comment',
+          label: '评论这段文字',
+          icon: riChatQuoteLine,
+          run: () => openSelector(pendingSelector, true),
+        })
+      }
+      selectionActions.push(
+        {
+          key: 'copy-text',
+          label: '复制文字',
+          icon: riFileCopyLine,
+          run: () => copyFromMenu('copy-text', menu.selectionText),
+        },
+        {
+          key: 'copy-quote-link',
+          label: '复制引用链接',
+          icon: riLinksLine,
+          run: () =>
+            copyFromMenu(
+              'copy-quote-link',
+              buildTextFragmentUrl(pendingSelector?.quote ?? menu.selectionText),
+            ),
+        },
+        {
+          key: 'search',
+          label: `搜索“${truncateLabel(menu.selectionText)}”`,
+          icon: riSearchLine,
+          run: () => {
+            setMenu(null)
+            window.open(
+              `https://www.google.com/search?q=${encodeURIComponent(menu.selectionText)}`,
+              '_blank',
+              'noopener,noreferrer',
+            )
+          },
+        },
+      )
+    }
+    const pageActions: MenuAction[] = [
+      {
+        key: 'copy-page-link',
+        label: '复制页面链接',
+        icon: riLinkM,
+        run: () => copyFromMenu('copy-page-link', pageUrl),
+      },
+      {
+        key: 'comments',
+        label: '前往评论区',
+        icon: riChat3Line,
+        run: () => {
+          setMenu(null)
+          document.getElementById('comments')?.scrollIntoView({ behavior: 'smooth' })
+        },
+      },
+      {
+        key: 'top',
+        label: '回到顶部',
+        icon: riArrowUpLine,
+        run: () => {
+          setMenu(null)
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        },
+      },
+    ]
+    return [selectionActions, pageActions].filter((group) => group.length)
+  }, [copyFromMenu, menu, openSelector, pendingSelector])
 
   return (
     <div data-inline-comments-ui>
-      {menu && (
-        <div
-          className="inline-comment-menu"
-          style={{ left: menu.left, top: menu.top }}
-          role="menu"
-          aria-label="文章操作"
-          onContextMenu={(event) => event.preventDefault()}
-        >
-          <button
-            type="button"
-            className="inline-comment-menu-item"
-            role="menuitem"
-            disabled={!pendingSelector}
-            onClick={() => pendingSelector && openSelector(pendingSelector, true)}
+      {menu &&
+        createPortal(
+          <div
+            ref={menuRef}
+            className="inline-comment-menu"
+            style={{ left: menu.left, top: menu.top }}
+            role="menu"
+            aria-label="文章操作"
+            data-inline-comments-ui
+            onContextMenu={(event) => event.preventDefault()}
           >
-            <span className="inline-comment-menu-icon">
-              <StaticIcon icon={riChat1Line} />
-            </span>
-            <span>{pendingSelector ? '评论这段文字' : '选中文字后评论'}</span>
-          </button>
-          <button
-            type="button"
-            className="inline-comment-menu-item"
-            role="menuitem"
-            onClick={() => void copyFromMenu()}
-          >
-            <span className="inline-comment-menu-icon">
-              <StaticIcon icon={menu.selectionText ? riFileCopyLine : riLinkM} />
-            </span>
-            <span>
-              {copyComplete ? '已复制' : menu.selectionText ? '复制选中文字' : '复制页面链接'}
-            </span>
-          </button>
-        </div>
-      )}
+            {menuGroups.map((group, index) => (
+              <div key={group[0].key} className="inline-comment-menu-group" role="group">
+                {index > 0 && <div className="inline-comment-menu-separator" role="separator" />}
+                {group.map((action) => (
+                  <button
+                    key={action.key}
+                    type="button"
+                    className="inline-comment-menu-item"
+                    role="menuitem"
+                    data-copied={copiedKey === action.key || undefined}
+                    onClick={() => void action.run()}
+                  >
+                    <StaticIcon icon={action.icon} className="inline-comment-menu-icon" />
+                    <span className="inline-comment-menu-label">
+                      {copiedKey === action.key ? '已复制' : action.label}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            ))}
+            {!menu.selectionText && (
+              <p className="inline-comment-menu-hint">选中正文文字即可评论</p>
+            )}
+          </div>,
+          document.body,
+        )}
 
       {isOpen && activeSelector && (
         <div className="inline-comment-overlay" role="presentation">

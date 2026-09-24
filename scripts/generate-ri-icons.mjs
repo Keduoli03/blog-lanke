@@ -10,10 +10,13 @@ const sourceDirectory = fileURLToPath(new URL('../src/', import.meta.url))
 const outputPath = fileURLToPath(new URL('../src/icons/ri.ts', import.meta.url))
 const icons = {
   riArchiveLine: 'archive-line',
+  riArrowUpLine: 'arrow-up-line',
   riAtLine: 'at-line',
   riBallPenLine: 'ball-pen-line',
   riCalendar2Line: 'calendar-2-line',
   riChat1Line: 'chat-1-line',
+  riChat3Line: 'chat-3-line',
+  riChatQuoteLine: 'chat-quote-line',
   riCloseLine: 'close-line',
   riComputerLine: 'computer-line',
   riFileCopyLine: 'file-copy-line',

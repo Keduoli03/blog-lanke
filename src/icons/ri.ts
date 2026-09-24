@@ -6,6 +6,11 @@ export const riArchiveLine: IconifyIcon = {
   width: 24,
   height: 24,
 }
+export const riArrowUpLine: IconifyIcon = {
+  body: '<path fill="currentColor" d="M13 7.828V20h-2V7.828l-5.364 5.364l-1.414-1.414L12 4l7.778 7.778l-1.414 1.414z"/>',
+  width: 24,
+  height: 24,
+}
 export const riAtLine: IconifyIcon = {
   body: '<path fill="currentColor" d="M20 12a8 8 0 1 0-3.562 6.657l1.11 1.664A9.95 9.95 0 0 1 12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10v1.5a3.5 3.5 0 0 1-6.396 1.966A5 5 0 1 1 15 8h2v5.5a1.5 1.5 0 0 0 3 0zm-8-3a3 3 0 1 0 0 6a3 3 0 0 0 0-6"/>',
   width: 24,
@@ -23,6 +28,16 @@ export const riCalendar2Line: IconifyIcon = {
 }
 export const riChat1Line: IconifyIcon = {
   body: '<path fill="currentColor" d="M10 3h4a8 8 0 1 1 0 16v3.5c-5-2-12-5-12-11.5a8 8 0 0 1 8-8m2 14h2a6 6 0 0 0 0-12h-4a6 6 0 0 0-6 6c0 3.61 2.462 5.966 8 8.48z"/>',
+  width: 24,
+  height: 24,
+}
+export const riChat3Line: IconifyIcon = {
+  body: '<path fill="currentColor" d="M7.291 20.824L2 22l1.176-5.291A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10a9.96 9.96 0 0 1-4.709-1.176m.29-2.113l.653.35A7.96 7.96 0 0 0 12 20a8 8 0 1 0-8-8c0 1.335.325 2.617.94 3.766l.349.653l-.655 2.947z"/>',
+  width: 24,
+  height: 24,
+}
+export const riChatQuoteLine: IconifyIcon = {
+  body: '<path fill="currentColor" d="M21 3a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H6.455L2 22.5V4a1 1 0 0 1 1-1zm-1 2H4v13.385L5.763 17H20zm-9.485 2.412l.447.688c-1.668.903-1.639 2.352-1.639 2.665c.155-.022.318-.025.48-.01a1.76 1.76 0 0 1 1.613 1.745a1.75 1.75 0 0 1-1.75 1.75c-.537 0-1.05-.245-1.374-.59c-.515-.546-.792-1.16-.792-2.155c0-1.75 1.228-3.318 3.015-4.093m5 0l.447.688c-1.668.903-1.639 2.352-1.639 2.665c.155-.022.318-.025.48-.01a1.76 1.76 0 0 1 1.613 1.745a1.75 1.75 0 0 1-1.75 1.75c-.537 0-1.05-.245-1.374-.59c-.515-.546-.792-1.16-.792-2.155c0-1.75 1.228-3.318 3.015-4.093"/>',
   width: 24,
   height: 24,
 }
