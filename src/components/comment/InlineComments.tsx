@@ -28,7 +28,6 @@ import {
 const COMMENTABLE_SELECTOR = 'p, li, blockquote, h2, h3, h4, h5, h6, td, th'
 const MAX_QUOTE_LENGTH = 500
 const ARTALK_CONTENT_STORAGE_KEY = 'ArtalkContent'
-const HIGHLIGHT_NAME = 'inline-comment'
 const ACTIVE_HIGHLIGHT_NAME = 'inline-comment-active'
 const MENU_VIEWPORT_GAP = 8
 
@@ -568,20 +567,7 @@ export function InlineComments({
       badge.className = 'inline-comment-badge'
       badge.dataset.inlineCommentBadge = discussion.selector.anchorId
       badge.setAttribute('aria-label', `查看这段文字的 ${discussion.comments.length} 条评论`)
-      const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-      icon.setAttribute('viewBox', '0 0 24 24')
-      icon.setAttribute('aria-hidden', 'true')
-      icon.classList.add('inline-comment-badge-icon')
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-      path.setAttribute('fill', 'currentColor')
-      path.setAttribute(
-        'd',
-        'M10 3h4a8 8 0 1 1 0 16v3.5c-5-2-12-5-12-11.5a8 8 0 0 1 8-8m2 14h2a6 6 0 0 0 0-12h-4a6 6 0 0 0-6 6c0 3.61 2.462 5.966 8 8.48z',
-      )
-      icon.append(path)
-      const count = document.createElement('span')
-      count.textContent = String(discussion.comments.length)
-      badge.append(icon, count)
+      badge.textContent = String(discussion.comments.length)
       badge.addEventListener('click', () => openSelector(discussion.selector))
       badge.addEventListener('pointerenter', () => setActiveHighlight(anchor.range))
       badge.addEventListener('pointerleave', () => setActiveHighlight(null))
@@ -597,15 +583,9 @@ export function InlineComments({
     resolved.forEach(({ discussion, anchor }) =>
       anchorRanges.set(discussion.selector.anchorId, anchor.range),
     )
-    const highlights = getHighlightRegistry()
-    highlights?.registry.set(
-      HIGHLIGHT_NAME,
-      highlights.create(resolved.map(({ anchor }) => anchor.range)),
-    )
 
     return () => {
-      highlights?.registry.delete(HIGHLIGHT_NAME)
-      highlights?.registry.delete(ACTIVE_HIGHLIGHT_NAME)
+      setActiveHighlight(null)
       anchorRanges.clear()
       article.querySelectorAll('[data-inline-comment-badge]').forEach((badge) => badge.remove())
       article.normalize()

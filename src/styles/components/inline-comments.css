@@ -85,52 +85,39 @@
   font-size: 0.72rem;
 }
 
-::highlight(inline-comment) {
-  text-decoration: underline dotted rgb(var(--color-accent) / 0.55);
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 0.28em;
-}
-
 ::highlight(inline-comment-active) {
   background-color: rgb(var(--color-accent) / 0.16);
 }
 
 .inline-comment-badge {
   position: relative;
-  top: -0.5em;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.12em;
-  margin-inline: 0.1em 0.05em;
-  padding: 0.14em 0.3em;
+  top: -0.55em;
+  display: inline-grid;
+  min-width: 1.5em;
+  height: 1.5em;
+  place-items: center;
+  margin-inline: 0.12em 0.08em;
+  padding: 0 0.4em;
   border: 0;
-  border-radius: 0.4em;
-  background: transparent;
-  color: rgb(var(--color-text-secondary));
+  border-radius: 999px;
+  background: rgb(var(--color-accent) / 0.14);
+  color: rgb(var(--color-accent));
   font:
-    600 0.64em/1 system-ui,
+    700 0.72em/1 system-ui,
     sans-serif;
   font-variant-numeric: tabular-nums;
   vertical-align: baseline;
   cursor: pointer;
-  opacity: 0.8;
   white-space: nowrap;
   transition:
     background-color 120ms ease,
-    color 120ms ease,
-    opacity 120ms ease;
-}
-
-.inline-comment-badge-icon {
-  width: 1.05em;
-  height: 1.05em;
+    color 120ms ease;
 }
 
 .inline-comment-badge:hover,
 .inline-comment-badge:focus-visible {
-  background: rgb(var(--color-accent) / 0.12);
-  color: rgb(var(--color-accent));
-  opacity: 1;
+  background: rgb(var(--color-accent));
+  color: rgb(var(--color-bg-primary));
   outline: none;
 }
 
