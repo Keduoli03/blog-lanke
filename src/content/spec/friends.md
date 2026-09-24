@@ -13,9 +13,9 @@ comments: true
 ```json
 title: Ditto
 description: 请为一切不真实之物骄傲，因为我们高于这个世界！
-link: https://blog.blueke.top/
+link: https://blueke.top/
 avatar: https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/avatar.jpg
-rss: https://blog.blueke.top/rss.xml
+rss: https://blueke.top/rss.xml
 ```
 
 推荐留下订阅地址，以便本站更好的展示你的内容。
