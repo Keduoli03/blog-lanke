@@ -150,7 +150,7 @@ export const friends = [
     tags: ['友链'],
   },
   {
-    title: 'Rain',
+    title: '朝朝听雨',
     avatar: 'https://rainzt.cn/zzty.png',
     description: '物物而不物于物，念念而不念于念',
     link: 'http://rainzt.cn',
