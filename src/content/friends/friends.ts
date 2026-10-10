@@ -204,6 +204,13 @@ export const friends = [
     link: 'https://blog.grayzhao.com/',
     tags: ['友链'],
   },
+  {
+    title: 'RAGNote',
+    avatar: 'https://ragnote.top/Avatar.png',
+    description: 'Life is code. I will debug it.',
+    link: 'https://ragnote.top/',
+    tags: ['友链'],
+  },
 ]
 
 export const lostFriends = [
