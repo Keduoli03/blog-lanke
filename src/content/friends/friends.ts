@@ -184,8 +184,9 @@ export const friends = [
     avatar: 'https://docs.asoe.cn/friends/TechSauce-Logo.webp',
     background: 'https://docs.asoe.cn/friends/TechSauce-Beijing.webp',
     description: '同一个世界，同一个互联网！',
-    link: 'https://docs.asoe.cn',
+    link: 'https://docs.asoe.cn/',
     rss: 'https://docs.asoe.cn/rss.xml',
+    sitemap: 'https://docs.asoe.cn/sitemap.xml',
     tags: ['友链'],
   },
   {
