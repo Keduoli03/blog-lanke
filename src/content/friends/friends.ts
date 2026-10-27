@@ -1,7 +1,7 @@
 export const friends = [
   {
     title: '天影大侠的小站',
-    avatar: 'https://weavatar.com/avatar/7388ea4765a319d5f83fea61c3236384?s=1000',
+    avatar: '/images/friends/081fe612c98ff538.webp',
     description: 'The Blog of SkyShadowHero!',
     link: 'https://blog.skyshadow.fun/',
     rss: 'https://blog.skyshadow.fun/rss.xml',
@@ -9,7 +9,7 @@ export const friends = [
   },
   {
     title: '伊卡的记事本',
-    avatar: 'https://ikamusume7.org/avatar.webp',
+    avatar: '/images/friends/ab8199177c54bc41.webp',
     description: '又菜又爱学',
     link: 'https://ikamusume7.org',
     rss: 'https://ikamusume7.org/rss.xml',
@@ -17,7 +17,7 @@ export const friends = [
   },
   {
     title: 'Mayx的博客',
-    avatar: 'https://avatars0.githubusercontent.com/u/17966333',
+    avatar: '/images/friends/103d596f2abacae7.png',
     description: 'Mayx’s Home Page',
     link: 'https://mayx.gitlab.io/',
     rss: 'https://mayx.gitlab.io/atom.xml',
@@ -33,7 +33,7 @@ export const friends = [
   },
   {
     title: 'LineXic书屋',
-    avatar: 'https://linexic.top/avatar.webp',
+    avatar: '/images/friends/1ded482a0b372acd.jpg',
     description: '难离难舍，想抱紧些',
     link: 'https://www.linexic.top/',
     rss: 'https://www.linexic.top/rss.xml',
@@ -41,7 +41,7 @@ export const friends = [
   },
   {
     title: '独元殇',
-    avatar: 'https://img1.ccgxk.com/ccgxk-oss/2025/05/202505191037317NTuR1.jpg',
+    avatar: '/images/friends/e824c35625caa898.png',
     description: '月光刚好，你在仰望，我们一起仰望',
     link: 'https://www.ccgxk.com',
     rss: 'https://www.ccgxk.com/rss.php',
@@ -49,7 +49,7 @@ export const friends = [
   },
   {
     title: '記緒漂流',
-    avatar: 'https://ttio.cc/favicon.svg',
+    avatar: '/images/friends/8d3dae8efc544c07.svg',
     description: '于记忆之川，泛思绪之舟',
     link: 'https://ttio.cc',
     rss: 'https://ttio.cc/feed.xml',
@@ -57,7 +57,7 @@ export const friends = [
   },
   {
     title: '流月小站',
-    avatar: 'https://cdn.liuyue.net/assets/img/avatar.jpg',
+    avatar: '/images/friends/4c19ea604964a481.jpg',
     description: '且听风吟，静待花开',
     link: 'https://blog.flowmoon.cn/',
     rss: 'https://blog.flowmoon.cn/rss.xml',
@@ -65,7 +65,7 @@ export const friends = [
   },
   {
     title: 'Pinpe 的云端',
-    avatar: 'https://pinpe.top/head.jpg',
+    avatar: '/images/friends/fa0ac62adc89f44e.jpg',
     description: '一个属于自己的云朵。',
     link: 'https://pinpe.top/',
     rss: 'https://pinpe.top/rss.xml',
@@ -80,8 +80,7 @@ export const friends = [
   },
   {
     title: '酥米的小站',
-    avatar:
-      'https://cdn.jsdmirror.com/gh/huang233893/blog-image-bed/top/huang233893/imgs/blog/userfb6a1018b84ce485.jpg',
+    avatar: '/images/friends/cf133ab4f5c19745.jpg',
     description: '有朝一日，寻见梦中人✨',
     link: 'https://www.sumi233.top/',
     rss: 'https://www.sumi233.top/rss.xml',
@@ -97,7 +96,7 @@ export const friends = [
   },
   {
     title: 'Evilrabbit Blog',
-    avatar: 'https://blog.yujiay.wang/images/site/BlogHsvg.png',
+    avatar: '/images/friends/58587f990ec9e9e0.png',
     description: '爱 Coding 爱生活',
     link: 'https://blog.yujiay.wang/',
     rss: 'https://blog.yujiay.wang/atom.xml',
@@ -105,21 +104,21 @@ export const friends = [
   },
   {
     title: '两个笨笨',
-    avatar: 'https://pan.mkirin.top/f/9Bt9/icon.png',
+    avatar: '/images/friends/0d9cfe54d8205442.png',
     description: '两个笨笨的blog',
     link: 'https://mkirin.top',
     tags: ['友链'],
   },
   {
     title: '吐司气泡',
-    avatar: 'https://blog.toastbubble.top/avatar.webp',
+    avatar: '/images/friends/5643cde4b38a5067.svg',
     description: '追求源于热爱',
     link: 'https://blog.toastbubble.top/',
     tags: ['友链'],
   },
   {
     title: '小曦的园子',
-    avatar: 'https://img.xiaoxi.ac.cn/logo.png',
+    avatar: '/images/friends/6406a4549c823585.png',
     description: '打理好自己的小园子',
     link: 'https://xiaoxi.ac.cn',
     rss: 'https://xiaoxi.ac.cn/rss.xml',
@@ -127,7 +126,7 @@ export const friends = [
   },
   {
     title: '拾柒',
-    avatar: 'https://www.s17.cn/logo.png',
+    avatar: '/images/friends/3e9bd63fac90cb03.jpg',
     description: '奇奇怪怪。',
     link: 'https://www.s17.cn',
     rss: 'https://www.s17.cn/rss.xml',
@@ -135,7 +134,7 @@ export const friends = [
   },
   {
     title: 'Sunrise.博客',
-    avatar: 'https://wowtang.top/images/avatar.png',
+    avatar: '/images/friends/19bb12131bf9f7b8.png',
     description: '心境自成天地，地狱可化作桃源，天堂也能沦为苦海。',
     link: 'https://wowtang.top',
     rss: 'https://wowtang.top/feed.xml',
@@ -143,7 +142,7 @@ export const friends = [
   },
   {
     title: '茗辰原',
-    avatar: 'https://mingcy.cn/image/mcy.png',
+    avatar: '/images/friends/66547d960bc6741f.png',
     description: '茶香四溢,编程世界',
     link: 'https://mingcy.cn',
     rss: 'https://mingcy.cn/rss.xml',
@@ -151,7 +150,7 @@ export const friends = [
   },
   {
     title: '朝朝听雨',
-    avatar: 'https://rainzt.cn/zzty.png',
+    avatar: '/images/friends/524ebe3a83a86581.png',
     description: '物物而不物于物，念念而不念于念',
     link: 'http://rainzt.cn',
     rss: 'https://rainzt.cn/rss.xml',
@@ -159,30 +158,30 @@ export const friends = [
   },
   {
     title: 'xiaomo的小破站',
-    avatar: 'https://xiaomoo.top/images/dog.jpg',
+    avatar: '/images/friends/6d4ed7b405005604.jpg',
     description: '愛をもって長き年月に立ち向かい、継続をもって心の遠き彼方へ赴く。',
     link: 'https://xiaomoo.top/',
     tags: ['友链'],
   },
   {
     title: '时光潜流',
-    avatar: 'https://www.dreamcenter.top/imgs/avatar.jpg',
+    avatar: '/images/friends/cf255bc76e1170b0.jpg',
     description: '妹控的中二君',
     link: 'https://www.dreamcenter.top',
     tags: ['友链'],
   },
   {
     title: 'Xe_iu的杂物间',
-    avatar: 'https://blog.xeiu.top/logo-img/logo.jpg',
-    background: 'https://blog.xeiu.top/logo-img/back.jpg',
+    avatar: '/images/friends/0fdff156950cbb5c.jpg',
+    background: '/images/friends/2e7c4dcee5d217f6.jpg',
     description: 'Since I cannot change the world, let me exist quietly in it.',
     link: 'https://blog.xeiu.top',
     tags: ['友链'],
   },
   {
     title: '科技酱的技术文档',
-    avatar: 'https://docs.asoe.cn/friends/TechSauce-Logo.webp',
-    background: 'https://docs.asoe.cn/friends/TechSauce-Beijing.webp',
+    avatar: '/images/friends/2b40455d1f24d1a7.png',
+    background: '/images/friends/6fee2f3a31d99f96.png',
     description: '同一个世界，同一个互联网！',
     link: 'https://docs.asoe.cn/',
     rss: 'https://docs.asoe.cn/rss.xml',
@@ -191,7 +190,7 @@ export const friends = [
   },
   {
     title: 'Homulilly',
-    avatar: 'https://homulilly.com/images/avatar.jpg',
+    avatar: '/images/friends/78f3c67852d29e59.jpg',
     background: 'https://img.nep.me/blog/homulilly-home.webp',
     description: '圆环之外，仍有未尽之愿。',
     link: 'https://homulilly.com',
@@ -200,14 +199,14 @@ export const friends = [
   },
   {
     title: '格雷万事屋',
-    avatar: 'https://blog.grayzhao.com/website.png',
+    avatar: '/images/friends/e7afed32917b8e7b.png',
     description: '格雷的万事屋包罗万象',
     link: 'https://blog.grayzhao.com/',
     tags: ['友链'],
   },
   {
     title: 'RAGNote',
-    avatar: 'https://ragnote.top/Avatar.png',
+    avatar: '/images/friends/17a9da7b47555b93.png',
     description: 'Life is code. I will debug it.',
     link: 'https://ragnote.top/',
     tags: ['友链'],
@@ -217,7 +216,7 @@ export const friends = [
 export const lostFriends = [
   {
     title: 'M次元',
-    avatar: 'https://cravatar.com/avatar/e067b11317af75ad0eff9db62d927096?s=80&d=blank',
+    avatar: '/images/friends/019756a5cd9ffb36.webp',
     description: '小声记录小事',
     link: 'https://mmxza.com/',
     tags: ['已失联'],
