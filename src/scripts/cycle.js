@@ -12,6 +12,19 @@ export function createAvatarFallback(author) {
   return 'data:image/svg+xml,' + encodeURIComponent(svg).replace(/'/g, '%27')
 }
 
+export function resolveAvatarUrl(value, baseUrl) {
+  const path = String(value || '')
+    .trim()
+    .replace(/^\/?public\//, '/')
+  if (!path) return ''
+  try {
+    const url = new URL(path, baseUrl)
+    return /^https?:$/.test(url.protocol) ? url.href : ''
+  } catch {
+    return ''
+  }
+}
+
 // 初始化函数
 export function initFriendCircle() {
   const UserConfig = window.UserConfig || {}
@@ -56,7 +69,6 @@ function loadArticleItem(container, datalist, start, end) {
     const title = item.title
     const link = item.link
     const fallback = createAvatarFallback(author)
-    const avatar = /^https?:\/\//i.test(item.avatar || '') ? item.avatar : fallback
 
     // 尝试从 link 中提取主域名作为作者链接
     let authorLink = '#'
@@ -66,6 +78,11 @@ function loadArticleItem(container, datalist, start, end) {
     } catch (e) {
       console.warn('Invalid URL:', link)
     }
+
+    // Prefer the current friend list, including local images, over stale API avatars.
+    const configuredAvatar = window.UserConfig?.friend_avatars?.[authorLink]
+    const avatar =
+      resolveAvatarUrl(configuredAvatar || item.avatar, window.location.origin) || fallback
 
     articleItem += `
       <div class="card" onclick="window.open('${link}', '_blank')">

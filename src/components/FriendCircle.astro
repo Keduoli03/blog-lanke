@@ -1,6 +1,13 @@
 ---
 import '@/styles/components/friend-circle.css'
 import cycleScriptUrl from '@/scripts/cycle.js?url'
+import { friends, lostFriends } from '@/content/friends/friends'
+
+const friendAvatars = Object.fromEntries(
+  [...friends, ...lostFriends]
+    .filter((friend) => friend.avatar)
+    .map((friend) => [new URL(friend.link).origin, friend.avatar]),
+)
 ---
 
 <div class="friend-circle-container md-lightbox-exclude">
@@ -40,10 +47,11 @@ import cycleScriptUrl from '@/scripts/cycle.js?url'
   <div id="friend-circle-lite-root"></div>
 </div>
 
-<script is:inline>
+<script is:inline define:vars={{ friendAvatars }}>
   window.UserConfig = {
     private_api_url: 'https://api.friend.blueke.top/',
     page_turning_number: 12,
+    friend_avatars: friendAvatars,
   }
 </script>
 <script is:inline type="module" define:vars={{ cycleScriptUrl }}>

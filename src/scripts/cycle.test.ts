@@ -4,6 +4,53 @@ import { afterEach, expect, test, vi } from 'vitest'
 afterEach(() => {
   vi.unstubAllGlobals()
   document.body.innerHTML = ''
+  Reflect.deleteProperty(window, 'UserConfig')
+})
+
+test('local public assets resolve against the blog rather than the API', async () => {
+  const { resolveAvatarUrl } = await import('./cycle.js')
+  const expected = 'https://blueke.top/images/friends/081fe612c98ff538.webp'
+  for (const path of [
+    '/images/friends/081fe612c98ff538.webp',
+    'public/images/friends/081fe612c98ff538.webp',
+    '/public/images/friends/081fe612c98ff538.webp',
+  ]) {
+    expect(resolveAvatarUrl(path, 'https://blueke.top/')).toBe(expected)
+  }
+  expect(resolveAvatarUrl('https://example.com/avatar.png', 'https://blueke.top/')).toBe(
+    'https://example.com/avatar.png',
+  )
+  expect(resolveAvatarUrl('javascript:alert(1)', 'https://blueke.top/')).toBe('')
+  expect(resolveAvatarUrl('', 'https://blueke.top/')).toBe('')
+})
+
+test('the current local friend avatar replaces an old API avatar', async () => {
+  const { initFriendCircle } = await import('./cycle.js')
+  Object.assign(window, {
+    UserConfig: { friend_avatars: { 'https://example.com': '/images/friends/local.webp' } },
+  })
+  document.body.innerHTML = '<div><div id="friend-circle-lite-root"></div></div>'
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue({
+      json: async () => ({
+        article_data: [
+          {
+            author: 'Alice',
+            title: 'Post',
+            link: 'https://example.com/post/',
+            avatar: 'https://broken.example/avatar.png',
+            created: '2026-10-27',
+          },
+        ],
+      }),
+    }),
+  )
+  initFriendCircle()
+  await vi.waitFor(() => expect(document.querySelectorAll('.card')).toHaveLength(1))
+  for (const image of document.querySelectorAll<HTMLImageElement>('.card img')) {
+    expect(image.src).toBe(window.location.origin + '/images/friends/local.webp')
+  }
 })
 
 test('avatar failures use a local, author-specific placeholder', async () => {
